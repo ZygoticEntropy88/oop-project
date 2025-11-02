@@ -1,1 +1,1 @@
-from interfaz_persistencia import IPersistencia
+from .interfaz_persistencia import IPersistencia

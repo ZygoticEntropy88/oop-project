@@ -1,4 +1,4 @@
-from menu import Menu
+from .menu import Menu
 
 class MenuCatalogoPersonal(Menu):
     id = 4

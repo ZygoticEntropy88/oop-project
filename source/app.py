@@ -14,7 +14,6 @@ if __name__ == '__main__':
     id = 0
     ejecutar = True
 
-    while ejecutar:
-        print(menus[id])
-        opcion = input(">> ")
-        id = menus[id].ejecutar(opcion)
+    menus[id].imprimir()
+    opcion = input(">> ")
+    id = menus[id].ejecutar(opcion)
