@@ -1,0 +1,156 @@
+DB/
+	usuarios.csv
+	catalogo_generico.csv
+	catalogos_premiums/
+		roctvic_22.csv
+		pablo_corbalan.csv
+		...
+	listas_reproduccion/
+		roctvic_22/
+			white_music.json
+			rock_and_rollas.json
+		pablo_corbalan/
+			psalms.json
+			white_music.json
+		...
+
+DOCS/
+	diagrama_de_clases.uml
+
+SOURCE/
+	reproductor.py
+	persistencia.py 
+		class GestorPersistencia():
+			# SE ENCARGA DE TODO LO QUE SEAN ARCHIVOS
+			def guardar_objeto_en_csv(objeto, ruta_csv)
+			def guardar_objeto_en_json(objeto, ruta_json)
+				json.dump(objeto.objeto_a_diccionario(), ruta_json)
+			def guardar_objeto_en_texto(objeto, ruta_texto)
+
+			def cargar_csv_en_objeto(objeto, ruta_csv)
+			...
+
+		class IPersistencia(ABC):
+			@abstractmethod
+			def objeto_a_diccionario():
+				pass
+
+			@abstractmethod
+			def objeto_a_texto():
+				pass
+
+			...
+	
+	listas.py
+		class Lista(IPersistencia)
+
+	cancion.py
+		class Cancion(IPersistencia)
+
+	usuarios.py
+
+		class Usuario(IPersistencia)
+			
+			+nombre
+			+apellidos
+			+fecha_nacimiento: (dia, mes, año)
+			+email
+			-contraseña 
+
+			class UsuarioAnonimo(Usuario) # SI TUVIERAMOS QUE REESCRIBIR MUCHO, AÑADIMOS UN NUEVO NIVEL DE HERENCIA (UsuarioAnonimo / UsuarioIdentificado)
+
+			class UsuarioCorriente(Usuario)
+
+			class UsuarioPremium(Usuario)	
+				-iban
+
+				self.catalogo_premium:Lista = self.__cargar_catalogo_premium()
+
+				def self.__cargar_catalogo_premium() -> Lista:
+
+					with open(f"DB/catalogos_premium/{self.id_usario}.csv", "r") as f:
+
+						canciones = gestor_persistencia.cargar_de_csv(f)
+
+	
+	main.py
+		usuario_logeado = UsuarioAnonimo(), UsuarioRegular(), UsuarioPremium()
+
+		id = 0
+		if __name__ == "__main__":
+			print(menus[id])
+			opción = input(">> ")
+			id = menus[id].ejecutar(opción)
+			
+			
+	menus.py
+		class Menu(ABC)
+			
+			+ id:int
+
+			
+			- @__str__() -> str
+			+ @ejecutar() -> id_siguiente_menu:int
+			+ volver_menu_anterior () -> id_menu_anterior:int 
+			+ salir()
+			
+			
+			class MenuInicio(Menu)
+				
+				+ id = 0
+
+				# pantalla_login
+				# pantalla_registrar
+				# continuar_como_invitado 
+					--> usuario_logeado = UsuarioAnonimo()
+
+
+
+			class MenuPrincipal(Menu)
+
+					
+				# pantalla_menu_reproduccion -> id menu_reproduccion
+				# pantalla_menu_catologo_generico -> ...
+				# pantalla_menu_personal
+				# pantalla_menu_reproduccion
+			
+			class MenuReproduccion(Menu)
+				
+				def pantalla_reproducir_por_id():
+					id_cancion:int = input(">")
+					cancion = Cancion(id_cancion)
+					cancion.reproducir()
+
+				# pausar_cancion
+				# renaudar_reproduccion
+
+			class MenuCatalogoGenerico(Menu)
+
+				# def listar_canciones()
+					catalogo_generico_info = gestor_persistencia.cargar_de_csv(ruta_catalogo_generico)
+					catologo_generico = Lista(catalogo_generico_info)
+					print(catalogo_generico)
+
+			class MenuCatalogoPersonal(Menu)
+				
+				
+				# def listar_canciones_de_usuario(user)
+					ruta_catalogo_personal:str = f"DB/catologo_personal/{user}.csv"
+					catalogo_personal_info = gestor_persistencia.cargar_de_csv(ruta_catalogo_personal)
+					catologo_personal = Lista(catalogo_personal_info)
+					print(catalogo_personal)
+
+				# def añadir canción
+				# def eliminar canción
+
+			class MenuListaReproduccion(Menu)
+				# mostrar_listas
+				# mostrar_canciones_en_lista
+				# …
+
+
+
+
+			
+		
+
