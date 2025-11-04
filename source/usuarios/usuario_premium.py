@@ -6,7 +6,7 @@ class TarjetaCredito:
                  CVV : int,
                  fecha_de_caducidad : Fecha,
                  nombre_completo_titular : str,
-                 propietario : UsuarioPremium = None ):
+                 propietario : str = None):
 
         assert (len(str(numero_de_cuenta)) == 16 and
                 len(str(CVV)) == 3), "Los datos introducidos no son válidos"
@@ -14,7 +14,7 @@ class TarjetaCredito:
         self._numero_de_cuenta = numero_de_cuenta
         self._CVV = CVV
         self._fecha_de_caducidad = fecha_de_caducidad
-        self.nombre_completo_titular = nombre_completo_titular
+        self._nombre_completo_titular = nombre_completo_titular
         self._propietario = propietario
 
     def get_numero_cuenta (self):
@@ -36,9 +36,15 @@ class UsuarioPremium(Usuario):
                  correo_electronico : str,
                  contrasenya : str,
                  fecha_registro : Fecha,
-                 tarjeta_credito : TarjetaCredito
-    ):
-        super.__init__(nombre_usuario = nombre_usuario,
+                 tarjeta_credito : TarjetaCredito):
+
+        super().__init__(nombre_de_usuario = nombre_usuario,
                        fecha_nacimiento = fecha_nacimiento,
                        correo_electronico = correo_electronico,
-                       
+                       contrasenya = contrasenya,
+                       fecha_registro = fecha_registro)
+        self._tarjeta_de_credito = tarjeta_credito
+
+    def get_tarjeta_credito (self):
+        return self._tarjeta_de_credito
+

@@ -1,4 +1,5 @@
 from source.persistencia import IPersistencia
+import csv
 
 class Fecha:
     def __init__(self, dia : int, mes : int, anyo : int):
@@ -38,3 +39,28 @@ class Usuario(IPersistencia):
         self._correo_electronico = correo_electronico
         self._contrasenya = contrasenya
         self.fecha_de_registro = fecha_registro
+
+
+    def get_nombre_usuario (self):
+        return self._nombre_de_usuario
+
+    def get_fecha_nacimiento(self):
+        return self._fecha_de_nacimiento
+
+    def get_correo_electronico (self):
+        return self._correo_electronico
+
+    def get_contrasenya (self):
+        return self._contrasenya
+
+    def get_fecha_registro (self):
+        return self._fecha_de_registro
+
+    def objeto_a_diccionario (self):
+        
+
+    def objeto_a_csv(self):
+
+        with open("usuarios.csv", "w", newline = "") as f:
+            writer = csv.DictWriter(f, fieldnames = datos.keys(), delimiter = ", ")
+            writer.writeheader()
