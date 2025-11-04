@@ -20,8 +20,13 @@ class Menu(ABC):
 
     @classmethod
     @abstractmethod
-    def ejecutar(self, opcion:int):
-        pass
+    def ejecutar(cls, opcion:int):
+        assert isinstance(opcion, int) and opcion >= 0, "La selección de opción debe ser un número positivo mayor que cero"
+
+        if opcion == 0:
+            cls.salir()
+        elif opcion == 1:
+            cls.menu_anterior()
 
     @classmethod
     def menu_anterior(cls) -> int:
