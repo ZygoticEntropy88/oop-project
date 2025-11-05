@@ -1,4 +1,4 @@
-from source.persistencia import IPersistencia
+from persistencia.interfaz_persistencia import IPersistencia
 import csv
 
 class Fecha:
@@ -38,7 +38,7 @@ class Usuario(IPersistencia):
         self._fecha_de_nacimiento = fecha_nacimiento
         self._correo_electronico = correo_electronico
         self._contrasenya = contrasenya
-        self.fecha_de_registro = fecha_registro
+        self._fecha_de_registro = fecha_registro
 
 
     def get_nombre_usuario (self):
@@ -56,11 +56,34 @@ class Usuario(IPersistencia):
     def get_fecha_registro (self):
         return self._fecha_de_registro
 
+    def objeto_a_texto (self):
+        usuario_texto : str = ""
+        usuario_texto += f"Nombre:  {self.get_nombre_usuario()} \n"
+        usuario_texto += f"Fecha Nacimiento:  {self.get_fecha_nacimiento()} \n"
+        usuario_texto += f"Correo Electrónico:  {self.get_correo_electronico()} \n"
+        usuario_texto += f"Contraseña:  {self.get_contrasenya()} \n"
+        usuario_texto += f"Fecha Registro:  {self.get_fecha_registro()} \n"
+        return usuario_texto
+
+
     def objeto_a_diccionario (self):
-        
+        usuario = {
+            "Nombre" : self.get_nombre_usuario(),
+            "Fecha Nacimiento" : self.get_fecha_nacimiento(),
+            "Correo Electrónico" : self.get_correo_electronico(),
+            "Contraseña" : self.get_contrasenya(),
+            "Fecha Registro" : self.get_fecha_registro()
+        }
+        return usuario
 
     def objeto_a_csv(self):
+        campos : list[str] = ['Nombre', 'Fecha de Nacimiento', 'Correo Electrónico,'
+                                                               'Contraseña',
+                              'Fecha Registro']
 
-        with open("usuarios.csv", "w", newline = "") as f:
-            writer = csv.DictWriter(f, fieldnames = datos.keys(), delimiter = ", ")
+        with open ('archivo_usuarios.csv', 'w', newline = ' ') as archivo:
+            writer = csv.DictWriter (archivo, fieldnames = campos, delimiter = " , ")
             writer.writeheader()
+            writer.writerow(self.objeto_a_diccionario())
+
+    
