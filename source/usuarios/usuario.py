@@ -56,6 +56,20 @@ class Usuario(IPersistencia):
     def get_fecha_registro (self):
         return self._fecha_de_registro
 
+    def set_nombre_usuario (self, nuevo_nombre : str):
+        self._nombre_de_usuario = nuevo_nombre
+
+    def set_fecha_nacimiento(self, nueva_fecha : Fecha):
+        self._fecha_de_nacimiento = nueva_fecha
+
+    def set_correo_electronico (self, nuevo_correo : str):
+        self._correo_electronico = nuevo_correo
+
+    def set_contrasenya (self, nueva_contrasenya : str):
+        self._contrasenya = nueva_contrasenya
+
+    def set_fecha_registro (self, nueva_fecha_registro : Fecha):
+        self._fecha_de_registro = nueva_fecha_registro
     def objeto_a_texto (self):
         usuario_texto : str = ""
         usuario_texto += f"Nombre:  {self.get_nombre_usuario()} \n"
@@ -77,8 +91,8 @@ class Usuario(IPersistencia):
         return usuario
 
     def objeto_a_csv(self):
-        campos : list[str] = ['Nombre', 'Fecha de Nacimiento', 'Correo Electrónico,'
-                                                               'Contraseña',
+        campos : list[str] = ['Nombre', 'Fecha de Nacimiento',
+                              'Correo Electrónico', 'Contraseña',
                               'Fecha Registro']
 
         with open ('archivo_usuarios.csv', 'w', newline = ' ') as archivo:
@@ -86,4 +100,28 @@ class Usuario(IPersistencia):
             writer.writeheader()
             writer.writerow(self.objeto_a_diccionario())
 
-    
+    def texto_a_objeto (self, texto : str):
+        pass
+
+    def diccionario_a_objeto (self, diccionario_usuario : dict):
+        try:
+            if "Nombre" in diccionario_usuario and diccionario_usuario["Nombre"]:
+                self.set_nombre_usuario(diccionario_usuario["Nombre"])
+
+            if "Fecha de Nacimiento" in diccionario_usuario and diccionario_usuario["Fecha de Nacimiento"]:
+                self.set_fecha_nacimiento(diccionario_usuario["Fecha de Nacimiento"])
+
+            if "Correo Electrónico" in diccionario_usuario and diccionario_usuario["Correo Electrónico"]:
+                self.set_correo_electronico(diccionario_usuario["Correo Electrónico"])
+
+            if "Contraseña" in diccionario_usuario and diccionario_usuario["Contraseña"]:
+                self.set_contrasenya(diccionario_usuario["Contraseña"])
+
+            if "Fecha Registro" in diccionario_usuario and diccionario_usuario["Fecha Registro"]:
+                self.set_fecha_registro(diccionario_usuario["Fecha Registro"])
+
+        except Exception as error:
+            raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
+
+    def csv_a_objeto (self):
+        pass
