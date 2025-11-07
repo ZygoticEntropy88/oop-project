@@ -70,6 +70,8 @@ class Usuario(IPersistencia):
 
     def set_fecha_registro (self, nueva_fecha_registro : Fecha):
         self._fecha_de_registro = nueva_fecha_registro
+
+
     def objeto_a_texto (self):
         usuario_texto : str = ""
         usuario_texto += f"Nombre:  {self.get_nombre_usuario()} \n"
@@ -91,14 +93,7 @@ class Usuario(IPersistencia):
         return usuario
 
     def objeto_a_csv(self):
-        campos : list[str] = ['Nombre', 'Fecha de Nacimiento',
-                              'Correo Electrónico', 'Contraseña',
-                              'Fecha Registro']
-
-        with open ('archivo_usuarios.csv', 'w', newline = ' ') as archivo:
-            writer = csv.DictWriter (archivo, fieldnames = campos, delimiter = " , ")
-            writer.writeheader()
-            writer.writerow(self.objeto_a_diccionario())
+        pass
 
     def texto_a_objeto (self, texto : str):
         pass
@@ -123,5 +118,5 @@ class Usuario(IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
-    def csv_a_objeto (self):
+    def csv_a_objeto (self, diccionario ):
         pass

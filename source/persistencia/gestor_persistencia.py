@@ -67,7 +67,7 @@ class GestorPersistencia:
             with open(ruta, newline='', encoding='utf-8') as f:
                 lector = csv.DictReader(f)
                 # Convierto el iterador "lector" en una lista de diccionarios de la forma {'cabecera': 'valor'}
-                contenido = list(lector)
+                contenido = list(lector) # [{"cabecera 1: "valor fila 1", "cabecera 2": "valor cabecera 2"}, {}, {]
         except Exception as e:
             print(f"No se ha podido cargar el CSV: {ruta}, error {e}")
             return False
