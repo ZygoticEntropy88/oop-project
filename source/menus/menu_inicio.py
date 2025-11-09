@@ -1,7 +1,7 @@
 from .menu import Menu
 
 class MenuInicio(Menu):
-    id = 0
+    numero_menu = 0
     opciones = [
         "Registrar un usuario",
         "Login con usuario y contraseña",

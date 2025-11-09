@@ -2,7 +2,7 @@ from .menu import Menu
 
 
 class MenuListasReproduccion(Menu):
-    id = 5
+    numero_menu = 5
     opciones = [
         "Mostrar todas las listas",
         "Mostrar canciones en una lista",

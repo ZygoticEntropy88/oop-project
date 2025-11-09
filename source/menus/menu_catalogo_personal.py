@@ -1,7 +1,7 @@
 from .menu import Menu
 
 class MenuCatalogoPersonal(Menu):
-    id = 4
+    numero_menu = 4
     opciones = [
         "Listar canciones",
         "Añadir canción",

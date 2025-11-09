@@ -1,7 +1,7 @@
 from .usuario import Usuario
 from .usuario import Fecha
-
-class TarjetaCredito:
+from persistencia.interfaz_persistencia import IPersistencia
+class TarjetaCredito (IPersistencia):
     def __init__(self, numero_de_cuenta : int,
                  CVV : int,
                  fecha_de_caducidad : Fecha,
@@ -24,11 +24,58 @@ class TarjetaCredito:
         return self._CVV
 
     def get_fecha_caducidad (self):
-        return self._fecha_caducidad
+        return self._fecha_de_caducidad
 
     def get_nombre_titular (self):
         return self._nombre_completo_titular
 
+    def get_propietario (self):
+        return self._propietario
+
+    def set_numero_cuenta (self, nuevo_numero_cuenta : int):
+        self._numero_de_cuenta = nuevo_numero_cuenta
+
+    def set_CVV (self, nuevo_CVV : int):
+        self._CVV = nuevo_CVV
+
+    def set_fecha_caducidad (self, nueva_fecha_caducidad : Fecha):
+        self._fecha_de_caducidad = nueva_fecha_caducidad
+
+    def set_nombre_titular (self, nuevo_nombre_titular : str):
+        self._nombre_completo_titular = nuevo_nombre_titular
+
+    def set_propietario (self, nuevo_propietario : str):
+        self._propietario = nuevo_propietario
+
+    def objeto_a_diccionario (self):
+        tarjeta = {
+            "Numero de cuenta": self.get_numero_cuenta(),
+            "CVV": self.get_CVV(),
+            "Fecha de caducidad": self.get_fecha_caducidad(),
+            "Nombre del titular": self.get_nombre_titular(),
+            "Propietario" : self.get_propietario()
+        }
+        return tarjeta
+
+    def diccionario_a_objeto(self, diccionario_tarjeta: dict):
+        try:
+            if "Numero de cuenta" in diccionario_tarjeta and diccionario_tarjeta["Numero de cuenta"]:
+                self.set_numero_cuenta(diccionario_tarjeta["Numero de cuenta"])
+
+            if "CVV" in diccionario_tarjeta and diccionario_tarjeta["CVV"]:
+                self.set_CVV(diccionario_tarjeta["CVV"])
+
+            if "Fecha de caducidad" in diccionario_tarjeta and diccionario_tarjeta["Fecha de caducidad"]:
+                self.set_fecha_caducidad(diccionario_tarjeta["Fecha de caducidad"])
+
+            if "Nombre del titular" in diccionario_tarjeta and diccionario_tarjeta["Nombre del titular"]:
+                self.set_nombre_titular(diccionario_tarjeta["Nombre del titular"])
+
+            if "Propietario" in diccionario_tarjeta and diccionario_tarjeta["Propietario"]:
+                self.set_propietario(diccionario_tarjeta["Propietario"])
+
+        except Exception as error:
+            raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
 class UsuarioPremium(Usuario):
     def __init__(self, nombre_usuario : str,
@@ -48,3 +95,10 @@ class UsuarioPremium(Usuario):
     def get_tarjeta_credito (self):
         return self._tarjeta_de_credito
 
+    def objeto_a_diccionario(self):
+        super().objeto_a_diccionario()
+        self.get_tarjeta_credito().objeto_a_diccionario()
+
+    def diccionario_a_objeto(self, diccionario_usuario_premium : dict):
+        super().diccionario_a_objeto()
+        self.get_tarjeta_credito().objeto_a_diccionario()

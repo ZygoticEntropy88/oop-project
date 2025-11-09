@@ -2,7 +2,7 @@ from .menu import Menu
 
 
 class MenuPrincipal(Menu):
-    id = 1
+    numero_menu = 1
     opciones = [
         "Menu reproducción",
         "Menu catálogo genérico",

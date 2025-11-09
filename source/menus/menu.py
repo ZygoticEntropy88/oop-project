@@ -8,7 +8,7 @@ def print_opcion(numero:int, opcion:str) -> None:
 
 class Menu(ABC):
 
-    id:int = 0
+    numero_menu:int = 0
     opciones = []
 
     @classmethod
@@ -30,15 +30,15 @@ class Menu(ABC):
 
     @classmethod
     def menu_anterior(cls) -> int:
-        if cls.id == 0:
-            return cls.id
-        return cls.id - 1
+        if cls.numero_menu == 0:
+            return cls.numero_menu
+        return cls.numero_menu - 1
 
     @classmethod
     def menu_siguiente(cls) -> int:
-        if cls.id > 2:
-            return cls.id
-        return cls.id + 1
+        if cls.numero_menu > 2:
+            return cls.numero_menu
+        return cls.numero_menu + 1
 
     @staticmethod
     def salir():

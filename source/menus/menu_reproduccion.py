@@ -1,7 +1,7 @@
 from .menu import Menu
 
 class MenuReproduccion(Menu):
-    id = 2
+    numero_menu = 2
     opciones = [
         "Reproducir canción por ID",
         "Pausar reproducción de la canción",

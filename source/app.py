@@ -11,9 +11,9 @@ menus:dict['Menu'] = {
 }
 
 if __name__ == '__main__':
-    id = 0
+    numero_menu :int = 0
     ejecutar = True
 
-    menus[id].imprimir()
+    menus[numero_menu].imprimir()
     opcion = input(">> ")
-    id = menus[id].ejecutar(opcion)
+    numero_menu = menus[numero_menu].ejecutar(opcion)
