@@ -1,6 +1,9 @@
 from .usuario import Usuario
 from .usuario import Fecha
 from persistencia.interfaz_persistencia import IPersistencia
+from listas import Lista
+from canciones import Cancion
+
 class TarjetaCredito (IPersistencia):
     def __init__(self, numero_de_cuenta : int,
                  CVV : int,
@@ -95,7 +98,14 @@ class UsuarioPremium(Usuario):
     def get_tarjeta_credito (self):
         return self._tarjeta_de_credito
 
-    def objeto_a_diccionario(self):
+    def crear_lista_reproduccion(self, lista_canciones : list['Cancion']): #Tengo que permitir que un usuario dado cree una lista de reproduccion
+        nombre_lista: str = str(input("Ingrese el nombre de la lista"))
+        descripcion_lista: str = str(input("Añade una descripción a la lista"))
+        fecha_creacion :'Fecha' = Fecha(10, 11, 2025)
+        nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
+        return nueva_lista
+
+def objeto_a_diccionario(self):
         super().objeto_a_diccionario()
         self.get_tarjeta_credito().objeto_a_diccionario()
 

@@ -41,7 +41,7 @@ class Cancion(IPersistencia):
         cancion_a_str += f"Artista: {self.get_artista()} \n"
         cancion_a_str += f"Año: {self.get_anyo()} \n"
         cancion_a_str += f"Identificador: {self.get_identificador()}"
-        print(cancion_a_str)
+        return cancion_a_str
 
     def objeto_a_diccionario (self):
         cancion : dict = {

@@ -1,5 +1,6 @@
 from persistencia.interfaz_persistencia import IPersistencia
 import csv
+from listas import Lista
 
 class Fecha:
     def __init__(self, dia : int, mes : int, anyo : int):
@@ -70,6 +71,10 @@ class Usuario(IPersistencia):
 
     def set_fecha_registro (self, nueva_fecha_registro : Fecha):
         self._fecha_de_registro = nueva_fecha_registro
+
+    @abstractmethod
+    def crear_lista_reproduccion(self, lista_canciones : list['Cancion']):
+        pass
 
 
     def objeto_a_texto (self):

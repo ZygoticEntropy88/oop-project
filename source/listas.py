@@ -4,7 +4,7 @@ from usuarios.usuario import Fecha
 from usuarios.usuario import Usuario
 
 
-class Lista(IPersistencia):
+class Lista:
 
     def __init__(self, nombre : str, descripcion : str,
                  lista_canciones : list['Cancion'],
@@ -26,10 +26,25 @@ class Lista(IPersistencia):
         return self._lista_canciones
 
     def get_fecha_creacion(self):
-        return self.fecha_creacion
+        return self._fecha_creacion
 
     def get_usuario_creador(self):
         return self._usuario_creador
+
+    def set_nombre(self, nuevo_nombre : str):
+        self._nombre = nuevo_nombre
+
+    def set_descripcion(self, nueva_descripcion : str):
+        self._descripcion = nueva_descripcion
+
+    def set_lista_canciones(self, nueva_lista : list['Cancion']):
+        self._lista_canciones = nueva_lista
+
+    def set_fecha_creacion(self, nueva_fecha : 'Fecha'):
+        self._fecha_creacion = nueva_fecha
+
+    def set_usuario_creador(self, nuevo_usuario : 'Usuario'):
+        self._usuario_creador = nuevo_usuario
 
     def __str__(self):
         lista_a_str : str = ""
@@ -40,12 +55,36 @@ class Lista(IPersistencia):
         lista_a_str += self.get_usuario_creador().get_nombre_usuario()
         print(lista_a_str)
 
-    def mostar_canciones(self):
-        pass
+    def mostrar_canciones(self):
+        for cancion in self.get_lista_canciones():
+            print(cancion.__str__())
+
+    def anyadir_cancion(self, cancion : 'Cancion'):
+        self.get_lista_canciones().append(cancion)
+
+    def eliminar_cancion (self, cancion : 'Cancion'):
+        self.get_lista_canciones().remove(cancion)
 
 
 
 
 
-class Catalogo(Lista):
-    pass
+
+
+class Catalogo:
+
+    def __init__(self, lista_canciones : list['Cancion']):
+        self._lista_canciones = lista_canciones
+
+    def get_lista_canciones(self):
+        return self._lista_canciones
+
+    def set_lista_canciones(self, nueva_lista : list['Cancion']):
+        self._lista_canciones = nueva_lista
+
+    def filtrar_por_artista(self, artista : str):
+        lista_filtrada : list['Cancion'] = []
+        for cancion in self.get_lista_canciones():
+            if cancion.get_artista() == artista:
+                lista_filtrada.append(cancion)
+
