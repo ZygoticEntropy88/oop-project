@@ -88,3 +88,17 @@ class Catalogo:
             if cancion.get_artista() == artista:
                 lista_filtrada.append(cancion)
 
+        self.set_lista_canciones(lista_filtrada)
+
+    def filtrar_por_genero(self, genero : str): #Debería cambiarlo para poner el filtro en función de un parámetro y tener una única función
+        lista_filtrada : list['Cancion'] = []
+        for cancion in self.get_lista_canciones():
+            if cancion.get_genero() == genero:
+                lista_filtrada.append(cancion)
+
+        self.set_lista_canciones(lista_filtrada)
+
+    class CatalogoPersonal ('Catalogo'):
+
+
+        def anyadir_cancion(self, ):
