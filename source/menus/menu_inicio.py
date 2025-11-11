@@ -32,7 +32,7 @@ class MenuInicio(Menu):
 
     @classmethod
     def login(cls):
-        
+
 
         """
         Introducimos correo y contraseña.
