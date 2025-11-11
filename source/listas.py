@@ -77,10 +77,36 @@ class Lista(IPersistencia):
 
     def objeto_a_texto(self):
         pass
+
     def objeto_a_diccionario(self):
-        pass
+        diccionario_listas : dict = {
+            "Nombre lista" : self.get_nombre(),
+            "Descripción" : self.get_descripcion(),
+            "Lista de canciones" : self.get_lista_canciones(),
+            "Fecha de creación" : self.get_fecha_creacion(),
+            "Usuario creador" : self.get_usuario_creador()
+        }
+        return diccionario_listas
+
     def diccionario_a_objeto(self, diccionario_listas : dict):
-        pass
+        try:
+            if "Descripción" in diccionario_listas and diccionario_listas["Descripción"]:
+                self.set_descripcion(diccionario_listas["Descripción"])
+
+            if "Nombre lista" in diccionario_listas and diccionario_listas["Nombre lista"]:
+                self.set_nombre(diccionario_listas["Nombre lista"])
+
+            if "Lista de canciones" in diccionario_listas and diccionario_listas["Lista de canciones"]:
+                self.set_lista_canciones(diccionario_listas["Lista de canciones"])
+
+            if "Fecha de creación" in diccionario_listas and diccionario_listas["Fecha de creación"]:
+                self.set_fecha_creacion(diccionario_listas["Fecha de creación"])
+
+            if "Usuario creador" in diccionario_listas and diccionario_listas["Usuario creador"]:
+                self.set_usuario_creador(diccionario_listas["Usuario creador"])
+
+        except Exception as error:
+            raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
 class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
@@ -134,10 +160,24 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
     def objeto_a_texto(self):
         pass
+
+
     def objeto_a_diccionario(self):
-        pass
-    def diccionario_a_objeto(self, diccionario_listas : dict):
-        pass
+        diccionario_catalogo : dict = {}
+
+        for cancion in self.get_lista_canciones():
+            diccionario_catalogo.update(cancion.objeto_a_diccionario())
+
+        return diccionario_catalogo
+
+
+    def diccionario_a_objeto(self, diccionario_catalogo : dict):
+        nueva_lista_canciones : list['Cancion'] = []
+        for datos_cancion in diccionario_catalogo.items():
+            cancion : Cancion = cancion.diccionario_a_objeto(datos_cancion)
+            nueva_lista_canciones.append(cancion)
+
+        self.set_lista_canciones(nueva_lista_canciones)
 
 class CatalogoPersonal (Catalogo):
     def __init__(self, lista_canciones : list['Cancion']):
