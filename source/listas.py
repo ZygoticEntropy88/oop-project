@@ -4,7 +4,7 @@ from usuarios.usuario import Fecha
 from usuarios.usuario import Usuario
 
 
-class Lista:
+class Lista(IPersistencia):
 
     def __init__(self, nombre : str, descripcion : str,
                  lista_canciones : list['Cancion'],
@@ -60,12 +60,27 @@ class Lista:
             print(cancion.__str__())
 
     def anyadir_cancion(self, cancion : 'Cancion'):
+
         self.get_lista_canciones().append(cancion)
 
     def eliminar_cancion (self, cancion : 'Cancion'):
         self.get_lista_canciones().remove(cancion)
 
+    def objeto_a_csv(self):
+        pass
 
+    def csv_a_objeto(self):
+        pass
+
+    def texto_a_objeto(self, diccionario_texto : str):
+        pass
+
+    def objeto_a_texto(self):
+        pass
+    def objeto_a_diccionario(self):
+        pass
+    def diccionario_a_objeto(self, diccionario_listas : dict):
+        pass
 
 
 

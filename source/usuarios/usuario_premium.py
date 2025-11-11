@@ -105,10 +105,10 @@ class UsuarioPremium(Usuario):
         nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
         return nueva_lista
 
-def objeto_a_diccionario(self):
+    def objeto_a_diccionario(self):
         super().objeto_a_diccionario()
         self.get_tarjeta_credito().objeto_a_diccionario()
 
     def diccionario_a_objeto(self, diccionario_usuario_premium : dict):
-        super().diccionario_a_objeto()
+        super().diccionario_a_objeto(diccionario_usuario_premium)
         self.get_tarjeta_credito().objeto_a_diccionario()

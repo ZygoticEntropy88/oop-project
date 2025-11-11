@@ -32,6 +32,16 @@ class MenuInicio(Menu):
 
     @classmethod
     def login(cls):
+        
+
+        """
+        Introducimos correo y contraseña.
+        Compruebo en qué csv (si premium o regular) está el correo
+        Si está en premium, mi variable vale x
+        Si está en regular, mi variable vale y
+
+        """
+
         pass
 
     @classmethod

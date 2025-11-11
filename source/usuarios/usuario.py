@@ -72,7 +72,7 @@ class Usuario(IPersistencia):
     def set_fecha_registro (self, nueva_fecha_registro : Fecha):
         self._fecha_de_registro = nueva_fecha_registro
 
-    @abstractmethod
+
     def crear_lista_reproduccion(self, lista_canciones : list['Cancion']):
         pass
 

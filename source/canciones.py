@@ -56,7 +56,7 @@ class Cancion(IPersistencia):
             "Identificador cancion" : self.get_identificador(),
             "Nombre" : self.get_nombre(),
             "Artista" : self.get_artista(),
-            "Género" : self.get_genero()
+            "Género" : self.get_genero(),
             "Anyo" : self.get_anyo()
         }
         return cancion
@@ -92,3 +92,4 @@ class Cancion(IPersistencia):
 
     def csv_a_objeto(self):
         pass
+
