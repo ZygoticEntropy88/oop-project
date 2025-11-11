@@ -82,11 +82,7 @@ class Lista(IPersistencia):
     def diccionario_a_objeto(self, diccionario_listas : dict):
         pass
 
-
-
-
-
-class Catalogo:
+class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
     def __init__(self, lista_canciones : list['Cancion']):
         self._lista_canciones = lista_canciones
@@ -97,32 +93,56 @@ class Catalogo:
     def set_lista_canciones(self, nueva_lista : list['Cancion']):
         self._lista_canciones = nueva_lista
 
-    def filtrar_lista(self, artista : str = None, genero : str = None):
-        lista_filtrada : list['Cancion'] = []
+    def filtrar_catalogo(self, artista : str = None, genero : str = None):
+        catalogo_filtrado : list['Cancion'] = []
 
         if artista is not None and genero is not None:
             for cancion in self.get_lista_canciones():
                 if cancion.get_artista() == artista and cancion.get_genero() == genero:
-                    lista_filtrada.append(cancion)
+                    catalogo_filtrado.append(cancion)
 
-            self.set_lista_canciones(lista_filtrada)
+            self.set_lista_canciones(catalogo_filtrado)
 
         elif artista is not None and genero is None:
             for cancion in self.get_lista_canciones():
                 if cancion.get_artista() == artista:
-                    lista_filtrada.append(cancion)
+                    catalogo_filtrado.append(cancion)
 
-            self.set_lista_canciones(lista_filtrada)
+            self.set_lista_canciones(catalogo_filtrado)
 
         elif genero is not None and artista is None:
             for cancion in self.get_lista_canciones():
                 if cancion.get_genero() == genero:
-                    lista_filtrada.append(cancion)
+                    catalogo_filtrado.append(cancion)
 
-            self.set_lista_canciones(lista_filtrada)
+            self.set_lista_canciones(catalogo_filtrado)
 
         else:
             raise ValueError("Los valores introducidos no son válidos")
 
-class CatalogoPersonal ('Catalogo'):
-    def anyadir_cancion(self, ):
+    def __str__(self):
+        self.get_lista_canciones().__str__()
+
+    def objeto_a_csv(self):
+        pass
+
+    def csv_a_objeto(self):
+        pass
+
+    def texto_a_objeto(self, diccionario_texto : str):
+        pass
+
+    def objeto_a_texto(self):
+        pass
+    def objeto_a_diccionario(self):
+        pass
+    def diccionario_a_objeto(self, diccionario_listas : dict):
+        pass
+
+class CatalogoPersonal (Catalogo):
+    def __init__(self, lista_canciones : list['Cancion']):
+        super().__init__(lista_canciones)
+
+    def anyadir_cancion_a_catalogo(self, cancion : 'Cancion'):
+        assert cancion, "Los datos introducidos no son válidos"
+        self.get_lista_canciones().append(cancion)

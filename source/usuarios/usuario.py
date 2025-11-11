@@ -1,7 +1,8 @@
 from persistencia.interfaz_persistencia import IPersistencia
 import csv
 from listas import Lista
-
+from listas import Catalogo
+from canciones import Cancion
 class Fecha:
     def __init__(self, dia : int, mes : int, anyo : int):
         assert (0 < dia <= 31
@@ -33,14 +34,15 @@ class Usuario(IPersistencia):
                  fecha_nacimiento : Fecha,
                  correo_electronico : str,
                  contrasenya : str,
-                 fecha_registro : Fecha):
+                 fecha_registro : Fecha,
+                 catalogo_generico : 'Catalogo' ):
 
         self._nombre_de_usuario = nombre_de_usuario
         self._fecha_de_nacimiento = fecha_nacimiento
         self._correo_electronico = correo_electronico
         self._contrasenya = contrasenya
         self._fecha_de_registro = fecha_registro
-
+        self._catalogo_generico = catalogo_generico
 
     def get_nombre_usuario (self):
         return self._nombre_de_usuario
@@ -57,6 +59,9 @@ class Usuario(IPersistencia):
     def get_fecha_registro (self):
         return self._fecha_de_registro
 
+    def get_catalogo_generico(self):
+        return self._catalogo_generico
+
     def set_nombre_usuario (self, nuevo_nombre : str):
         self._nombre_de_usuario = nuevo_nombre
 
@@ -72,10 +77,15 @@ class Usuario(IPersistencia):
     def set_fecha_registro (self, nueva_fecha_registro : Fecha):
         self._fecha_de_registro = nueva_fecha_registro
 
+    def set_catalogo_generico(self, nuevo_catalogo_generico : 'Catalogo'):
+        self._catalogo_generico = nuevo_catalogo_generico
 
-    def crear_lista_reproduccion(self, lista_canciones : list['Cancion']):
-        pass
-
+    def crear_lista_reproduccion(self, lista_canciones : list['Cancion']): #Tengo que permitir que un usuario dado cree una lista de reproduccion
+        nombre_lista: str = str(input("Ingrese el nombre de la lista"))
+        descripcion_lista: str = str(input("Añade una descripción a la lista"))
+        fecha_creacion :'Fecha' = Fecha(10, 11, 2025)
+        nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
+        return nueva_lista
 
     def objeto_a_texto (self):
         usuario_texto : str = ""
@@ -85,7 +95,6 @@ class Usuario(IPersistencia):
         usuario_texto += f"Contraseña:  {self.get_contrasenya()} \n"
         usuario_texto += f"Fecha Registro:  {self.get_fecha_registro()} \n"
         return usuario_texto
-
 
     def objeto_a_diccionario (self):
         usuario = {
@@ -123,5 +132,5 @@ class Usuario(IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
-    def csv_a_objeto (self, diccionario ):
+    def csv_a_objeto (self):
         pass

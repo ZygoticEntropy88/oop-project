@@ -1,7 +1,7 @@
 from .usuario import Usuario
 from .usuario import Fecha
 from persistencia.interfaz_persistencia import IPersistencia
-from listas import Lista
+from listas import Lista, Catalogo, CatalogoPersonal
 from canciones import Cancion
 
 class TarjetaCredito (IPersistencia):
@@ -80,35 +80,50 @@ class TarjetaCredito (IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
+    def objeto_a_csv(self):
+        pass
+
+    def objeto_a_texto(self):
+        pass
+
+    def csv_a_objeto(self):
+        pass
+
+    def texto_a_objeto(self, texto : str):
+        pass
+
 class UsuarioPremium(Usuario):
     def __init__(self, nombre_usuario : str,
                  fecha_nacimiento : Fecha,
                  correo_electronico : str,
                  contrasenya : str,
                  fecha_registro : Fecha,
-                 tarjeta_credito : TarjetaCredito):
+                 tarjeta_credito : TarjetaCredito,
+                 catalogo_generico : 'Catalogo',
+                 catalogo_personal : 'CatalogoPersonal'):
 
         super().__init__(nombre_de_usuario = nombre_usuario,
                        fecha_nacimiento = fecha_nacimiento,
                        correo_electronico = correo_electronico,
                        contrasenya = contrasenya,
-                       fecha_registro = fecha_registro)
+                       fecha_registro = fecha_registro,
+                         catalogo_generico = catalogo_generico)
+
         self._tarjeta_de_credito = tarjeta_credito
+        self._catalogo_personal = catalogo_personal
 
     def get_tarjeta_credito (self):
         return self._tarjeta_de_credito
 
-    def crear_lista_reproduccion(self, lista_canciones : list['Cancion']): #Tengo que permitir que un usuario dado cree una lista de reproduccion
-        nombre_lista: str = str(input("Ingrese el nombre de la lista"))
-        descripcion_lista: str = str(input("Añade una descripción a la lista"))
-        fecha_creacion :'Fecha' = Fecha(10, 11, 2025)
-        nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
-        return nueva_lista
+    def get_catalogo_personal(self):
+        return self._catalogo_personal
 
     def objeto_a_diccionario(self):
-        super().objeto_a_diccionario()
-        self.get_tarjeta_credito().objeto_a_diccionario()
+        diccionario_base : dict = super().objeto_a_diccionario()
+        diccionario_base["Tarjeta de crédito"] = self.get_tarjeta_credito().objeto_a_diccionario()
+        return diccionario_base
 
     def diccionario_a_objeto(self, diccionario_usuario_premium : dict):
         super().diccionario_a_objeto(diccionario_usuario_premium)
-        self.get_tarjeta_credito().objeto_a_diccionario()
+        if "Tarjeta de crédito" in diccionario_usuario_premium:
+            self.get_tarjeta_credito().diccionario_a_objeto(diccionario_usuario_premium["Tarjeta de crédito"])
