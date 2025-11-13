@@ -123,6 +123,23 @@ class UsuarioPremium(Usuario):
         diccionario_base["Tarjeta de crédito"] = self.get_tarjeta_credito().objeto_a_diccionario()
         return diccionario_base
 
+    def crear_lista_reproduccion(self, lista_canciones: list['Cancion']):
+        contador : int = 0
+        pertenece_a_catalogo_personal : bool = True
+        while contador < len(lista_canciones) and pertenece_a_catalogo_personal: #Compruebo que todas las canciones que implemento están en el catálogo personal
+            if lista_canciones[contador] not in self.get_catalogo_personal():
+                pertenece_a_catalogo_personal = False
+        contador +=1
+        if pertenece_a_catalogo_personal:
+            nombre_lista: str = str(input("Ingrese el nombre de la lista"))
+            descripcion_lista: str = str(input("Añade una descripción a la lista"))
+            fecha_creacion: 'Fecha' = Fecha(10, 11, 2025)
+            nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
+            return nueva_lista
+        else:
+            return -1
+
+
     def diccionario_a_objeto(self, diccionario_usuario_premium : dict):
         super().diccionario_a_objeto(diccionario_usuario_premium)
         if "Tarjeta de crédito" in diccionario_usuario_premium:
