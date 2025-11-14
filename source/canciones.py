@@ -2,7 +2,12 @@ from persistencia import IPersistencia
 
 class Cancion(IPersistencia):
 
-    def __init__(self, id_cancion : str, nombre : str, genero : str, artista : str, anyo : int):
+    def __init__(self,
+                id_cancion : str = None,
+                nombre : str = None,
+                genero : str = None,
+                artista : str = None,
+                anyo : int = 2025):
 
         assert 0 <= anyo <= 2025, "El año introducido no es válido"
         self._identificador = id_cancion
@@ -41,13 +46,13 @@ class Cancion(IPersistencia):
     def set_anyo (self, nuevo_anyo : int):
         self._anyo = nuevo_anyo
 
-    def __str__(self) -> str:
-        cancion_a_str : str = ""
-        cancion_a_str += f"Nombre: {self.get_nombre()} \n"
-        cancion_a_str += f"Artista: {self.get_artista()} \n"
-        cancion_a_str += f"Año: {self.get_anyo()} \n"
-        cancion_a_str += f"Género: {self.get_genero()} \n"
-        cancion_a_str += f"Identificador: {self.get_identificador()}"
+    def __str__(self):
+        cancion_a_str : str = "CANCIÓN | "
+        cancion_a_str += f"Nombre: {self.get_nombre()} ; "
+        cancion_a_str += f"Artista: {self.get_artista()} ;"
+        cancion_a_str += f"Año: {self.get_anyo()} ;"
+        cancion_a_str += f"Género: {self.get_genero()} ;"
+        cancion_a_str += f"Identificador: {self.get_identificador()}\n"
         return cancion_a_str
 
     def objeto_a_diccionario (self):
@@ -55,7 +60,7 @@ class Cancion(IPersistencia):
             "Identificador cancion" : self.get_identificador(),
             "Nombre" : self.get_nombre(),
             "Artista" : self.get_artista(),
-            "Género" : self.get_genero()
+            "Género" : self.get_genero(),
             "Anyo" : self.get_anyo()
         }
         return cancion

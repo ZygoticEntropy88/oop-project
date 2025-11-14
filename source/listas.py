@@ -1,15 +1,14 @@
 from persistencia import IPersistencia
 from canciones import Cancion
-from usuarios.usuario import Fecha
-from usuarios.usuario import Usuario
+from fecha import Fecha
+#from usuarios import Usuario
 
-
-class Lista:
+class Lista(IPersistencia):
 
     def __init__(self, nombre : str, descripcion : str,
                  lista_canciones : list['Cancion'],
                  fecha_creacion : Fecha,
-                 usuario_creador : Usuario):
+                 usuario_creador : 'Usuario'):
         self._nombre = nombre
         self._descripcion = descripcion
         self._lista_canciones = lista_canciones
@@ -60,22 +59,67 @@ class Lista:
             print(cancion.__str__())
 
     def anyadir_cancion(self, cancion : 'Cancion'):
-        assert cancion not in self.get_lista_canciones(), "La canción está repetida"
-        self.get_lista_canciones().append(cancion) # Aliasing
+
+        self.get_lista_canciones().append(cancion)
 
     def eliminar_cancion (self, cancion : 'Cancion'):
         self.get_lista_canciones().remove(cancion)
 
+    def objeto_a_csv(self):
+        pass
+
+    def csv_a_objeto(self):
+        pass
+
+    def texto_a_objeto(self, diccionario_texto : str):
+        pass
+
+    def objeto_a_texto(self):
+        pass
+
+    def objeto_a_diccionario(self):
+        diccionario_listas : dict = {
+            "Nombre lista" : self.get_nombre(),
+            "Descripción" : self.get_descripcion(),
+            "Lista de canciones" : self.get_lista_canciones(),
+            "Fecha de creación" : self.get_fecha_creacion(),
+            "Usuario creador" : self.get_usuario_creador()
+        }
+        return diccionario_listas
+
+    def diccionario_a_objeto(self, diccionario_listas : dict):
+        try:
+            if "Descripción" in diccionario_listas and diccionario_listas["Descripción"]:
+                self.set_descripcion(diccionario_listas["Descripción"])
+
+            if "Nombre lista" in diccionario_listas and diccionario_listas["Nombre lista"]:
+                self.set_nombre(diccionario_listas["Nombre lista"])
+
+            if "Lista de canciones" in diccionario_listas and diccionario_listas["Lista de canciones"]:
+                self.set_lista_canciones(diccionario_listas["Lista de canciones"])
+
+            if "Fecha de creación" in diccionario_listas and diccionario_listas["Fecha de creación"]:
+                self.set_fecha_creacion(diccionario_listas["Fecha de creación"])
+
+            if "Usuario creador" in diccionario_listas and diccionario_listas["Usuario creador"]:
+                self.set_usuario_creador(diccionario_listas["Usuario creador"])
+
+        except Exception as error:
+            raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
 
 
 
-
-
-class Catalogo:
+class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
     def __init__(self, lista_canciones : list['Cancion']):
         self._lista_canciones = lista_canciones
+
+    def __str__(self):
+        msg = "CATÁLOGO:\n"
+        for i, cancion in enumerate(self.get_lista_canciones()):
+            msg += f"\t[{i}]: {cancion} \n"
+        return msg
 
     def get_lista_canciones(self):
         return self._lista_canciones
@@ -83,23 +127,70 @@ class Catalogo:
     def set_lista_canciones(self, nueva_lista : list['Cancion']):
         self._lista_canciones = nueva_lista
 
-    def filtrar_por_artista(self, artista : str):
-        lista_filtrada : list['Cancion'] = []
+    def filtrar_catalogo(self, artista : str = None, genero : str = None):
+        catalogo_filtrado : list['Cancion'] = []
+
+        if artista is not None and genero is not None:
+            for cancion in self.get_lista_canciones():
+                if cancion.get_artista().lower() == artista and cancion.get_genero().lower() == genero:
+                    catalogo_filtrado.append(cancion)
+
+        elif artista is not None and genero is None:
+            for cancion in self.get_lista_canciones():
+                if cancion.get_artista().lower() == artista:
+                    catalogo_filtrado.append(cancion)
+
+        elif genero is not None and artista is None:
+            for cancion in self.get_lista_canciones():
+                if cancion.get_genero().lower() == genero:
+                    catalogo_filtrado.append(cancion)
+
+        elif genero is None and artista is None:
+            catalogo_filtrado = self.get_lista_canciones()
+
+        else:
+            raise ValueError("Los valores introducidos no son válidos")
+
+        return catalogo_filtrado
+
+    def listar_canciones(self, filtrar_por_genero = None, filtrar_por_artista = None):
+        for i, cancion in enumerate(self.filtrar_catalogo(genero = filtrar_por_genero, artista = filtrar_por_artista)):
+            print(f"\t\t[{i}]: {cancion}")
+
+    def objeto_a_csv(self):
+        pass
+
+    def csv_a_objeto(self):
+        pass
+
+    def texto_a_objeto(self, diccionario_texto : str):
+        pass
+
+    def objeto_a_texto(self):
+        pass
+
+
+    def objeto_a_diccionario(self):
+        diccionario_catalogo : dict = {}
+
         for cancion in self.get_lista_canciones():
-            if cancion.get_artista() == artista:
-                lista_filtrada.append(cancion)
+            diccionario_catalogo.update(cancion.objeto_a_diccionario())
 
-        self.set_lista_canciones(lista_filtrada)
-
-    def filtrar_por_genero(self, genero : str): #Debería cambiarlo para poner el filtro en función de un parámetro y tener una única función
-        lista_filtrada : list['Cancion'] = []
-        for cancion in self.get_lista_canciones():
-            if cancion.get_genero() == genero:
-                lista_filtrada.append(cancion)
-
-        self.set_lista_canciones(lista_filtrada)
-
-    class CatalogoPersonal ('Catalogo'):
+        return diccionario_catalogo
 
 
-        def anyadir_cancion(self, ):
+    def diccionario_a_objeto(self, diccionario_catalogo : dict):
+        nueva_lista_canciones : list['Cancion'] = []
+        for datos_cancion in diccionario_catalogo.items():
+            cancion : Cancion = cancion.diccionario_a_objeto(datos_cancion)
+            nueva_lista_canciones.append(cancion)
+
+        self.set_lista_canciones(nueva_lista_canciones)
+
+class CatalogoPersonal (Catalogo):
+    def __init__(self, lista_canciones : list['Cancion']):
+        super().__init__(lista_canciones)
+
+    def anyadir_cancion_a_catalogo(self, cancion : 'Cancion'):
+        assert cancion, "Los datos introducidos no son válidos"
+        self.get_lista_canciones().append(cancion)

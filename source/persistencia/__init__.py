@@ -1,1 +1,0 @@
-from .interfaz_persistencia import IPersistencia

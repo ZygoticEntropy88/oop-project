@@ -4,6 +4,8 @@ from yt_dlp import YoutubeDL
 import ctypes
 from enum import Enum
 
+import sys, os
+
 # Excepciones de la API
 class ReproduccionError(Exception):
     """Base de errores de Reproduccion."""
@@ -111,8 +113,20 @@ class Reproductor:
         }
 
         try:
-            with YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=False)
+            # -------- Bloque para suprimir todos los warnings de la librería yt-dlp --------
+            devnull = os.open(os.devnull, os.O_WRONLY)
+            old_stderr = os.dup(2)  # Guardar stderr original
+            os.dup2(devnull, 2)  # Redirigir stderr a /dev/null
+
+            try:
+                from yt_dlp import YoutubeDL
+                with YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(url, download=False)
+            finally:
+                # Restaurar stderr original
+                os.dup2(old_stderr, 2)
+                os.close(devnull)
+                os.close(old_stderr)
         except Exception as e:
             raise ResolverStreamError(f"No se pudo resolver el stream: {e}")
 
