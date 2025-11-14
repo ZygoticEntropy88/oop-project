@@ -60,7 +60,8 @@ class Lista:
             print(cancion.__str__())
 
     def anyadir_cancion(self, cancion : 'Cancion'):
-        self.get_lista_canciones().append(cancion)
+        assert cancion not in self.get_lista_canciones(), "La canción está repetida"
+        self.get_lista_canciones().append(cancion) # Aliasing
 
     def eliminar_cancion (self, cancion : 'Cancion'):
         self.get_lista_canciones().remove(cancion)
