@@ -1,5 +1,6 @@
-from menus import MenuInicio, MenuPrincipal, MenuReproduccion, MenuCatalogoGenerico, MenuCatalogoPersonal, MenuListasReproduccion
-from usuarios import UsuarioAnonimo
+from menus import Menu, MenuInicio, MenuPrincipal, MenuReproduccion, MenuCatalogoGenerico, MenuCatalogoPersonal, MenuListasReproduccion
+from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium
+from memoria import Memoria
 
 HASH_MENUS: dict[int: 'Menu'] = {
 	0: MenuInicio(),

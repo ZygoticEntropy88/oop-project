@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from usuarios import Usuario, UsuarioPremium
-
+from listas import Lista, Catalogo, CatalogoPersonal
 def print_opcion(numero:int, opcion:str) -> None:
     print(f"[{numero}]: {opcion}")
 
