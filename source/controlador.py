@@ -126,7 +126,7 @@ class Controlador:
 					# RENAUDAR REPRODUCCIÓN
 					elif opcion == 4:
 						self._menu_actual.reanudar_cancion()
-                        
+
 
 				# ========================= MENÚ CATÁLOGO GENÉRICO =========================
 				elif id_menu == 3:

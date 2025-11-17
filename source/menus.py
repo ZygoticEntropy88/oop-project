@@ -85,12 +85,13 @@ class MenuReproduccion(Menu):
     nombre_menu = "MENÚ REPRODUCCIÓN"
 
     reproductor : Reproductor = Reproductor() #Cuando llamo al menú, instancio un objeto de la clase reproductor
-
+    reproduciendo : bool = False
     @classmethod
     def reproducir_por_id(cls):
         id_cancion : str = input("Introduzca el id de la canción")
         try:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
+            MenuReproduccion.reproduciendo = True
         except EntradaInvalidaError:
             raise EntradaInvalidaError("Error al introducir el id")
         except ResolverStreamError:
@@ -104,18 +105,22 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def pausar_cancion(cls):
-        assert MenuReproduccion.reproducir_por_id(), "No se está reproduciendo ninguna canción actualmente"
+        if MenuReproduccion.reproduciendo == False:
+            raise PlayError("Error al pausar")
         #Compruebo que la canción está reproduciéndose
         try:
             MenuReproduccion.reproductor.pausar()
+            MenuReproduccion.reproduciendo = False
         except PlayError:
             raise PlayError("Error al pausar")
 
     @classmethod
     def reanudar_cancion(cls):
-        assert MenuReproduccion.pausar_cancion(), "La canción no está pausada actualmente"
+        if MenuReproduccion.reproduciendo == False:
+            raise PlayError("Error al pausar")
         try:
             MenuReproduccion.reproductor.reanudar()
+            MenuReproduccion.reproduciendo = True
         except PlayError:
             raise PlayError("Error al reanudar la canción")
 
