@@ -73,6 +73,8 @@ class MenuPrincipal(Menu):
     nombre_menu = "MENÚ PRINCIPAL"
 
 # ======================================== MENU REPRODUCCIÓN ==============================================
+from reproductor import * #Me traigo del módulo reproductor todas sus clases, incluidas las excepciones
+
 class MenuReproduccion(Menu):
     numero_menu = 2
     opciones = [
@@ -82,17 +84,40 @@ class MenuReproduccion(Menu):
     ]
     nombre_menu = "MENÚ REPRODUCCIÓN"
 
+    reproductor_actual : Reproductor = Reproductor() #Cuando llamo al menú, instancio un objeto de la clase reproductor
+
     @classmethod
     def reproducir_por_id(cls):
-        pass
+        id_cancion : str = input("Introduzca el id de la canción")
+        try:
+            MenuReproduccion.reproductor_actual.reproducir_desde_youtube(id_cancion)
+        except EntradaInvalidaError:
+            raise EntradaInvalidaError("Error al introducir el id")
+        except ResolverStreamError:
+            raise ResolverStreamError("No se pudo obtener el recurso solicitado")
+        except PlayError:
+            raise PlayError("No se pudo iniciar la reproducción")
+
+        #Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte y el error no se propague
+
 
     @classmethod
     def pausar_cancion(cls):
-        pass
+        assert MenuReproduccion.reproducir_por_id(), "No se está reproduciendo ninguna canción actualmente" #Compruebo que la canción está reproduciéndose
+        try:
+            MenuReproduccion.reproductor_actual.pausar()
+        except PlayError:
+            raise PlayError("Error al pausar")
 
     @classmethod
     def renaudar_cancion(cls):
-        pass
+        assert MenuReproduccion.pausar_cancion(), "La canción no está pausada actualmente"
+        try:
+            MenuReproduccion.reproductor_actual.reanudar()
+        except PlayError:
+            raise PlayError("Error al reanudar la canción")
+
+
 
 # ================================= MENU CATÁLOGO GENÉRICO ==========================================
 class MenuCatalogoGenerico(Menu):
