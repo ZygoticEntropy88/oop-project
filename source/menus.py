@@ -105,7 +105,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def pausar_cancion(cls):
-        if MenuReproduccion.reproduciendo == False:
+        if not MenuReproduccion.reproduciendo:
             raise PlayError("Error al pausar")
         #Compruebo que la canción está reproduciéndose
         try:
@@ -116,7 +116,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def reanudar_cancion(cls):
-        if MenuReproduccion.reproduciendo == False:
+        if MenuReproduccion.reproduciendo:
             raise PlayError("Error al pausar")
         try:
             MenuReproduccion.reproductor.reanudar()
