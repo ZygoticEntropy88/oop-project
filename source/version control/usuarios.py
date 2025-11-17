@@ -101,9 +101,14 @@ class Usuario(IPersistencia):
             "Nombre de usuario" : self.get_nombre_usuario(),
             "Correo electronico" : self.get_correo_electronico(),
             "Contrasenya" : self.get_contrasenya(),
-            "Fecha registro" : self.get_fecha_registro().__str__(),
-            "Fecha nacimiento" : self.get_fecha_nacimiento().__str__(),
+            "Fecha registro" : self.get_fecha_registro(),
+            "Fecha nacimiento" : self.get_fecha_nacimiento(),
             "Tipo usuario": self.get_tipo_usuario(),
+            "iban" : None,
+            "cvv" : None,
+            "Propietario tarjeta" : None,
+            "Fecha caducidad" : None,
+            "Fecha registro" :  None
         }
         return usuario
 
