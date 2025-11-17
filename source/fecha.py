@@ -22,7 +22,13 @@ class FormatoFechaNoValido(Exception):
     pass
 
 class Fecha:
-    def __init__(self,  dia:int = 1, mes:Meses = Meses(1), anyo:int = 2025, es_de_caducidad=False):
+    def __init__(self,  formato_string=None, dia:int = 1, mes:Meses = Meses(1), anyo:int = 2025, es_de_caducidad=False):
+
+        if formato_string:
+            dia:int = int(fecha_introducida[:1]) if fecha_introducida[0] != '0' else int(fecha_introducida[1])
+            mes:int = int(fecha_introducida[3:4]) if fecha_introducida[3] != '0' else int(fecha_introducida[4])
+            anyo:int = int(fecha_introducida[6:])
+            
         self._dia:int = dia
         self._mes:Meses = mes
         self._anyo:int = anyo

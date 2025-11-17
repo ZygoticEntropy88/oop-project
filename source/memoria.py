@@ -12,7 +12,7 @@ class Memoria:
 
         self.__gp = GestorPersistencia()
 
-        self._usuarios = self.__gp.leer_csv(f"{ruta}usuarios.csv")
+        self._usuarios = self.__gp.leer_json(f"{ruta}usuarios.json")
 
         self._catalogo_generico = self.__gp.leer_csv(f"{ruta}catalogo_generico.csv")
         
@@ -116,9 +116,8 @@ class Memoria:
 
         # GUARDADO DE LOS USUARIOS
         try:
-            self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}usuarios.csv")
-            for usuario in self.get_usuarios().values():
-                self.__gp.guardar_csv(contenido=usuario.objeto_a_diccionario(), ruta=f"{self.ruta}usuarios.csv")
+            usuarios_info = [usuario.objeto_a_diccionario() for usuario in self.get_usuarios().values()]
+            self.__gp.guardar_json(contenido=usuarios_info, ruta=f"{self.ruta}usuarios.json")
         except Exception as e:
             print(e)
 
