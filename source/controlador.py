@@ -119,13 +119,14 @@ class Controlador:
 				elif id_menu == 2:
 					# REPRODUCIR POR ID
 					if opcion == 2:
-						pass
+						self._menu_actual.reproducir_por_id()
 					# PAUSAR REPRODUCCION
 					elif opcion == 3:
-						pass
+						self._menu_actual.pausar_cancion()
 					# RENAUDAR REPRODUCCIÓN
 					elif opcion == 4:
-						pass
+						self._menu_actual.reanudar_cancion()
+                        
 
 				# ========================= MENÚ CATÁLOGO GENÉRICO =========================
 				elif id_menu == 3:
