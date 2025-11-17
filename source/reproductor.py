@@ -114,9 +114,9 @@ class Reproductor:
 
         try:
             # -------- Bloque para suprimir todos los warnings de la librería yt-dlp --------
-            devnull = os.open(os.devnull, os.O_WRONLY)
-            old_stderr = os.dup(2)  # Guardar stderr original
-            os.dup2(devnull, 2)  # Redirigir stderr a /dev/null
+            devnull = open("nul", "w")
+            old_stderr = sys.stderr
+            sys.stderr = devnull  # redirige stderr a "nul"
 
             try:
                 from yt_dlp import YoutubeDL
@@ -124,9 +124,8 @@ class Reproductor:
                     info = ydl.extract_info(url, download=False)
             finally:
                 # Restaurar stderr original
-                os.dup2(old_stderr, 2)
-                os.close(devnull)
-                os.close(old_stderr)
+                sys.stderr = old_stderr
+                devnull.close()
         except Exception as e:
             raise ResolverStreamError(f"No se pudo resolver el stream: {e}")
 
