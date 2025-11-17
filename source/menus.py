@@ -98,12 +98,14 @@ class MenuReproduccion(Menu):
         except PlayError:
             raise PlayError("No se pudo iniciar la reproducción")
 
-        #Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte y el error no se propague
+        #Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte
+        # y el error no se propague
 
 
     @classmethod
     def pausar_cancion(cls):
-        assert MenuReproduccion.reproducir_por_id(), "No se está reproduciendo ninguna canción actualmente" #Compruebo que la canción está reproduciéndose
+        assert MenuReproduccion.reproducir_por_id(), "No se está reproduciendo ninguna canción actualmente"
+        #Compruebo que la canción está reproduciéndose
         try:
             MenuReproduccion.reproductor_actual.pausar()
         except PlayError:
