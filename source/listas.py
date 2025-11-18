@@ -5,10 +5,10 @@ from fecha import Fecha
 
 class Lista(IPersistencia):
 
-    def __init__(self, nombre : str, descripcion : str,
-                 lista_canciones : list['Cancion'],
-                 fecha_creacion : Fecha,
-                 usuario_creador : 'Usuario'):
+    def __init__(self, nombre: str = None, descripcion : str = None,
+                 lista_canciones : list['Cancion'] = None,
+                 fecha_creacion : Fecha = None,
+                 usuario_creador : 'Usuario' = None):
         self._nombre = nombre
         self._descripcion = descripcion
         self._lista_canciones = lista_canciones
@@ -46,13 +46,13 @@ class Lista(IPersistencia):
         self._usuario_creador = nuevo_usuario
 
     def __str__(self):
-        lista_a_str : str = ""
-        lista_a_str += f"{self.get_nombre()} \n"
-        lista_a_str += f"{self.get_descripcion()} \n"
+        lista_a_str : str = "LISTA | "
+        lista_a_str += f"{self.get_nombre()};"
+        lista_a_str += f"{self.get_descripcion()}"
         for cancion in self.get_lista_canciones():
-            lista_a_str += cancion.__str__()
-        lista_a_str += self.get_usuario_creador().get_nombre_usuario()
-        print(lista_a_str)
+            lista_a_str += f"{cancion}"
+        lista_a_str += self.get_usuario_creador()
+        return lista_a_str
 
     def mostrar_canciones(self):
         for cancion in self.get_lista_canciones():
@@ -80,26 +80,33 @@ class Lista(IPersistencia):
     def objeto_a_diccionario(self):
         diccionario_listas : dict = {
             "Nombre lista" : self.get_nombre(),
-            "Descripción" : self.get_descripcion(),
-            "Lista de canciones" : self.get_lista_canciones(),
-            "Fecha de creación" : self.get_fecha_creacion(),
-            "Usuario creador" : self.get_usuario_creador()
+            "Descripcion" : self.get_descripcion(),
+            "Lista canciones" : [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()],
+            "Fecha creacion" : self.get_fecha_creacion().objeto_a_diccionario(),
+            "Usuario creador" : self.get_usuario_creador().get_nombre_usuario()
         }
         return diccionario_listas
 
     def diccionario_a_objeto(self, diccionario_listas : dict):
         try:
-            if "Descripción" in diccionario_listas and diccionario_listas["Descripción"]:
-                self.set_descripcion(diccionario_listas["Descripción"])
-
             if "Nombre lista" in diccionario_listas and diccionario_listas["Nombre lista"]:
                 self.set_nombre(diccionario_listas["Nombre lista"])
 
-            if "Lista de canciones" in diccionario_listas and diccionario_listas["Lista de canciones"]:
-                self.set_lista_canciones(diccionario_listas["Lista de canciones"])
+            if "Descripcion" in diccionario_listas and diccionario_listas["Descripcion"]:
+                self.set_descripcion(diccionario_listas["Descripcion"])
 
-            if "Fecha de creación" in diccionario_listas and diccionario_listas["Fecha de creación"]:
-                self.set_fecha_creacion(diccionario_listas["Fecha de creación"])
+            if "Lista canciones" in diccionario_listas and diccionario_listas["Lista canciones"]:
+                lista_canciones:list[Cancion] = list()
+                for cancion_info in diccionario_listas["Lista canciones"]:
+                    cancion = Cancion()
+                    cancion.diccionario_a_objeto(cancion_info)
+                    lista_canciones.append(cancion)
+                self.set_lista_canciones(lista_canciones)
+
+            if "Fecha creacion" in diccionario_listas and diccionario_listas["Fecha creacion"]:
+                fecha_creacion = Fecha()
+                fecha_creacion.diccionario_a_objeto(diccionario_listas["Fecha creacion"])
+                self.set_fecha_creacion(fecha_creacion)
 
             if "Usuario creador" in diccionario_listas and diccionario_listas["Usuario creador"]:
                 self.set_usuario_creador(diccionario_listas["Usuario creador"])

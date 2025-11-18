@@ -1,7 +1,7 @@
 from canciones import Cancion
 from usuarios import Usuario, UsuarioPremium
 from persistencia import GestorPersistencia
-from listas import Catalogo, CatalogoPersonal
+from listas import Catalogo, CatalogoPersonal, Lista
 
 import os
 
@@ -33,7 +33,13 @@ class Memoria:
             usuario.set_catalogo_personal(CatalogoPersonal(lista_canciones_catalogo_personal))
 
             # CARGO LAS LISTAS DE REPRODUCCIÓN
-            
+            listas_reproduccion_usuario:list[Lista] = list()
+            for lista_info in self.__gp.leer_json(f"{ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json"):
+                lista = Lista()
+                lista.diccionario_a_objeto(lista_info)
+                listas_reproduccion_usuario.append(lista)
+            usuario.set_listas_reproduccion(listas_reproduccion_usuario)
+
         self._usuarios = usuarios
 
         # CARGO EL CATÁLOGO GENÉRICO

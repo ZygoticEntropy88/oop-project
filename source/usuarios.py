@@ -21,6 +21,7 @@ class Usuario(IPersistencia):
         self._fecha_de_registro:Fecha = fecha_registro
         self._tipo_usuario = "REGULAR"
         self._catalogo_personal = None
+        self._listas_reproduccion:list[Lista] = None
 
     def __str__(self):
         return self.objeto_a_texto()
@@ -46,6 +47,9 @@ class Usuario(IPersistencia):
     def get_catalogo_personal(self): 
         return self._catalogo_personal
 
+    def get_listas_reproduccion(self):
+        return self._listas_reproduccion
+
     def set_nombre_usuario (self, nuevo_nombre : str):
         self._nombre_de_usuario = nuevo_nombre
 
@@ -63,6 +67,9 @@ class Usuario(IPersistencia):
 
     def set_catalogo_personal(self, nuevo_catalogo_personal:'Catalogo'):
         self._catalogo_personal = nuevo_catalogo_personal
+
+    def set_listas_reproduccion(self, nueva_lista_reproduccion:list[Lista]):
+        self._listas_reproduccion = nueva_lista_reproduccion
 
     def crear_nuevo_usuario_por_consola(self):
         nombre_de_usuario:str = input("Ingresa tu nombre de usuario: ")
@@ -102,6 +109,10 @@ class Usuario(IPersistencia):
         usuario_texto += f"Correo electronico:  {self.get_correo_electronico()} ; "
         usuario_texto += f"Contrasenya:  {self.get_contrasenya()} ; "
         usuario_texto += f"\n\n \t\t\t CATÁLOGO (PERSONAL): {self.get_catalogo_personal()}"
+        usuario_texto += f"\n\n \t\t\t LISTAS DE REPRODUCCIÓN:"
+        for lista_reproduccion in self.get_listas_reproduccion():
+            usuario_texto += f"\t\t\t{lista_reproduccion}"
+
         return usuario_texto
 
     def objeto_a_diccionario (self):

@@ -1,0 +1,16 @@
+[
+	{
+	"Nombre lista":"List 1",
+	"Descripcion": "Test descripcion 1",
+	"Lista canciones": [],
+	"Fecha creacion": {"dia": 1, "mes": 1, "anyo": 2025},
+	"Usuario creador": "testuser"
+	},
+	{
+	"Nombre lista":"List 2",
+	"Descripcion": "Test descripcion 2",
+	"Lista canciones": [],
+	"Fecha creacion": {"dia": 2, "mes": 2, "anyo": 2025},
+	"Usuario creador": "testuser"
+	}
+]
