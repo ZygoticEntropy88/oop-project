@@ -55,6 +55,25 @@ class Cancion(IPersistencia):
         cancion_a_str += f"Identificador: {self.get_identificador()}\n"
         return cancion_a_str
 
+    def solicitar_usuario_por_consola(self, motivo_consulta=""):
+        cancion_id:str = input(f"Introduzca el ID de youtube de la canción {motivo_consulta}: ")
+        if input("Le gustaría guardar más datos de la canción? (s/n)").lower().strip() == 's':
+            cancion_nombre = input("Introduzca el título de la canción (Presione enter para dejar en blanco): ")
+            cancion_artista = input("Introduzca el artista de la canción (Presione enter para dejar en blanco): ")
+            cancion_genero = input("Introduzca el género de la canción (Presione enter para dejar en blanco): ")
+            cancion_anyo = input("Introduzca el año de la canción (Presione enter para dejar en blanco)")
+            
+        if cancion_nombre != "":
+            self.set_nombre(cancion_nombre)
+        if cancion_artista != "":
+            self.set_artista(cancion_artista):
+        if cancion_genero != "":
+            self.set_genero(cancion_genero)
+        if self.cancion_anyo != "":
+            self.set_anyo(int(cancion_anyo))
+
+        self.set_identificador(cancion_id)
+
     def objeto_a_diccionario (self):
         cancion : dict = {
             "Nombre" : self.get_nombre(),
@@ -64,6 +83,7 @@ class Cancion(IPersistencia):
             "Identificador cancion" : self.get_identificador(),
         }
         return cancion
+
 
     def diccionario_a_objeto(self, diccionario_cancion : dict):
         try:

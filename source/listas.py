@@ -183,6 +183,11 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
     def objeto_a_texto(self):
         pass
 
+    def anyadir_cancion_a_catalogo(self, cancion:'Cancion'):
+        self.set_lista_canciones(self.get_lista_canciones().append(cancion))
+
+    def eliminar_cancion_de_catalogo(self, cancion:'Cancion'):
+        pass
 
     def objeto_a_diccionario(self):
         diccionario_catalogo : list = list()

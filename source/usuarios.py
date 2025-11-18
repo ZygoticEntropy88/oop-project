@@ -99,6 +99,13 @@ class Usuario(IPersistencia):
         nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
         return nueva_lista
 
+    def anyadir_cancion_a_catalogo(self, cancion:Cancion):
+        self.get_catalogo_personal().anyadir_cancion_a_catalogo(cancion)
+
+    def eliminar_cancion_de_catalogo_personal(self, cancion:Cancion):
+        self.get_catalogo_personal().eliminar_cancion_de_catalogo(cancion)
+
+
     # ===================================================================================
     #                  IMPLEMENTACIONES DE LA INTERFAZ DE PERSISTENCIA
     # ===================================================================================

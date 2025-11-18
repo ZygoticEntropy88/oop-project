@@ -141,7 +141,18 @@ class Controlador:
 					if not self.usuario_actual.comprobar_acceso_premium():
 						print("Lo sentimos el catálogo personal está solo disponible para usuarios premium")
 					else:
-						pass
+						
+
+						if opcion == 2:
+							self.menu_actual.listar_canciones()
+
+						elif opcion == 3:
+							nueva_cancion = self.menu_actual.anyadir_cancion_a_catalogo()
+							self.usuario_actual.anyadir_cancion_a_catalogo(nueva_cancion)
+
+						elif opcion == 4:
+							cancion_a_eliminar = self.menu_actual.eliminar_cancion_de_catalogo()
+							self.usuario_actual.eliminar_cancion_de_catalogo(cancion_a_eliminar)
 
 				# ========================= MENÚ LISTAS REPRODUCCIÓN =========================
 				elif id_menu == 5:
