@@ -92,6 +92,7 @@ class Memoria:
                     for cancion_info in catalogo_personal.objeto_a_diccionario():
                         self.__gp.guardar_csv(contenido=cancion_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
 
+                print("DEBUG", usuario.get_listas_reproduccion())
                 """
                 # GUARDO LAS LISTAS DE REPRODUCCIÓN DE CADA USUARIO
                 if usuario.get_listas_reproduccion():  

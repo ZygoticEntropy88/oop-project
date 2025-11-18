@@ -137,12 +137,11 @@ class Controlador:
 
 
 				# ========================= MENÚ CATÁLOGO PERSONAL =========================
-                elif id_menu == 4:
-                    if not self.usuario_actual.comprobar_acceso_premium():
-                        print("Lo sentimos el catálogo personal está solo disponible para usuarios premium")
-                    else:
-                        pass
-
+				elif id_menu == 4:
+					if not self.usuario_actual.comprobar_acceso_premium():
+						print("Lo sentimos el catálogo personal está solo disponible para usuarios premium")
+					else:
+						pass
 
 				# ========================= MENÚ LISTAS REPRODUCCIÓN =========================
 				elif id_menu == 5:
