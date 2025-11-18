@@ -118,6 +118,14 @@ class Memoria:
         """Dado un nombre de usuario, verifica que esté en la base de datos"""
         return True if nombre in self.get_usuarios() and self.get_usuarios()[nombre] else False
 
+    def comprobar_cancion_en_catalogo(self, id_cancion : str):
+        return True if id_cancion in self.get_catalogo_generico() and self.get_catalogo_generico()[id_cancion] else False
+
+    def comprobar_cancion_en_catalogo_premium(self, id_cancion : str, nombre_usuario : str):
+        if self.get_usuarios()[nombre_usuario].comprobar_acceso_premium() != "PREMIUM":
+            return False
+        return True if id_cancion in self.get_usuarios()[nombre_usuario].get_catalogo_personal() else False
+
     def comprobar_credenciales_validas(self, nombre:str, contrasenya) ->  bool:
         """Comprueba que el usuario esté registrado y que la contraseña coincida con la guardada en la base de datos"""
         if self.comprobar_usuario_registrado(nombre):
