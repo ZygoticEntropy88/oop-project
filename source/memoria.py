@@ -32,8 +32,8 @@ class Memoria:
                 lista_canciones_catalogo_personal.append(cancion)
             usuario.set_catalogo_personal(CatalogoPersonal(lista_canciones_catalogo_personal))
 
-            # ESTABLEZCO LAS LISTAS DE REPRODUCCIÓN
-            # TODO
+            # CARGO LAS LISTAS DE REPRODUCCIÓN
+            
         self._usuarios = usuarios
 
         # CARGO EL CATÁLOGO GENÉRICO
