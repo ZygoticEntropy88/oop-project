@@ -180,6 +180,7 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
     def diccionario_a_objeto(self, diccionario_catalogo : dict):
         nueva_lista_canciones : list['Cancion'] = []
         for datos_cancion in diccionario_catalogo.items():
+            cancion = Cancion()
             cancion : Cancion = cancion.diccionario_a_objeto(datos_cancion)
             nueva_lista_canciones.append(cancion)
 

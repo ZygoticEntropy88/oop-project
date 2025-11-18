@@ -51,24 +51,22 @@ class Cancion(IPersistencia):
         cancion_a_str += f"Nombre: {self.get_nombre()} ; "
         cancion_a_str += f"Artista: {self.get_artista()} ;"
         cancion_a_str += f"Año: {self.get_anyo()} ;"
-        cancion_a_str += f"Género: {self.get_genero()} ;"
+        cancion_a_str += f"Genero: {self.get_genero()} ;"
         cancion_a_str += f"Identificador: {self.get_identificador()}\n"
         return cancion_a_str
 
     def objeto_a_diccionario (self):
         cancion : dict = {
-            "Identificador cancion" : self.get_identificador(),
             "Nombre" : self.get_nombre(),
             "Artista" : self.get_artista(),
-            "Género" : self.get_genero(),
-            "Anyo" : self.get_anyo()
+            "Genero" : self.get_genero(),
+            "Anyo" : self.get_anyo(),
+            "Identificador cancion" : self.get_identificador(),
         }
         return cancion
 
     def diccionario_a_objeto(self, diccionario_cancion : dict):
         try:
-            if "Identificador cancion" in diccionario_cancion and diccionario_cancion["Identificador cancion"]:
-                self.set_identificador(diccionario_cancion["Identificador cancion"])
 
             if "Nombre" in diccionario_cancion and diccionario_cancion["Nombre"]:
                 self.set_nombre(diccionario_cancion["Nombre"])
@@ -76,11 +74,14 @@ class Cancion(IPersistencia):
             if "Artista" in diccionario_cancion and diccionario_cancion["Artista"]:
                 self.set_artista(diccionario_cancion["Artista"])
 
-            if "Género" in diccionario_cancion and diccionario_cancion["Género"]:
-                self.set_genero(diccionario_cancion["Género"])
+            if "Genero" in diccionario_cancion and diccionario_cancion["Genero"]:
+                self.set_genero(diccionario_cancion["Genero"])
 
             if "Anyo" in diccionario_cancion and diccionario_cancion["Anyo"]:
                 self.set_anyo(int(diccionario_cancion["Anyo"]))
+
+            if "Identificador cancion" in diccionario_cancion and diccionario_cancion["Identificador cancion"]:
+                self.set_identificador(diccionario_cancion["Identificador cancion"])
 
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
