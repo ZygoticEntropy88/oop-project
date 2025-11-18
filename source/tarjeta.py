@@ -75,8 +75,8 @@ class TarjetaCredito (IPersistencia):
         tarjeta = {
             "Numero de cuenta": self.get_numero_cuenta(),
             "cvv": self.get_cvv(),
-            "Fecha registro": self.get_fecha_registro(),
-            "Fecha caducidad": self.get_fecha_caducidad(),
+            "Fecha registro": self.get_fecha_registro().objeto_a_diccionario(),
+            "Fecha caducidad": self.get_fecha_caducidad().objeto_a_diccionario(),
             "Propietario" : self.get_propietario()
         }
         return tarjeta
@@ -89,14 +89,15 @@ class TarjetaCredito (IPersistencia):
             if "cvv" in diccionario_tarjeta and diccionario_tarjeta["cvv"]:
                 self.set_cvv(diccionario_tarjeta["cvv"])
 
-            if "Fecha de registro" in diccionario_tarjeta and diccionario_tarjeta["Fecha de registro"]:
-                self.set_fecha_registro(diccionario_tarjeta["Fecha de registro"])
+            if "Fecha registro" in diccionario_tarjeta and diccionario_tarjeta["Fecha registro"]:
+                fecha_registro = Fecha()
+                fecha_registro.diccionario_a_objeto(diccionario_tarjeta["Fecha registro"])
+                self.set_fecha_registro(fecha_registro)
 
-            if "Fecha de caducidad" in diccionario_tarjeta and diccionario_tarjeta["Fecha de caducidad"]:
-                self.set_fecha_caducidad(diccionario_tarjeta["Fecha de caducidad"])
-
-            if "Nombre del titular" in diccionario_tarjeta and diccionario_tarjeta["Nombre del titular"]:
-                self.set_nombre_titular(diccionario_tarjeta["Nombre del titular"])
+            if "Fecha caducidad" in diccionario_tarjeta and diccionario_tarjeta["Fecha caducidad"]:
+                fecha_caducidad = Fecha()
+                fecha_caducidad.diccionario_a_objeto(diccionario_tarjeta["Fecha caducidad"])
+                self.set_fecha_caducidad(fecha_caducidad)
 
             if "Propietario" in diccionario_tarjeta and diccionario_tarjeta["Propietario"]:
                 self.set_propietario(diccionario_tarjeta["Propietario"])

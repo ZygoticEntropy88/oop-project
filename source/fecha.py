@@ -22,13 +22,7 @@ class FormatoFechaNoValido(Exception):
     pass
 
 class Fecha:
-    def __init__(self,  formato_string=None, dia:int = 1, mes:Meses = Meses(1), anyo:int = 2025, es_de_caducidad=False):
-
-        if formato_string:
-            dia:int = int(fecha_introducida[:1]) if fecha_introducida[0] != '0' else int(fecha_introducida[1])
-            mes:int = int(fecha_introducida[3:4]) if fecha_introducida[3] != '0' else int(fecha_introducida[4])
-            anyo:int = int(fecha_introducida[6:])
-            
+    def __init__(self,  dia:int = 1, mes:Meses = Meses(1), anyo:int = 2025, es_de_caducidad=False):            
         self._dia:int = dia
         self._mes:Meses = mes
         self._anyo:int = anyo
@@ -86,6 +80,19 @@ class Fecha:
         self.set_dia(dia_introducido)
         self.set_mes(mes_introducido)
         self.set_anyo(anyo_introducido)
+
+    def objeto_a_diccionario(self) -> dict:
+        diccionario_informacion_fecha = {
+            "dia": self.get_dia(),
+            "mes": self.get_mes().value,
+            "anyo": self.get_anyo()
+        }
+        return diccionario_informacion_fecha
+
+    def diccionario_a_objeto(self, diccionario_informacion_fecha) -> None:
+        self.set_dia(diccionario_informacion_fecha["dia"])
+        self.set_mes(diccionario_informacion_fecha["mes"])
+        self.set_anyo(diccionario_informacion_fecha["anyo"])
 
 if __name__ == "__main__":
     # Pequeña prueba para ver que la clase funciona correctamente, ejecutar como "python fecha.py"

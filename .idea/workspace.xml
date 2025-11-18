@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b54dd43-7611-4982-8ce1-42c24ef67002" name="Changes" comment="" />
+    <list default="true" id="1b54dd43-7611-4982-8ce1-42c24ef67002" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/source/fecha.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/fecha.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/tarjeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/tarjeta.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/usuarios.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/usuarios.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="35b8nOJnP1Ew6Qk2nYPXjPkDUgp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -19,7 +26,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -31,6 +39,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="1b54dd43-7611-4982-8ce1-42c24ef67002" name="Changes" comment="" />
       <created>1763367585841</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

@@ -101,8 +101,8 @@ class Usuario(IPersistencia):
             "Nombre de usuario" : self.get_nombre_usuario(),
             "Correo electronico" : self.get_correo_electronico(),
             "Contrasenya" : self.get_contrasenya(),
-            "Fecha registro" : self.get_fecha_registro().__str__(),
-            "Fecha nacimiento" : self.get_fecha_nacimiento().__str__(),
+            "Fecha registro" : self.get_fecha_registro().objeto_a_diccionario(),
+            "Fecha nacimiento" : self.get_fecha_nacimiento().objeto_a_diccionario(),
             "Tipo usuario": self.get_tipo_usuario(),
         }
         return usuario
@@ -119,7 +119,9 @@ class Usuario(IPersistencia):
                 self.set_nombre_usuario(diccionario_usuario["Nombre de usuario"])
 
             if "Fecha nacimiento" in diccionario_usuario and diccionario_usuario["Fecha nacimiento"]:
-                self.set_fecha_nacimiento(diccionario_usuario["Fecha nacimiento"])
+                fecha_nacimiento = Fecha()
+                fecha_nacimiento.diccionario_a_objeto(diccionario_usuario["Fecha nacimiento"])
+                self.set_fecha_nacimiento(fecha_nacimiento)
 
             if "Correo electronico" in diccionario_usuario and diccionario_usuario["Correo electronico"]:
                 self.set_correo_electronico(diccionario_usuario["Correo electronico"])
@@ -128,7 +130,9 @@ class Usuario(IPersistencia):
                 self.set_contrasenya(diccionario_usuario["Contrasenya"])
 
             if "Fecha registro" in diccionario_usuario and diccionario_usuario["Fecha registro"]:
-                self.set_fecha_registro(diccionario_usuario["Fecha registro"])
+                fecha_registro = Fecha()
+                fecha_registro.diccionario_a_objeto(diccionario_usuario["Fecha registro"])
+                self.set_fecha_registro(fecha_registro)
 
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
@@ -176,11 +180,7 @@ class UsuarioPremium(Usuario):
 
     def objeto_a_diccionario(self) -> dict:
         diccionario : dict = super().objeto_a_diccionario()
-        diccionario["iban"] = self.get_tarjeta_credito().get_numero_cuenta()
-        diccionario["cvv"] = self.get_tarjeta_credito().get_cvv()
-        diccionario["Propietario tarjeta"] = self.get_tarjeta_credito().get_propietario() 
-        diccionario["Fecha caducidad"] = self.get_tarjeta_credito().get_fecha_caducidad()
-        diccionario["Fecha registro"] = self.get_tarjeta_credito().get_fecha_registro()
+        diccionario["Tarjeta de credito"] = self.get_tarjeta_credito().objeto_a_diccionario()
         return diccionario
 
     def crear_lista_reproduccion(self, lista_canciones: list['Cancion']):
