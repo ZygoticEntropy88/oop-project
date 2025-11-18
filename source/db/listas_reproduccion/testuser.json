@@ -1,16 +1,1 @@
-[
-	{
-	"Nombre lista":"List 1",
-	"Descripcion": "Test descripcion 1",
-	"Lista canciones": ["JGwWNGJdvx8", "DyDfgMOUjCI"],
-	"Fecha creacion": {"dia": 1, "mes": 1, "anyo": 2025},
-	"Usuario creador": "testuser"
-	},
-	{
-	"Nombre lista":"List 2",
-	"Descripcion": "Test descripcion 2",
-	"Lista canciones": [],
-	"Fecha creacion": {"dia": 2, "mes": 2, "anyo": 2025},
-	"Usuario creador": "testuser"
-	}
-]
+[{"Nombre lista": "List 1", "Descripcion": "Test descripcion 1", "Fecha creacion": {"dia": 1, "mes": 1, "anyo": 2025}, "Usuario creador": "testuser", "Lista canciones": [{"Nombre": null, "Artista": null, "Genero": null, "Anyo": 2025, "Identificador cancion": null}, {"Nombre": null, "Artista": null, "Genero": null, "Anyo": 2025, "Identificador cancion": null}]}, {"Nombre lista": "List 2", "Descripcion": "Test descripcion 2", "Fecha creacion": {"dia": 2, "mes": 2, "anyo": 2025}, "Usuario creador": "testuser"}]

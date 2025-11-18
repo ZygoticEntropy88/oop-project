@@ -85,10 +85,13 @@ class Lista(IPersistencia):
         diccionario_listas : dict = {
             "Nombre lista" : self.get_nombre(),
             "Descripcion" : self.get_descripcion(),
-            "Lista canciones" : [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()],
             "Fecha creacion" : self.get_fecha_creacion().objeto_a_diccionario(),
             "Usuario creador" : self.get_usuario_creador()
         }
+
+        if self.get_lista_canciones():
+            diccionario_listas["Lista canciones"] = [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()]
+
         return diccionario_listas
 
     def diccionario_a_objeto(self, diccionario_listas : dict):
