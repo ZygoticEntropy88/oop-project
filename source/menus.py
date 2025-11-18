@@ -93,7 +93,7 @@ class MenuReproduccion(Menu):
         id_cancion : str = input("Introduzca el id de la canción")
         if not id_cancion:
             raise EntradaInvalidaError("El id introducido no es válido")
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != MenuReproduccion.reproductor.EstadoReproductor().SIN_REPRODUCCION:
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.SIN_REPRODUCCION:
             raise PlayError("Ya hay una canción seleccionada")
         else:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
@@ -105,7 +105,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def pausar_cancion(cls):
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != "REPRODUCIENDO":
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.REPRODUCIENDO:
             raise PlayError("La canción no está sonando")
         #Compruebo que la canción está reproduciéndose
         else:
@@ -113,7 +113,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def reanudar_cancion(cls):
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != "PAUSADO":
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.PAUSADO:
             raise PlayError("Error al pausar")
         else:
             MenuReproduccion.reproductor.reanudar()
