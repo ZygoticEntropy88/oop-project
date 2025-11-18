@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from usuarios import Usuario, UsuarioPremium
 from listas import Lista, Catalogo, CatalogoPersonal
+from canciones import Cancion
 def print_opcion(numero:int, opcion:str) -> None:
     print(f"[{numero}]: {opcion}")
 
@@ -154,12 +155,12 @@ class MenuCatalogoPersonal(Menu):
         catalogo_personal.listar_canciones(filtrar_por_genero=filtrar_por_genero, filtrar_por_artista=filtrar_por_artista)
 
     @classmethod
-    def anyadir_cancion(cls):
-        pass
+    def anyadir_cancion(cls, catalogo_personal : 'CatalogoPersonal', nueva_cancion : 'Cancion'):
+        catalogo_personal.anyadir_cancion_a_catalogo(nueva_cancion)
 
     @classmethod
-    def eliminar_cancion(cls):
-        pass
+    def eliminar_cancion(cls, catalogo_personal : 'CatalogoPersonal', cancion_a_eliminar : 'Cancion'):
+        catalogo_personal.eliminar_cancion_de_catalogo(cancion_a_eliminar)
 
 class MenuListasReproduccion(Menu):
     numero_menu = 5

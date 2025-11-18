@@ -207,3 +207,7 @@ class CatalogoPersonal (Catalogo):
     def anyadir_cancion_a_catalogo(self, cancion : 'Cancion'):
         assert cancion, "Los datos introducidos no son válidos"
         self.get_lista_canciones().append(cancion)
+
+    def eliminar_cancion_de_catalogo(self, cancion_a_eliminar : 'Cancion'):
+        assert cancion_a_eliminar and cancion_a_eliminar in self.get_lista_canciones(), "Los datos introducidos no son válidos"
+        self.get_lista_canciones().remove(cancion_a_eliminar)
