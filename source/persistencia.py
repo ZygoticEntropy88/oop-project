@@ -20,10 +20,6 @@ class GestorPersistencia:
         return True
 
     @staticmethod
-    def resetear_csv(cabecera:list, ruta:str):
-        """Dado un archivo csv, elimina todas las filas salvo la cabecera"""
-
-    @staticmethod
     def resetear_csv_manteniendo_cabeceras(ruta:str) -> bool:
         try:
             with open(ruta, "r", newline="") as f:

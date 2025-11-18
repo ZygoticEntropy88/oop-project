@@ -171,11 +171,9 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
 
     def objeto_a_diccionario(self):
-        diccionario_catalogo : dict = {}
-
+        diccionario_catalogo : list = list()
         for cancion in self.get_lista_canciones():
-            diccionario_catalogo.update(cancion.objeto_a_diccionario())
-
+            diccionario_catalogo.append(cancion.objeto_a_diccionario())
         return diccionario_catalogo
 
 

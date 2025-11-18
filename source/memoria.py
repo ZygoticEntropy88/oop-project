@@ -79,10 +79,11 @@ class Memoria:
             for usuario in self.get_usuarios().values():
                 usuarios_info.append(usuario.objeto_a_diccionario())
                 catalogo_personal = usuario.get_catalogo_personal()
-                catalogo_personal_info = catalogo_personal.objeto_a_csv()
 
                 # GUARDO EL CATÁLOGO PERSONAL DE CADA USUARIO
-                self.__gp.guardar_csv(contenido=catalogo_personal_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
+                self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
+                for cancion_info in catalogo_personal.objeto_a_diccionario():
+                    self.__gp.guardar_csv(contenido=cancion_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
 
             # GUARDO TODOS LOS USUARIOS COMO UN <<CONGLOMERADO>> DE USUARIOS, ES DECIR HAGO UN ÚNICO DUMP
             self.__gp.guardar_json(contenido=usuarios_info, ruta=f"{self.ruta}usuarios.json")
