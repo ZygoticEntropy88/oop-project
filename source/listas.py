@@ -116,9 +116,9 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
         self._lista_canciones = lista_canciones
 
     def __str__(self):
-        msg = "CATÁLOGO:\n"
+        msg = "\n"
         for i, cancion in enumerate(self.get_lista_canciones()):
-            msg += f"\t[{i}]: {cancion} \n"
+            msg += f"\t\t\t[{i}]: {cancion} \n"
         return msg
 
     def get_lista_canciones(self):
@@ -155,7 +155,7 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
 
     def listar_canciones(self, filtrar_por_genero = None, filtrar_por_artista = None):
         for i, cancion in enumerate(self.filtrar_catalogo(genero = filtrar_por_genero, artista = filtrar_por_artista)):
-            print(f"\t\t[{i}]: {cancion}")
+            print(f"\t\t\t[{i}]: {cancion}")
 
     def objeto_a_csv(self):
         pass

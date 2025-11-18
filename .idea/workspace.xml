@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1b54dd43-7611-4982-8ce1-42c24ef67002" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/source/fecha.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/fecha.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/tarjeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/tarjeta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/usuarios.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/usuarios.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/db/catalogos_personales/testuser2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/oop-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/oop-project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/canciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/canciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/memoria.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/memoria.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +24,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="35b8nOJnP1Ew6Qk2nYPXjPkDUgp" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -27,7 +35,10 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true"
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/corba/OneDrive/Desktop/oop-project"
   }
 }]]></component>
   <component name="SharedIndexes">

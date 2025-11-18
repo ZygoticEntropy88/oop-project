@@ -12,25 +12,37 @@ class Memoria:
 
         self.__gp = GestorPersistencia()
 
-        self._usuarios = self.__gp.leer_json(f"{ruta}usuarios.json")
+        # ESTABLEZCO LOS USUARIOS
+        usuarios:dict[str: 'Usuario'] = dict()
+        for usuario_info in self.__gp.leer_json(f"{ruta}usuarios.json"):
+            if usuario_info["Tipo usuario"] == "REGULAR":
+                usuario = Usuario()
+                usuario.diccionario_a_objeto(usuario_info)
+            elif usuario_info["Tipo usuario"] == "PREMIUM":
+                usuario = UsuarioPremium()
+                usuario.diccionario_a_objeto(usuario_info)
+            usuarios[usuario.get_nombre_usuario()] = usuario
 
-        self._catalogo_generico = self.__gp.leer_csv(f"{ruta}catalogo_generico.csv")
-        
-        self._listas_reproduccion = {}
-        for directorio_usuario in os.listdir(f"{ruta}listas_reproduccion/"):
-            self._listas_reproduccion[directorio_usuario] = []
-            for nombre_archivo in os.listdir(f"{ruta}listas_reproduccion/{directorio_usuario}"):
-                if "." in nombre_archivo:  
-                    lista = self.__gp.leer_csv(f"{ruta}listas_reproduccion/{directorio_usuario}/{nombre_archivo}")
-                    self._listas_reproduccion[directorio_usuario].append(lista)
 
-        self._catalogos_personales = dict()
-        for nombre_archivo in os.listdir(f"{ruta}catalogos_personales/"):
-            if "." in nombre_archivo:  
-                catalogo = self.__gp.leer_csv(f"{ruta}catalogos_personales/{nombre_archivo}")
-                self._catalogos_personales[nombre_archivo.replace(".csv", "")] = catalogo
+            # ESTABLEZO LOS CATÁLOGOS PERSONALES
+            lista_canciones_catalogo_personal = list()
+            for cancion_info in self.__gp.leer_csv(f"{ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv"):
+                cancion = Cancion()
+                cancion.diccionario_a_objeto(cancion_info)
+                lista_canciones_catalogo_personal.append(cancion)
+            usuario.set_catalogo_personal(CatalogoPersonal(lista_canciones_catalogo_personal))
 
-        self.procesar()
+            # ESTABLEZCO LAS LISTAS DE REPRODUCCIÓN
+            # TODO
+        self._usuarios = usuarios
+
+        # CARGO EL CATÁLOGO GENÉRICO
+        lista_canciones_catalogo_generico = list()
+        for cancion_info in self.__gp.leer_csv(f"{ruta}catalogo_generico.csv"):
+            cancion = Cancion()
+            cancion.diccionario_a_objeto(cancion_info)
+            lista_canciones_catalogo_generico.append(cancion)
+        self._catalogo_generico = Catalogo(lista_canciones_catalogo_generico)
 
     def __str__(self):
         msg = "===================================MEMORIA=========================================\n"
@@ -43,16 +55,12 @@ class Memoria:
         for cancion in self.get_catalogo_generico().get_lista_canciones():
             msg += f"\t\t{cancion}\n"
         msg += "\n"
-
-        msg += f"\t ·CATÁLOGOS PERSONALES:\n\n"
-        for catalogo_personal in self.get_catalogos_personales().values():
-            msg += f"\t{catalogo_personal}"
-        msg += "\n"
-
+        """
         msg += f"\t ·LISTAS REPRODUCCIÓN =  \n"
         for usuario in self._listas_reproduccion.values():
             msg += f"\t\t {usuario}"
         msg += "\n"
+        """
 
         return msg
 
@@ -62,68 +70,29 @@ class Memoria:
     def get_catalogo_generico(self):
         return self._catalogo_generico
 
-    def get_catalogos_personales(self):
-        return self._catalogos_personales
-
-    def set_catalogos_personales(self, catalogos_personales):
-        self._catalogos_personales = catalogos_personales
-
-    def procesar(self):
-        """Una vez leída la información del disco, procesarla para tratar la información leída (listas, diccionarios)
-        y otros... como instancias de las clases que hemos definido en el programa"""
-
-        # PROCESAMIENTO DEL FICHERO CON USUARIOS
-        usuarios:dict[str: 'Usuario'] = dict()
-        for usuario_info in self.get_usuarios():
-            if usuario_info["Tipo usuario"] == "REGULAR":
-                usuario = Usuario()
-                usuario.diccionario_a_objeto(usuario_info)
-            elif usuario_info["Tipo usuario"] == "PREMIUM":
-                usuario = UsuarioPremium()
-                usuario.diccionario_a_objeto(usuario_info)
-            usuarios[usuario.get_nombre_usuario()] = usuario
-        self._usuarios = usuarios
-
-        # PROCESAMIENTO DEL CATÁLOGO GENÉRICO
-        lista_canciones_catalogo_generico = list()
-        for cancion_info in self._catalogo_generico:
-            cancion = Cancion()
-            cancion.diccionario_a_objeto(cancion_info)
-            lista_canciones_catalogo_generico.append(cancion)
-        self._catalogo_generico = Catalogo(lista_canciones_catalogo_generico)
-
-        # PROCESAMIENTO DE LOS CATÁLOGOS PERSONALES
-        catalogos_personales: dict[str: 'Catalogo'] = dict()
-        for nombre_usuario, catalogo_info in self.get_catalogos_personales().items():
-
-            lista_canciones_catalogo_personal = list()
-            for cancion_info in catalogo_info:
-                cancion = Cancion()
-                cancion.diccionario_a_objeto(cancion_info)
-                lista_canciones_catalogo_personal.append(cancion)
-
-            catalogo = CatalogoPersonal(lista_canciones_catalogo_personal)
-            catalogos_personales[nombre_usuario] = catalogo
-            # Agrego el catálogo personal de cada usuario a la instancia de usuario.
-            self.get_usuarios()[nombre_usuario].set_catalogo_personal(catalogo)
-
-        self.set_catalogos_personales(catalogos_personales)
-
-
-
     def guardar_en_disco(self):
         """Este método se ejecuta antes de salir de la aplicación: guarda toda la memoria en el disco duro"""
 
         # GUARDADO DE LOS USUARIOS
         try:
-            usuarios_info = [usuario.objeto_a_diccionario() for usuario in self.get_usuarios().values()]
+            usuarios_info = list()
+            for usuario in self.get_usuarios().values():
+                usuarios_info.append(usuario.objeto_a_diccionario())
+                catalogo_personal = usuario.get_catalogo_personal()
+                catalogo_personal_info = catalogo_personal.objeto_a_csv()
+
+                # GUARDO EL CATÁLOGO PERSONAL DE CADA USUARIO
+                self.__gp.guardar_csv(contenido=catalogo_personal_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
+
+            # GUARDO TODOS LOS USUARIOS COMO UN <<CONGLOMERADO>> DE USUARIOS, ES DECIR HAGO UN ÚNICO DUMP
             self.__gp.guardar_json(contenido=usuarios_info, ruta=f"{self.ruta}usuarios.json")
+
+
         except Exception as e:
             print(e)
 
         # EL CATÁLOGO GENÉRICO NO CAMBIA, ES FIJO. POR TANTO NO TENGO QUE INTERACTUAR CON ÉL EN DISCO
 
-        # GUARDADO DE LOS CATÁLOGOS PERSONALES
         
 
     def anyadir_usuario(self, usuario:'Usuario'):

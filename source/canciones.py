@@ -80,7 +80,7 @@ class Cancion(IPersistencia):
                 self.set_genero(diccionario_cancion["Género"])
 
             if "Anyo" in diccionario_cancion and diccionario_cancion["Anyo"]:
-                self.set_anyo(diccionario_cancion["Anyo"])
+                self.set_anyo(int(diccionario_cancion["Anyo"]))
 
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
