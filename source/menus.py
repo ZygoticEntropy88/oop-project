@@ -140,7 +140,7 @@ class MenuCatalogoGenerico(Menu):
 class MenuCatalogoPersonal(Menu):
     numero_menu = 4
     opciones = [
-        "Listar canciones",
+        "Listar catálogo personal",
         "Añadir canción",
         "Eliminar canción"
     ]
@@ -163,7 +163,7 @@ class MenuCatalogoPersonal(Menu):
     @classmethod
     def eliminar_cancion(cls):
         cancion_a_eliminar = Cancion()
-        cancion_a_eliminar.solicitar_usuario_por_consola("(Que desea eliminar)")
+        cancion_a_eliminar.solicitar_usuario_por_consola("(Que desea eliminar)", eliminar=True)
         return cancion_a_eliminar
 
 class MenuListasReproduccion(Menu):

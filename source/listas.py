@@ -187,9 +187,17 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
         self.set_lista_canciones(self.get_lista_canciones().append(cancion))
 
     def eliminar_cancion_de_catalogo(self, cancion:'Cancion'):
-        pass
+        
+        encontrada = False
+        posicion = 0
+        while not encontrada and posicion < len(self.get_lista_canciones()):
+            if self.get_lista_canciones()[posicion].get_identificador() == cancion.get_identificador():
+                encontrada = True
+                self.get_lista_canciones().pop(posicion)
+            posicion += 1
 
     def objeto_a_diccionario(self):
+        
         diccionario_catalogo : list = list()
         for cancion in self.get_lista_canciones():
             diccionario_catalogo.append(cancion.objeto_a_diccionario())

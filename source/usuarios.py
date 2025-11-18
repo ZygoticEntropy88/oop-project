@@ -20,7 +20,6 @@ class Usuario(IPersistencia):
         self._contrasenya:str = contrasenya
         self._fecha_de_registro:Fecha = fecha_registro
         self._tipo_usuario = "REGULAR"
-        self._catalogo_personal = None
         self._listas_reproduccion:list[Lista] = None
 
     def __str__(self):
@@ -44,9 +43,6 @@ class Usuario(IPersistencia):
     def get_tipo_usuario(self):
         return self._tipo_usuario
 
-    def get_catalogo_personal(self): 
-        return self._catalogo_personal
-
     def get_listas_reproduccion(self):
         return self._listas_reproduccion
 
@@ -64,9 +60,6 @@ class Usuario(IPersistencia):
 
     def set_fecha_registro (self, nueva_fecha_registro : Fecha):
         self._fecha_de_registro = nueva_fecha_registro
-
-    def set_catalogo_personal(self, nuevo_catalogo_personal:'Catalogo'):
-        self._catalogo_personal = nuevo_catalogo_personal
 
     def set_listas_reproduccion(self, nueva_lista_reproduccion:list[Lista]):
         self._listas_reproduccion = nueva_lista_reproduccion
@@ -99,11 +92,9 @@ class Usuario(IPersistencia):
         nueva_lista: 'Lista' = Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self)
         return nueva_lista
 
-    def anyadir_cancion_a_catalogo(self, cancion:Cancion):
-        self.get_catalogo_personal().anyadir_cancion_a_catalogo(cancion)
-
-    def eliminar_cancion_de_catalogo_personal(self, cancion:Cancion):
-        self.get_catalogo_personal().eliminar_cancion_de_catalogo(cancion)
+    @staticmethod
+    def comprobar_acceso_premium():
+        return False
 
 
     # ===================================================================================
@@ -115,9 +106,10 @@ class Usuario(IPersistencia):
         usuario_texto += f"Fecha nacimiento:  {self.get_fecha_nacimiento()} ; "
         usuario_texto += f"Correo electronico:  {self.get_correo_electronico()} ; "
         usuario_texto += f"Contrasenya:  {self.get_contrasenya()} ;"
-        usuario_texto += f"\n\n \t\tCATÁLOGO PERSONAL:\n"
-        if self.get_catalogo_personal():
-            usuario_texto +=  f"{self.get_catalogo_personal()}"
+        if self.comprobar_acceso_premium():
+            usuario_texto += f"\n\n \t\tCATÁLOGO PERSONAL:\n"
+            if self.get_catalogo_personal():
+                usuario_texto +=  f"{self.get_catalogo_personal()}"
         usuario_texto += f"\n\n \t\tLISTAS DE REPRODUCCIÓN:\n"
         if self.get_listas_reproduccion():
             for lista_reproduccion in self.get_listas_reproduccion():
@@ -195,6 +187,16 @@ class UsuarioPremium(Usuario):
     def set_catalogo_personal(self, nuevo_catalogo_personal:'CatalogoPersonal'):
         self._catalogo_personal = nuevo_catalogo_personal
 
+    def anyadir_cancion_a_catalogo(self, cancion:Cancion):
+        self.get_catalogo_personal().anyadir_cancion_a_catalogo(cancion)
+
+    def eliminar_cancion_de_catalogo(self, cancion:Cancion):
+        self.get_catalogo_personal().eliminar_cancion_de_catalogo(cancion)
+
+    @staticmethod
+    def comprobar_acceso_premium():
+        return True
+
     def crear_nuevo_usuario_premium_por_consola(self, usuario_base: Usuario):
         self.set_nombre_usuario(usuario_base.get_nombre_usuario())
         self.set_fecha_nacimiento(usuario_base.get_fecha_nacimiento())
@@ -238,3 +240,6 @@ class UsuarioAnonimo:
         self._tipo_usuario = "ANONIMO"
     def get_tipo_usuario():
         return self._tipo_usuario
+    @staticmethod
+    def comprobar_acceso_premium():
+        return False

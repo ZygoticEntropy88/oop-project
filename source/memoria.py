@@ -15,22 +15,24 @@ class Memoria:
         # ESTABLEZCO LOS USUARIOS
         usuarios:dict[str: 'Usuario'] = dict()
         for usuario_info in self.__gp.leer_json(f"{ruta}usuarios.json"):
+
             if usuario_info["Tipo usuario"] == "REGULAR":
                 usuario = Usuario()
                 usuario.diccionario_a_objeto(usuario_info)
+
             elif usuario_info["Tipo usuario"] == "PREMIUM":
                 usuario = UsuarioPremium()
                 usuario.diccionario_a_objeto(usuario_info)
+
+                # ESTABLEZO LOS CATÁLOGOS PERSONALES
+                lista_canciones_catalogo_personal = list()
+                for cancion_info in self.__gp.leer_csv(f"{ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv"):
+                    cancion = Cancion()
+                    cancion.diccionario_a_objeto(cancion_info)
+                    lista_canciones_catalogo_personal.append(cancion)
+                usuario.set_catalogo_personal(CatalogoPersonal(lista_canciones_catalogo_personal))
+
             usuarios[usuario.get_nombre_usuario()] = usuario
-
-
-            # ESTABLEZO LOS CATÁLOGOS PERSONALES
-            lista_canciones_catalogo_personal = list()
-            for cancion_info in self.__gp.leer_csv(f"{ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv"):
-                cancion = Cancion()
-                cancion.diccionario_a_objeto(cancion_info)
-                lista_canciones_catalogo_personal.append(cancion)
-            usuario.set_catalogo_personal(CatalogoPersonal(lista_canciones_catalogo_personal))
 
             # CARGO LAS LISTAS DE REPRODUCCIÓN
             listas_reproduccion_usuario:list[Lista] = list()
@@ -84,12 +86,11 @@ class Memoria:
             usuarios_info = list()
             for usuario in self.get_usuarios().values():
                 usuarios_info.append(usuario.objeto_a_diccionario())
-                catalogo_personal = usuario.get_catalogo_personal()
 
                 # GUARDO EL CATÁLOGO PERSONAL DE CADA USUARIO
-                if usuario.get_catalogo_personal():
+                if usuario.comprobar_acceso_premium() and usuario.get_catalogo_personal():
                     self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
-                    for cancion_info in catalogo_personal.objeto_a_diccionario():
+                    for cancion_info in usuario.get_catalogo_personal().objeto_a_diccionario():
                         self.__gp.guardar_csv(contenido=cancion_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
 
                 if usuario.get_listas_reproduccion() and usuario.get_listas_reproduccion() != []:

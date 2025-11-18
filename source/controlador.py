@@ -49,12 +49,12 @@ class Controlador:
 		self._menu_actual.imprimir()
 
 	def __cerrar_sesion_usuario(self):
+		self._memoria.guardar_en_disco()
 		self.set_usuario_actual() # Cómo no le paso ninguno, va a establecer el usuario como UsuarioAnonimo
 
 	def __apagar_controlador(self):
+		self.__cerrar_sesion_usuario() # Ya guarda la memoria en disco
 		self._ejecutandose = not self._ejecutandose
-		# ANTES DE SALIR TENEMOS QUE GUARDAR LA MEMORIA EN DISCO
-		self._memoria.guardar_en_disco()
 
 	def __cambiar_al_menu_con_id(self, id_menu:int):
 		self._menu_actual = HASH_MENUS[id_menu]
@@ -105,6 +105,7 @@ class Controlador:
 						# CONTINUAR COMO INVITADO
 						self.__cerrar_sesion_usuario()
 						self.__cambiar_al_menu_con_id(1)
+					self._memoria.guardar_en_disco()
 
 				# ============================ MENU PRINCIPAL ============================
 				elif id_menu == 1:
@@ -114,7 +115,6 @@ class Controlador:
 						self.__cambiar_al_menu_con_id(opcion)
 
 
-				# TODO: IMPORTANTE SOLICIONAR ERRORES CON MENU REPRODUCTOR --> MODULO NO FUNCIONA
 				# ============================ MENU REPRODUCTOR ============================
 				elif id_menu == 2:
 					# REPRODUCIR POR ID
@@ -138,21 +138,22 @@ class Controlador:
 
 				# ========================= MENÚ CATÁLOGO PERSONAL =========================
 				elif id_menu == 4:
-					if not self.usuario_actual.comprobar_acceso_premium():
-						print("Lo sentimos el catálogo personal está solo disponible para usuarios premium")
+					if not self._usuario_actual.comprobar_acceso_premium():
+						print("Lo sentimos el catálogo personal está solo disponible para usuarios premium.")
+						self.__cambiar_al_menu_anterior()
 					else:
 						
 
 						if opcion == 2:
-							self.menu_actual.listar_canciones()
+							self._menu_actual.listar_catalogo_personal(self._usuario_actual.get_catalogo_personal())
 
 						elif opcion == 3:
-							nueva_cancion = self.menu_actual.anyadir_cancion_a_catalogo()
-							self.usuario_actual.anyadir_cancion_a_catalogo(nueva_cancion)
+							nueva_cancion = self._menu_actual.anyadir_cancion()
+							self._usuario_actual.anyadir_cancion_a_catalogo(nueva_cancion)
 
 						elif opcion == 4:
-							cancion_a_eliminar = self.menu_actual.eliminar_cancion_de_catalogo()
-							self.usuario_actual.eliminar_cancion_de_catalogo(cancion_a_eliminar)
+							cancion_a_eliminar = self._menu_actual.eliminar_cancion()
+							self._usuario_actual.eliminar_cancion_de_catalogo(cancion_a_eliminar)
 
 				# ========================= MENÚ LISTAS REPRODUCCIÓN =========================
 				elif id_menu == 5:
