@@ -88,6 +88,7 @@ class Memoria:
                 usuarios_info.append(usuario.objeto_a_diccionario())
 
                 # GUARDO EL CATÁLOGO PERSONAL DE CADA USUARIO
+                print("DEEEBUG", usuario)
                 if usuario.comprobar_acceso_premium() and usuario.get_catalogo_personal():
                     self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
                     for cancion_info in usuario.get_catalogo_personal().objeto_a_diccionario():

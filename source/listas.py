@@ -183,21 +183,8 @@ class Catalogo(IPersistencia): #Tenemos que guardar los catálogos
     def objeto_a_texto(self):
         pass
 
-    def anyadir_cancion_a_catalogo(self, cancion:'Cancion'):
-        self.set_lista_canciones(self.get_lista_canciones().append(cancion))
-
-    def eliminar_cancion_de_catalogo(self, cancion:'Cancion'):
-        
-        encontrada = False
-        posicion = 0
-        while not encontrada and posicion < len(self.get_lista_canciones()):
-            if self.get_lista_canciones()[posicion].get_identificador() == cancion.get_identificador():
-                encontrada = True
-                self.get_lista_canciones().pop(posicion)
-            posicion += 1
-
     def objeto_a_diccionario(self):
-        
+
         diccionario_catalogo : list = list()
         for cancion in self.get_lista_canciones():
             diccionario_catalogo.append(cancion.objeto_a_diccionario())
@@ -217,10 +204,15 @@ class CatalogoPersonal (Catalogo):
     def __init__(self, lista_canciones : list['Cancion']):
         super().__init__(lista_canciones)
 
-    def anyadir_cancion_a_catalogo(self, cancion : 'Cancion'):
-        assert cancion, "Los datos introducidos no son válidos"
-        self.get_lista_canciones().append(cancion)
+    def anyadir_cancion_a_catalogo(self, cancion:'Cancion'):
+        self.set_lista_canciones(self.get_lista_canciones().append(cancion))
 
-    def eliminar_cancion_de_catalogo(self, cancion_a_eliminar : 'Cancion'):
-        assert cancion_a_eliminar and cancion_a_eliminar in self.get_lista_canciones(), "Los datos introducidos no son válidos"
-        self.get_lista_canciones().remove(cancion_a_eliminar)
+    def eliminar_cancion_de_catalogo(self, cancion:'Cancion'):
+        encontrada = False
+        posicion = 0
+        while not encontrada and posicion < len(self.get_lista_canciones()):
+            print(f" pos : {posicion}")
+            if self.get_lista_canciones()[posicion].get_identificador() == cancion.get_identificador():
+                encontrada = True
+                self.get_lista_canciones().pop(posicion)
+            posicion += 1

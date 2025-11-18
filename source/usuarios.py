@@ -191,7 +191,8 @@ class UsuarioPremium(Usuario):
         self.get_catalogo_personal().anyadir_cancion_a_catalogo(cancion)
 
     def eliminar_cancion_de_catalogo(self, cancion:Cancion):
-        self.get_catalogo_personal().eliminar_cancion_de_catalogo(cancion)
+        nuevo_catalogo_personal = self.get_catalogo_personal().eliminar_cancion_de_catalogo(cancion)
+        self.set_catalogo_personal(nuevo_catalogo_personal)
 
     @staticmethod
     def comprobar_acceso_premium():
