@@ -119,7 +119,8 @@ class Controlador:
 				elif id_menu == 2:
 					# REPRODUCIR POR ID
 					if opcion == 2:
-						self._menu_actual.reproducir_por_id()
+						id_cancion = self._menu_actual.reproducir_por_id()
+                        #self.get_memoria().comprobarcancionporid(id_cancion).imprimir
 					# PAUSAR REPRODUCCION
 					elif opcion == 3:
 						self._menu_actual.pausar_cancion()
@@ -136,12 +137,12 @@ class Controlador:
 
 
 				# ========================= MENÚ CATÁLOGO PERSONAL =========================
-				elif id_menu == 4:
-					print(f"DEBUG {id_menu}, {opcion}",)
-					if self.comprobar_acceso_premium():
-						pass
-					else:
-						print("Lo sentimos, el catálogo personal es una funcionalidad Premium")
+                elif id_menu == 4:
+                    if not self.usuario_actual.comprobar_acceso_premium():
+                        print("Lo sentimos el catálogo personal está solo disponible para usuarios premium")
+                    else:
+                        pass
+
 
 				# ========================= MENÚ LISTAS REPRODUCCIÓN =========================
 				elif id_menu == 5:

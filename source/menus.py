@@ -84,20 +84,19 @@ class MenuReproduccion(Menu):
     ]
     nombre_menu = "MENÚ REPRODUCCIÓN"
 
+
     reproductor : Reproductor = Reproductor() #Cuando llamo al menú, instancio un objeto de la clase reproductor
-    reproduciendo : bool = False
+
     @classmethod
     def reproducir_por_id(cls):
         id_cancion : str = input("Introduzca el id de la canción")
-        try:
+        if not id_cancion:
+            raise EntradaInvalidaError("El id introducido no es válido")
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != MenuReproduccion.reproductor.EstadoReproductor().SIN_REPRODUCCION:
+            raise PlayError("Ya hay una canción seleccionada")
+        else:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
-            MenuReproduccion.reproduciendo = True
-        except EntradaInvalidaError:
-            raise EntradaInvalidaError("Error al introducir el id")
-        except ResolverStreamError:
-            raise ResolverStreamError("No se pudo obtener el recurso solicitado")
-        except PlayError:
-            raise PlayError("No se pudo iniciar la reproducción")
+        return id_cancion
 
         #Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte
         # y el error no se propague
@@ -105,25 +104,18 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def pausar_cancion(cls):
-        if not MenuReproduccion.reproduciendo:
-            raise PlayError("Error al pausar")
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != "REPRODUCIENDO":
+            raise PlayError("La canción no está sonando")
         #Compruebo que la canción está reproduciéndose
-        try:
+        else:
             MenuReproduccion.reproductor.pausar()
-            MenuReproduccion.reproduciendo = False
-        except PlayError:
-            raise PlayError("Error al pausar")
 
     @classmethod
     def reanudar_cancion(cls):
-        if MenuReproduccion.reproduciendo:
+        if MenuReproduccion.reproductor.obtener_estado_reproductor() != "PAUSADO":
             raise PlayError("Error al pausar")
-        try:
+        else:
             MenuReproduccion.reproductor.reanudar()
-            MenuReproduccion.reproduciendo = True
-        except PlayError:
-            raise PlayError("Error al reanudar la canción")
-
 
 
 # ================================= MENU CATÁLOGO GENÉRICO ==========================================
