@@ -107,12 +107,14 @@ class Usuario(IPersistencia):
         usuario_texto += f"Nombre de usuario:  {self.get_nombre_usuario()} ; "
         usuario_texto += f"Fecha nacimiento:  {self.get_fecha_nacimiento()} ; "
         usuario_texto += f"Correo electronico:  {self.get_correo_electronico()} ; "
-        usuario_texto += f"Contrasenya:  {self.get_contrasenya()} ; "
-        usuario_texto += f"\n\n \t\t\t CATÁLOGO (PERSONAL): {self.get_catalogo_personal()}"
-        usuario_texto += f"\n\n \t\t\t LISTAS DE REPRODUCCIÓN:"
-        for lista_reproduccion in self.get_listas_reproduccion():
-            usuario_texto += f"\t\t\t{lista_reproduccion}"
-
+        usuario_texto += f"Contrasenya:  {self.get_contrasenya()} ;"
+        usuario_texto += f"\n\n \t\tCATÁLOGO PERSONAL:\n"
+        if self.get_catalogo_personal():
+            usuario_texto +=  f"{self.get_catalogo_personal()}"
+        usuario_texto += f"\n\n \t\tLISTAS DE REPRODUCCIÓN:\n"
+        if self.get_listas_reproduccion():
+            for lista_reproduccion in self.get_listas_reproduccion():
+                usuario_texto += f"\t\t\t{lista_reproduccion}"
         return usuario_texto
 
     def objeto_a_diccionario (self):

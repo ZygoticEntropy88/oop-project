@@ -2,7 +2,7 @@
 	{
 	"Nombre lista":"List 1",
 	"Descripcion": "Test descripcion 1",
-	"Lista canciones": [],
+	"Lista canciones": ["JGwWNGJdvx8", "DyDfgMOUjCI"],
 	"Fecha creacion": {"dia": 1, "mes": 1, "anyo": 2025},
 	"Usuario creador": "testuser"
 	},

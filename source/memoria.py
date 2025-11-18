@@ -87,10 +87,17 @@ class Memoria:
                 catalogo_personal = usuario.get_catalogo_personal()
 
                 # GUARDO EL CATÁLOGO PERSONAL DE CADA USUARIO
-                self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
-                for cancion_info in catalogo_personal.objeto_a_diccionario():
-                    self.__gp.guardar_csv(contenido=cancion_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
+                if usuario.get_catalogo_personal():
+                    self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
+                    for cancion_info in catalogo_personal.objeto_a_diccionario():
+                        self.__gp.guardar_csv(contenido=cancion_info, ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
 
+                """
+                # GUARDO LAS LISTAS DE REPRODUCCIÓN DE CADA USUARIO
+                if usuario.get_listas_reproduccion():  
+                    usuario_listas_reproduccion = [lista_reproduccion.objeto_a_diccionario() for lista_reproduccion in usuario.get_listas_reproduccion()]
+                    self.__gp.guardar_json(contenido = usuario_listas_reproduccion, ruta=f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json")
+                """
             # GUARDO TODOS LOS USUARIOS COMO UN <<CONGLOMERADO>> DE USUARIOS, ES DECIR HAGO UN ÚNICO DUMP
             self.__gp.guardar_json(contenido=usuarios_info, ruta=f"{self.ruta}usuarios.json")
 

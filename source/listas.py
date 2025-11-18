@@ -47,11 +47,15 @@ class Lista(IPersistencia):
 
     def __str__(self):
         lista_a_str : str = "LISTA | "
-        lista_a_str += f"{self.get_nombre()};"
-        lista_a_str += f"{self.get_descripcion()}"
-        for cancion in self.get_lista_canciones():
-            lista_a_str += f"{cancion}"
-        lista_a_str += self.get_usuario_creador()
+        lista_a_str += f"{self.get_nombre()} ; "
+        lista_a_str += f"{self.get_descripcion()} ; "
+        lista_a_str += f"{self.get_usuario_creador()} ; \n"
+
+        if self.get_lista_canciones():
+            for cancion in self.get_lista_canciones():
+                lista_a_str += f"\t\t\t\t {cancion}\n"
+        else:
+            lista_a_str += "\t\t\t\tLista vacía\n"
         return lista_a_str
 
     def mostrar_canciones(self):
@@ -83,7 +87,7 @@ class Lista(IPersistencia):
             "Descripcion" : self.get_descripcion(),
             "Lista canciones" : [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()],
             "Fecha creacion" : self.get_fecha_creacion().objeto_a_diccionario(),
-            "Usuario creador" : self.get_usuario_creador().get_nombre_usuario()
+            "Usuario creador" : self.get_usuario_creador()
         }
         return diccionario_listas
 
