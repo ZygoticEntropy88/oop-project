@@ -2,14 +2,17 @@ from abc import ABC, abstractmethod
 from usuarios import Usuario, UsuarioPremium
 from listas import Lista, Catalogo, CatalogoPersonal
 from canciones import Cancion
-def print_opcion(numero:int, opcion:str) -> None:
+
+
+def print_opcion(numero: int, opcion: str) -> None:
     print(f"[{numero}]: {opcion}")
+
 
 class Menu(ABC):
 
-    numero_menu:int = 0
+    numero_menu: int = 0
     opciones = []
-    nombre_menu:str = ""
+    nombre_menu: str = ""
 
     @classmethod
     def imprimir(cls):
@@ -17,7 +20,7 @@ class Menu(ABC):
         print_opcion(0, "Salir de la aplicación")
         print_opcion(1, "Volver al menú anterior")
         for opcion_id in range(len(cls.opciones)):
-            print_opcion(opcion_id+2, cls.opciones[opcion_id])
+            print_opcion(opcion_id + 2, cls.opciones[opcion_id])
 
     @classmethod
     def get_numero_menu(cls) -> int:
@@ -33,23 +36,25 @@ class MenuInicio(Menu):
     opciones = [
         "Registrar un usuario",
         "Login con usuario y contraseña",
-        "Continuar como invitado"
+        "Continuar como invitado",
     ]
     nombre_menu = "MENÚ INICIO"
 
-
     @classmethod
-    def registrar(cls) -> 'Usuario':
+    def registrar(cls) -> "Usuario":
         nuevo_usuario = Usuario()
         nuevo_usuario.crear_nuevo_usuario_por_consola()
-        opcion_registrar_usuario_premium = input("Quieres hacer tu cuenta premium? (s/n): ").lower().strip()
-        if opcion_registrar_usuario_premium == 's':
+        opcion_registrar_usuario_premium = (
+            input("Quieres hacer tu cuenta premium? (s/n): ").lower().strip()
+        )
+        if opcion_registrar_usuario_premium == "s":
             nuevo_usuario_premium = UsuarioPremium()
-            nuevo_usuario_premium.crear_nuevo_usuario_premium_por_consola(usuario_base = nuevo_usuario)
+            nuevo_usuario_premium.crear_nuevo_usuario_premium_por_consola(
+                usuario_base=nuevo_usuario
+            )
             return nuevo_usuario_premium
         else:
             return nuevo_usuario
-
 
     @classmethod
     def login(cls):
@@ -69,51 +74,62 @@ class MenuPrincipal(Menu):
         "·Menu reproducción",
         "·Menu catálogo genérico",
         "+Menu catálogo personal",
-        "-Menu listas reproducción"
+        "-Menu listas reproducción",
     ]
     nombre_menu = "MENÚ PRINCIPAL"
 
+
 # ======================================== MENU REPRODUCCIÓN ==============================================
-from reproductor import * #Me traigo del módulo reproductor todas sus clases, incluidas las excepciones
+from reproductor import *  # Me traigo del módulo reproductor todas sus clases, incluidas las excepciones
+
 
 class MenuReproduccion(Menu):
     numero_menu = 2
     opciones = [
         "Reproducir canción por ID",
         "Pausar reproducción de la canción",
-        "Renaudar reproducción"
+        "Renaudar reproducción",
     ]
     nombre_menu = "MENÚ REPRODUCCIÓN"
 
-
-    reproductor : Reproductor = Reproductor() #Cuando llamo al menú, instancio un objeto de la clase reproductor
+    reproductor: Reproductor = (
+        Reproductor()
+    )  # Cuando llamo al menú, instancio un objeto de la clase reproductor
 
     @classmethod
     def reproducir_por_id(cls):
-        id_cancion : str = input("Introduzca el id de la canción")
+        id_cancion: str = input("Introduzca el id de la canción")
         if not id_cancion:
             raise EntradaInvalidaError("El id introducido no es válido")
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.SIN_REPRODUCCION:
+        if (
+            MenuReproduccion.reproductor.obtener_estado_reproductor()
+            != EstadoReproductor.SIN_REPRODUCCION
+        ):
             raise PlayError("Ya hay una canción seleccionada")
         else:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
         return id_cancion
 
-        #Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte
+        # Voy filtrando de los errores más específicos a los más genéricos y capturo y lanzo excepciones para que el programa se corte
         # y el error no se propague
-
 
     @classmethod
     def pausar_cancion(cls):
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.REPRODUCIENDO:
+        if (
+            MenuReproduccion.reproductor.obtener_estado_reproductor()
+            != EstadoReproductor.REPRODUCIENDO
+        ):
             raise PlayError("La canción no está sonando")
-        #Compruebo que la canción está reproduciéndose
+        # Compruebo que la canción está reproduciéndose
         else:
             MenuReproduccion.reproductor.pausar()
 
     @classmethod
     def reanudar_cancion(cls):
-        if MenuReproduccion.reproductor.obtener_estado_reproductor() != EstadoReproductor.PAUSADO:
+        if (
+            MenuReproduccion.reproductor.obtener_estado_reproductor()
+            != EstadoReproductor.PAUSADO
+        ):
             raise PlayError("Error al pausar")
         else:
             MenuReproduccion.reproductor.reanudar()
@@ -128,31 +144,49 @@ class MenuCatalogoGenerico(Menu):
     nombre_menu = "MENÚ CATÁLOGO GENÉRICO"
 
     @classmethod
-    def listar_canciones(cls, catalogo_generico:'Catalogo'):
-        filtrar_por_genero:str = input("Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): ")
-        filtrar_por_artista:str = input("Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): ")
-        filtrar_por_genero = filtrar_por_genero.lower() if filtrar_por_genero != "" else None
-        filtrar_por_artista = filtrar_por_artista.lower() if filtrar_por_artista != "" else None
-        catalogo_generico.listar_canciones(filtrar_por_genero=filtrar_por_genero, filtrar_por_artista=filtrar_por_artista)
+    def listar_canciones(cls, catalogo_generico: "Catalogo"):
+        filtrar_por_genero: str = input(
+            "Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): "
+        )
+        filtrar_por_artista: str = input(
+            "Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): "
+        )
+        filtrar_por_genero = (
+            filtrar_por_genero.lower() if filtrar_por_genero != "" else None
+        )
+        filtrar_por_artista = (
+            filtrar_por_artista.lower() if filtrar_por_artista != "" else None
+        )
+        catalogo_generico.listar_canciones(
+            filtrar_por_genero=filtrar_por_genero,
+            filtrar_por_artista=filtrar_por_artista,
+        )
 
 
 # ====================================== MENU CATÁLOGO PERSONAL =====================================
 class MenuCatalogoPersonal(Menu):
     numero_menu = 4
-    opciones = [
-        "Listar catálogo personal",
-        "Añadir canción",
-        "Eliminar canción"
-    ]
+    opciones = ["Listar catálogo personal", "Añadir canción", "Eliminar canción"]
     nombre_menu = "MENÚ CATÁLOGO PERSONAL"
 
     @classmethod
-    def listar_catalogo_personal(cls, catalogo_personal:'CatalogoPersonal'):
-        filtrar_por_genero:str = input("Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): ")
-        filtrar_por_artista:str = input("Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): ")
-        filtrar_por_genero = filtrar_por_genero.lower() if filtrar_por_genero != "" else None
-        filtrar_por_artista = filtrar_por_artista.lower() if filtrar_por_artista != "" else None
-        catalogo_personal.listar_canciones(filtrar_por_genero=filtrar_por_genero, filtrar_por_artista=filtrar_por_artista)
+    def listar_catalogo_personal(cls, catalogo_personal: "CatalogoPersonal"):
+        filtrar_por_genero: str = input(
+            "Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): "
+        )
+        filtrar_por_artista: str = input(
+            "Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): "
+        )
+        filtrar_por_genero = (
+            filtrar_por_genero.lower() if filtrar_por_genero != "" else None
+        )
+        filtrar_por_artista = (
+            filtrar_por_artista.lower() if filtrar_por_artista != "" else None
+        )
+        catalogo_personal.listar_canciones(
+            filtrar_por_genero=filtrar_por_genero,
+            filtrar_por_artista=filtrar_por_artista,
+        )
 
     @classmethod
     def anyadir_cancion(cls):
@@ -163,8 +197,11 @@ class MenuCatalogoPersonal(Menu):
     @classmethod
     def eliminar_cancion(cls):
         cancion_a_eliminar = Cancion()
-        cancion_a_eliminar.solicitar_usuario_por_consola("(Que desea eliminar)", eliminar=True)
+        cancion_a_eliminar.solicitar_usuario_por_consola(
+            "(Que desea eliminar)", eliminar=True
+        )
         return cancion_a_eliminar
+
 
 class MenuListasReproduccion(Menu):
     numero_menu = 5
@@ -174,34 +211,43 @@ class MenuListasReproduccion(Menu):
         "Crear lista",
         "Eliminar lista",
         "Añadir canción a la lista",
-        "Eliminar canción de la lista"
+        "Eliminar canción de la lista",
     ]
     nombre_menu = "MENÚ LISTAS REPRODUCCIÓN"
 
     @classmethod
-    def ejecutar(cls, opcion:int):
-        pass
+    def mostrar_todas_las_listas(cls, listas_de_reproduccion : list[Lista]):
+        contador : int = 1
+        for lista in listas_de_reproduccion:
+            print(f"Lista {contador} : {lista.__str__()} \n")
+            contador +=1
+
 
     @classmethod
-    def mostrar_todas_las_listas(cls):
-        pass
+    def mostrar_canciones_en_lista(cls, listas_de_reproduccion : list['Lista']): #Comprobar errores!!
+        nombre_lista : str = input("Introduzca el nombre de la lista")
+        contador : int = 0
+        lista_encontrada : bool = False
+        while contador < len(listas_de_reproduccion) and not lista_encontrada:
+            if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
+                lista_encontrada = True
+                for cancion in listas_de_reproduccion[contador].get_lista_canciones():
+                    print(f"{cancion.__str__()} \n")
 
     @classmethod
-    def mostrar_canciones_en_lista(cls):
-        pass
+    def crear_lista(cls, lista_canciones : list['Cancion'], usuario_creador : 'Usuario'):
+        nombre_lista : str = input("Introduzca el nombre de la lista")
+        descripcion_lista : str = input("Introduzca la descripción de la lista")
+        return Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion = None, usuario_creador = usuario_creador)
 
     @classmethod
-    def crear_lista(cls):
-        pass
+    def eliminar_lista(cls, listas_de_reproduccion : list[Lista], lista_a_eliminar : 'Lista'):
+        listas_de_reproduccion.remove(lista_a_eliminar)
 
     @classmethod
-    def eliminar_lista(cls):
-        pass
+    def anyadir_cancion_a_lista(cls, lista_de_reproduccion : 'Lista', cancion_a_anyadir : 'Cancion'):
+        lista_de_reproduccion.anyadir_cancion(cancion_a_anyadir)
 
     @classmethod
-    def anyadir_cancion_a_lista(cls):
-        pass
-
-    @classmethod
-    def eliminar_cancion_de_lista(cls):
-        pass
+    def eliminar_cancion_de_lista(cls, lista_de_reproduccion : 'Lista', cancion_a_eliminar : 'Cancion'):
+        lista_de_reproduccion.eliminar_cancion(cancion_a_eliminar)

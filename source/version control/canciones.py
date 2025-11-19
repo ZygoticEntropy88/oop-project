@@ -1,13 +1,16 @@
 from persistencia import IPersistencia
 
+
 class Cancion(IPersistencia):
 
-    def __init__(self,
-                id_cancion : str = None,
-                nombre : str = None,
-                genero : str = None,
-                artista : str = None,
-                anyo : int = 2025):
+    def __init__(
+        self,
+        id_cancion: str = None,
+        nombre: str = None,
+        genero: str = None,
+        artista: str = None,
+        anyo: int = 2025,
+    ):
 
         assert 0 <= anyo <= 2025, "El año introducido no es válido"
         self._identificador = id_cancion
@@ -16,38 +19,38 @@ class Cancion(IPersistencia):
         self._artista = artista
         self._anyo = anyo
 
-    def get_identificador (self):
+    def get_identificador(self):
         return self._identificador
 
     def get_nombre(self):
         return self._nombre
 
-    def get_artista (self):
+    def get_artista(self):
         return self._artista
 
-    def get_anyo (self):
+    def get_anyo(self):
         return self._anyo
 
     def get_genero(self):
         return self._genero
 
-    def set_identificador (self, nuevo_identificador : str):
+    def set_identificador(self, nuevo_identificador: str):
         self._identificador = nuevo_identificador
 
-    def set_nombre (self, nuevo_nombre : str):
+    def set_nombre(self, nuevo_nombre: str):
         self._nombre = nuevo_nombre
 
-    def set_artista (self, nuevo_artista : str):
+    def set_artista(self, nuevo_artista: str):
         self._artista = nuevo_artista
 
-    def set_genero (self, nuevo_genero : str):
+    def set_genero(self, nuevo_genero: str):
         self._genero = nuevo_genero
 
-    def set_anyo (self, nuevo_anyo : int):
+    def set_anyo(self, nuevo_anyo: int):
         self._anyo = nuevo_anyo
 
     def __str__(self):
-        cancion_a_str : str = "CANCIÓN | "
+        cancion_a_str: str = "CANCIÓN | "
         cancion_a_str += f"Nombre: {self.get_nombre()} ; "
         cancion_a_str += f"Artista: {self.get_artista()} ;"
         cancion_a_str += f"Año: {self.get_anyo()} ;"
@@ -55,19 +58,22 @@ class Cancion(IPersistencia):
         cancion_a_str += f"Identificador: {self.get_identificador()}\n"
         return cancion_a_str
 
-    def objeto_a_diccionario (self):
-        cancion : dict = {
-            "Identificador cancion" : self.get_identificador(),
-            "Nombre" : self.get_nombre(),
-            "Artista" : self.get_artista(),
-            "Género" : self.get_genero(),
-            "Anyo" : self.get_anyo()
+    def objeto_a_diccionario(self):
+        cancion: dict = {
+            "Identificador cancion": self.get_identificador(),
+            "Nombre": self.get_nombre(),
+            "Artista": self.get_artista(),
+            "Género": self.get_genero(),
+            "Anyo": self.get_anyo(),
         }
         return cancion
 
-    def diccionario_a_objeto(self, diccionario_cancion : dict):
+    def diccionario_a_objeto(self, diccionario_cancion: dict):
         try:
-            if "Identificador cancion" in diccionario_cancion and diccionario_cancion["Identificador cancion"]:
+            if (
+                "Identificador cancion" in diccionario_cancion
+                and diccionario_cancion["Identificador cancion"]
+            ):
                 self.set_identificador(diccionario_cancion["Identificador cancion"])
 
             if "Nombre" in diccionario_cancion and diccionario_cancion["Nombre"]:
@@ -85,13 +91,13 @@ class Cancion(IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
-    def texto_a_objeto (self, texto : str):
+    def texto_a_objeto(self, texto: str):
         pass
 
-    def objeto_a_texto (self):
+    def objeto_a_texto(self):
         pass
 
-    def objeto_a_csv (self):
+    def objeto_a_csv(self):
         pass
 
     def csv_a_objeto(self):

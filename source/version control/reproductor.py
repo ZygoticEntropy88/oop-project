@@ -6,24 +6,31 @@ from enum import Enum
 
 import sys, os
 
+
 # Excepciones de la API
 class ReproduccionError(Exception):
     """Base de errores de Reproduccion."""
 
+
 class EntradaInvalidaError(ReproduccionError):
     """Parámetros de entrada inválidos (IDs, rutas...)."""
+
 
 class ResolverStreamError(ReproduccionError):
     """No se pudo resolver la URL de streaming de YouTube."""
 
+
 class PlayError(ReproduccionError):
     """Fallo al iniciar/controlar la reproducción (VLC)."""
 
+
 class EstadoReproductor(Enum):
     """Enumerado que define el estado actual del reproductor"""
+
     SIN_REPRODUCCION = 1
     REPRODUCIENDO = 2
     PAUSADO = 3
+
 
 class Reproductor:
     """Clase que nos permite crear una instancia del reproductor, capaz de reproducir canciones de YouTube"""
@@ -35,14 +42,22 @@ class Reproductor:
         self._player = self._instance.media_player_new()
 
         # Interceptar y anular logs internos de libVLC
-        log_callback = ctypes.CFUNCTYPE(None, ctypes.c_void_p, ctypes.c_int,
-                                        ctypes.c_void_p, ctypes.c_char_p, ctypes.c_void_p)
+        log_callback = ctypes.CFUNCTYPE(
+            None,
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_void_p,
+            ctypes.c_char_p,
+            ctypes.c_void_p,
+        )
 
         def __log_sink(data, level, ctx, fmt, args):
             # No hacemos nada: se descartan todos los logs de VLC.
             return
 
-        self.__log_cb = log_callback(__log_sink)  # guardarlo en self para que no lo recoja el GC
+        self.__log_cb = log_callback(
+            __log_sink
+        )  # guardarlo en self para que no lo recoja el GC
         try:
             # Enlazar el callback a la instancia
             vlc.libvlc_log_set(self._instance, self.__log_cb, None)
@@ -90,13 +105,23 @@ class Reproductor:
             return EstadoReproductor.REPRODUCIENDO
         elif estado_vlc == vlc.State.Paused:
             return EstadoReproductor.PAUSADO
-        elif estado_vlc in (vlc.State.NothingSpecial, vlc.State.Stopped, vlc.State.Ended, vlc.State.Error):
+        elif estado_vlc in (
+            vlc.State.NothingSpecial,
+            vlc.State.Stopped,
+            vlc.State.Ended,
+            vlc.State.Error,
+        ):
             return EstadoReproductor.SIN_REPRODUCCION
         else:
             # Por precaución, cualquier otro valor se considera sin reproducción activa
             return EstadoReproductor.SIN_REPRODUCCION
 
-    def reproducir_desde_youtube(self, video_id: str, espera_hasta_reproducir: bool = True, timeout_sec: float = 10.0) -> bool:
+    def reproducir_desde_youtube(
+        self,
+        video_id: str,
+        espera_hasta_reproducir: bool = True,
+        timeout_sec: float = 10.0,
+    ) -> bool:
         """
         Reproduce en streaming desde YouTube (corta cualquier reproducción previa).
         Devuelve True si comenzó correctamente.
@@ -120,6 +145,7 @@ class Reproductor:
 
             try:
                 from yt_dlp import YoutubeDL
+
                 with YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(url, download=False)
             finally:

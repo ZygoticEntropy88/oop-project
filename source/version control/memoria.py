@@ -5,6 +5,7 @@ from listas import Catalogo, CatalogoPersonal
 
 import os
 
+
 class Memoria:
     def __init__(self, ruta="db/"):
 
@@ -15,20 +16,28 @@ class Memoria:
         self._usuarios = self.__gp.leer_csv(f"{ruta}usuarios.csv")
 
         self._catalogo_generico = self.__gp.leer_csv(f"{ruta}catalogo_generico.csv")
-        
+
         self._listas_reproduccion = {}
         for directorio_usuario in os.listdir(f"{ruta}listas_reproduccion/"):
             self._listas_reproduccion[directorio_usuario] = []
-            for nombre_archivo in os.listdir(f"{ruta}listas_reproduccion/{directorio_usuario}"):
-                if "." in nombre_archivo:  
-                    lista = self.__gp.leer_csv(f"{ruta}listas_reproduccion/{directorio_usuario}/{nombre_archivo}")
+            for nombre_archivo in os.listdir(
+                f"{ruta}listas_reproduccion/{directorio_usuario}"
+            ):
+                if "." in nombre_archivo:
+                    lista = self.__gp.leer_csv(
+                        f"{ruta}listas_reproduccion/{directorio_usuario}/{nombre_archivo}"
+                    )
                     self._listas_reproduccion[directorio_usuario].append(lista)
 
         self._catalogos_personales = dict()
         for nombre_archivo in os.listdir(f"{ruta}catalogos_personales/"):
-            if "." in nombre_archivo:  
-                catalogo = self.__gp.leer_csv(f"{ruta}catalogos_personales/{nombre_archivo}")
-                self._catalogos_personales[nombre_archivo.replace(".csv", "")] = catalogo
+            if "." in nombre_archivo:
+                catalogo = self.__gp.leer_csv(
+                    f"{ruta}catalogos_personales/{nombre_archivo}"
+                )
+                self._catalogos_personales[nombre_archivo.replace(".csv", "")] = (
+                    catalogo
+                )
 
         self.procesar()
 
@@ -73,7 +82,7 @@ class Memoria:
         y otros... como instancias de las clases que hemos definido en el programa"""
 
         # PROCESAMIENTO DEL FICHERO CON USUARIOS
-        usuarios:dict[str: 'Usuario'] = dict()
+        usuarios: dict[str:"Usuario"] = dict()
         for usuario_info in self.get_usuarios():
             if usuario_info["Tipo usuario"] == "REGULAR":
                 usuario = Usuario()
@@ -93,7 +102,7 @@ class Memoria:
         self._catalogo_generico = Catalogo(lista_canciones_catalogo_generico)
 
         # PROCESAMIENTO DE LOS CATÁLOGOS PERSONALES
-        catalogos_personales: dict[str: 'Catalogo'] = dict()
+        catalogos_personales: dict[str:"Catalogo"] = dict()
         for nombre_usuario, catalogo_info in self.get_catalogos_personales().items():
 
             lista_canciones_catalogo_personal = list()
@@ -109,8 +118,6 @@ class Memoria:
 
         self.set_catalogos_personales(catalogos_personales)
 
-
-
     def guardar_en_disco(self):
         """Este método se ejecuta antes de salir de la aplicación: guarda toda la memoria en el disco duro"""
 
@@ -118,23 +125,29 @@ class Memoria:
         try:
             self.__gp.resetear_csv_manteniendo_cabeceras(f"{self.ruta}usuarios.csv")
             for usuario in self.get_usuarios().values():
-                self.__gp.guardar_csv(contenido=usuario.objeto_a_diccionario(), ruta=f"{self.ruta}usuarios.csv")
+                self.__gp.guardar_csv(
+                    contenido=usuario.objeto_a_diccionario(),
+                    ruta=f"{self.ruta}usuarios.csv",
+                )
         except Exception as e:
             print(e)
 
         # EL CATÁLOGO GENÉRICO NO CAMBIA, ES FIJO. POR TANTO NO TENGO QUE INTERACTUAR CON ÉL EN DISCO
 
         # GUARDADO DE LOS CATÁLOGOS PERSONALES
-        
 
-    def anyadir_usuario(self, usuario:'Usuario'):
+    def anyadir_usuario(self, usuario: "Usuario"):
         self._usuarios[usuario.get_nombre_usuario()] = usuario
 
-    def comprobar_usuario_registrado(self, nombre:str) -> bool:
+    def comprobar_usuario_registrado(self, nombre: str) -> bool:
         """Dado un nombre de usuario, verifica que esté en la base de datos"""
-        return True if nombre in self.get_usuarios() and self.get_usuarios()[nombre] else False
+        return (
+            True
+            if nombre in self.get_usuarios() and self.get_usuarios()[nombre]
+            else False
+        )
 
-    def comprobar_credenciales_validas(self, nombre:str, contrasenya) ->  bool:
+    def comprobar_credenciales_validas(self, nombre: str, contrasenya) -> bool:
         """Comprueba que el usuario esté registrado y que la contraseña coincida con la guardada en la base de datos"""
         if self.comprobar_usuario_registrado(nombre):
             if contrasenya == self.get_usuarios()[nombre].get_contrasenya():
@@ -144,6 +157,6 @@ class Memoria:
             print(f"Usuario {nombre} no registrado en la base de datos.")
         return False
 
-    def cargar_usuario_por_nombre_y_contrasenya(self, nombre:str, contrasenya:str):
+    def cargar_usuario_por_nombre_y_contrasenya(self, nombre: str, contrasenya: str):
         if self.comprobar_credenciales_validas(nombre, contrasenya):
             return self.get_usuarios()[nombre]
