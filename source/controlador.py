@@ -208,7 +208,7 @@ class Controlador:
 
                 # ========================= MENÚ LISTAS REPRODUCCIÓN =========================
                 elif id_menu == 5:
-                    if self.get_memoria().comprobar_usuario_registrado(self.get_usuario_actual()):
+                    if self.get_memoria().comprobar_usuario_registrado(self.get_usuario_actual().get_nombre_usuario()):
                         if opcion == 2:
                             self.get_menu_actual().mostrar_todas_las_listas(
                                 self.get_usuario_actual().get_listas_reproduccion()
@@ -236,7 +236,7 @@ class Controlador:
                             self.get_menu_actual().eliminar_lista(self.get_usuario_actual())
                     else:
                         print("Usuario no registrado")
-                        self.get_menu_actual().volver_al_menu_anterior()
+                        self.__cambiar_al_menu_anterior()
 
 
         #except TypeError as e:
