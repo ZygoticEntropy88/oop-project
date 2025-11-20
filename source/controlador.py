@@ -141,9 +141,7 @@ class Controlador:
                     # REPRODUCIR POR ID
                     if opcion == 2:
                         id_cancion: str = self._menu_actual.reproducir_por_id()
-                        if self.get_memoria().comprobar_cancion_en_catalogo_generico(
-                            id_cancion
-                        ):
+                        if self.get_memoria().comprobar_cancion_en_catalogo(id_cancion):
                             cancion_actual = (
                                 self.get_memoria()
                                 .get_catalogo_generico()
@@ -154,7 +152,7 @@ class Controlador:
                             )
 
                         elif self.get_usuario_actual().tipo_usuario() == "PREMIUM" and self.get_memoria().comprobar_cancion_en_catalogo_premium(
-                            id_cancion, self.get_usuario_actual().get_nombre()
+                                id_cancion, self.get_usuario_actual().get_nombre()
                         ):
                             cancion_actual = (
                                 self.get_memoria()
@@ -210,17 +208,40 @@ class Controlador:
 
                 # ========================= MENÚ LISTAS REPRODUCCIÓN =========================
                 elif id_menu == 5:
-                    if opcion == 2:
-                        self.get_menu_actual().mostrar_todas_las_listas(self.get_usuario_actual().get_listas_reproduccion())
+                    if self.get_memoria().comprobar_usuario_registrado(self.get_usuario_actual()):
+                        if opcion == 2:
+                            self.get_menu_actual().mostrar_todas_las_listas(
+                                self.get_usuario_actual().get_listas_reproduccion()
+                            )
 
-                    elif opcion == 3:
-                        self.get_menu_actual().mostrar_canciones_en_lista(self.get_usuario_actual().get_listas_reproduccion())
+                        elif opcion == 3:
+                            self.get_menu_actual().mostrar_canciones_en_lista(
+                                self.get_usuario_actual().get_listas_reproduccion()
+                            )
 
-                    elif opcion == 4:
-                        pass
+                        elif opcion == 4:
 
-        except TypeError as e:
-            print(f"La opción escogida debe ser un número entero. {e}")
+                            if self.get_usuario_actual().get_tipo_usuario() == "REGULAR":
+                                lista_canciones = self.get_memoria().get_catalogo_generico().devolver_canciones_en_catalogo_por_consola()
+                                nueva_lista = self.get_menu_actual().crear_lista(lista_canciones, self.get_usuario_actual())
+                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+                            elif self.get_usuario_actual().get_tipo_usuario () == "PREMIUM":
+                                lista_canciones = self.get_memoria().get_catalogo_generico().devolver_canciones_en_catalogo_por_consola()
+                                lista_premium : list ['Cancion'] = self.get_memoria().get_usuario_actual().get_catalogo_personal().devolver_canciones_en_catalogo_por_consola()
+                                lista_definitiva = lista_canciones + lista_premium
+                                nueva_lista_premium = self.get_menu_actual().crear_lista(lista_definitiva, self.get_usuario_actual())
+                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista_premium)
+
+                        elif opcion == 5:
+                            self.get_menu_actual().eliminar_lista(self.get_usuario_actual())
+                    else:
+                        print("Usuario no registrado")
+                        self.get_menu_actual().volver_al_menu_anterior()
+
+
+        #except TypeError as e:
+         #4
+        #print(f"La opción escogida debe ser un número entero. {e}")
         except Exception as e:
             print(f"Error: {e}")
         return opcion

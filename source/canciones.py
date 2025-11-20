@@ -90,7 +90,7 @@ class Cancion(IPersistencia):
                     "Introduzca el año de la canción (Presione enter para dejar en blanco)"
                 )
                 if cancion_anyo != "":
-                    self.set_anyo(cancion_anyo)
+                    self.set_anyo(int(cancion_anyo))
 
     def objeto_a_diccionario(self):
         cancion: dict = {
@@ -102,7 +102,7 @@ class Cancion(IPersistencia):
         }
         return cancion
 
-    def diccionario_a_objeto(self, diccionario_cancion: dict):
+    def diccionario_a_objeto(self, diccionario_cancion: dict) -> 'Cancion':
         try:
 
             if "Nombre" in diccionario_cancion and diccionario_cancion["Nombre"]:
@@ -122,7 +122,7 @@ class Cancion(IPersistencia):
                 and diccionario_cancion["Identificador cancion"]
             ):
                 self.set_identificador(diccionario_cancion["Identificador cancion"])
-
+            return self
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 

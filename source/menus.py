@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from usuarios import Usuario, UsuarioPremium
 from listas import Lista, Catalogo, CatalogoPersonal
 from canciones import Cancion
@@ -101,11 +101,6 @@ class MenuReproduccion(Menu):
         id_cancion: str = input("Introduzca el id de la canción")
         if not id_cancion:
             raise EntradaInvalidaError("El id introducido no es válido")
-        if (
-            MenuReproduccion.reproductor.obtener_estado_reproductor()
-            != EstadoReproductor.SIN_REPRODUCCION
-        ):
-            raise PlayError("Ya hay una canción seleccionada")
         else:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
         return id_cancion
@@ -130,7 +125,7 @@ class MenuReproduccion(Menu):
             MenuReproduccion.reproductor.obtener_estado_reproductor()
             != EstadoReproductor.PAUSADO
         ):
-            raise PlayError("Error al pausar")
+            raise PlayError("Error al reanudar")
         else:
             MenuReproduccion.reproductor.reanudar()
 
@@ -216,18 +211,19 @@ class MenuListasReproduccion(Menu):
     nombre_menu = "MENÚ LISTAS REPRODUCCIÓN"
 
     @classmethod
-    def mostrar_todas_las_listas(cls, listas_de_reproduccion : list[Lista]):
-        contador : int = 1
+    def mostrar_todas_las_listas(cls, listas_de_reproduccion: list[Lista]):
+        contador: int = 1
         for lista in listas_de_reproduccion:
             print(f"Lista {contador} : {lista.__str__()} \n")
-            contador +=1
-
+            contador += 1
 
     @classmethod
-    def mostrar_canciones_en_lista(cls, listas_de_reproduccion : list['Lista']): #Comprobar errores!!
-        nombre_lista : str = input("Introduzca el nombre de la lista")
-        contador : int = 0
-        lista_encontrada : bool = False
+    def mostrar_canciones_en_lista(
+        cls, listas_de_reproduccion: list["Lista"]
+    ):  # Comprobar errores!!
+        nombre_lista: str = input("Introduzca el nombre de la lista")
+        contador: int = 0
+        lista_encontrada: bool = False
         while contador < len(listas_de_reproduccion) and not lista_encontrada:
             if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
                 lista_encontrada = True
@@ -235,19 +231,39 @@ class MenuListasReproduccion(Menu):
                     print(f"{cancion.__str__()} \n")
 
     @classmethod
-    def crear_lista(cls, lista_canciones : list['Cancion'], usuario_creador : 'Usuario'):
-        nombre_lista : str = input("Introduzca el nombre de la lista")
-        descripcion_lista : str = input("Introduzca la descripción de la lista")
-        return Lista(nombre_lista, descripcion_lista, lista_canciones, fecha_creacion = None, usuario_creador = usuario_creador)
+    def crear_lista(cls, lista_canciones : list['Cancion'], usuario_creador: "Usuario"):
+        nombre_lista: str = input("Introduzca el nombre de la lista")
+        descripcion_lista: str = input("Introduzca la descripción de la lista")
+        return Lista(
+            nombre_lista,
+            descripcion_lista,
+            lista_canciones,
+            fecha_creacion=None,
+            usuario_creador=usuario_creador,
+        )
 
     @classmethod
-    def eliminar_lista(cls, listas_de_reproduccion : list[Lista], lista_a_eliminar : 'Lista'):
-        listas_de_reproduccion.remove(lista_a_eliminar)
+    def eliminar_lista(
+        cls, usuario_actual : 'Usuario'
+    ):
+        nombre_lista : str = input("Introduzca el nombre de la lista que desea eliminar -> ")
+        contador : int = 0
+        encontrada : bool = False
+        while contador < len(usuario_actual.get_listas_reproduccion()) and not encontrada:
+            if usuario_actual.get_listas_reproduccion()[contador].get_nombre() == nombre_lista:
+                usuario_actual.get_listas_reproduccion().remove(usuario_actual.get_listas_reproduccion()[contador])
+                encontrada = True
+        if not encontrada:
+            print("No se ha encontrado la lista")
 
     @classmethod
-    def anyadir_cancion_a_lista(cls, lista_de_reproduccion : 'Lista', cancion_a_anyadir : 'Cancion'):
+    def anyadir_cancion_a_lista(
+        cls, lista_de_reproduccion: "Lista", cancion_a_anyadir: "Cancion"
+    ):
         lista_de_reproduccion.anyadir_cancion(cancion_a_anyadir)
 
     @classmethod
-    def eliminar_cancion_de_lista(cls, lista_de_reproduccion : 'Lista', cancion_a_eliminar : 'Cancion'):
+    def eliminar_cancion_de_lista(
+        cls, lista_de_reproduccion: "Lista", cancion_a_eliminar: "Cancion"
+    ):
         lista_de_reproduccion.eliminar_cancion(cancion_a_eliminar)

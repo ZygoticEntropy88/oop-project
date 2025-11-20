@@ -1,7 +1,7 @@
 from persistencia import IPersistencia
-from fecha import Fecha
+from fecha import Fecha, Meses
 
-from listas import Lista, Catalogo
+from listas import Lista, CatalogoPersonal
 from canciones import Cancion
 from tarjeta import TarjetaCredito
 
@@ -22,7 +22,7 @@ class Usuario(IPersistencia):
         self._contrasenya: str = contrasenya
         self._fecha_de_registro: Fecha = fecha_registro
         self._tipo_usuario = "REGULAR"
-        self._listas_reproduccion: list[Lista] = None
+        self._listas_reproduccion: list[Lista] = []
 
     def __str__(self):
         return self.objeto_a_texto()
@@ -90,7 +90,7 @@ class Usuario(IPersistencia):
     def crear_lista_reproduccion(self, lista_canciones: list["Cancion"]):
         nombre_lista: str = str(input("Ingrese el nombre de la lista"))
         descripcion_lista: str = str(input("Añade una descripción a la lista"))
-        fecha_creacion: "Fecha" = Fecha(10, 11, 2025)
+        fecha_creacion: "Fecha" = Fecha(10, Meses.NOVIEMBRE, 2025)
         nueva_lista: "Lista" = Lista(
             nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self
         )
@@ -109,15 +109,12 @@ class Usuario(IPersistencia):
         usuario_texto += f"Fecha nacimiento:  {self.get_fecha_nacimiento()} ; "
         usuario_texto += f"Correo electronico:  {self.get_correo_electronico()} ; "
         usuario_texto += f"Contrasenya:  {self.get_contrasenya()} ;"
-        if self.comprobar_acceso_premium():
-            usuario_texto += f"\n\n \t\tCATÁLOGO PERSONAL:\n"
-            if self.get_catalogo_personal():
-                usuario_texto += f"{self.get_catalogo_personal()}"
         usuario_texto += f"\n\n \t\tLISTAS DE REPRODUCCIÓN:\n"
         if self.get_listas_reproduccion():
             for lista_reproduccion in self.get_listas_reproduccion():
                 usuario_texto += f"\t\t\t{lista_reproduccion}"
         return usuario_texto
+
 
     def objeto_a_diccionario(self):
         usuario = {
@@ -208,7 +205,7 @@ class UsuarioPremium(Usuario):
     def get_catalogo_personal(self):
         return self._catalogo_personal
 
-    def set_tarjeta_credito(self, nueva_tarjeta: "Tarjeta"):
+    def set_tarjeta_credito(self, nueva_tarjeta: "TarjetaCredito"):
         self._tarjeta_de_credito = nueva_tarjeta
 
     def set_catalogo_personal(self, nuevo_catalogo_personal: "CatalogoPersonal"):
@@ -257,7 +254,7 @@ class UsuarioPremium(Usuario):
         if pertenece_a_catalogo_personal:
             nombre_lista: str = str(input("Ingrese el nombre de la lista"))
             descripcion_lista: str = str(input("Añade una descripción a la lista"))
-            fecha_creacion: "Fecha" = Fecha(10, 11, 2025)
+            fecha_creacion: "Fecha" = Fecha(10, Meses.NOVIEMBRE, 2025)
             nueva_lista: "Lista" = Lista(
                 nombre_lista, descripcion_lista, lista_canciones, fecha_creacion, self
             )

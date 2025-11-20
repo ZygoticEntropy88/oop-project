@@ -1,9 +1,8 @@
 from persistencia import IPersistencia
 from canciones import Cancion
 from fecha import Fecha
-from usuarios import Usuario, UsuarioPremium
 
-# from usuarios import Usuario
+#from usuarios import Usuario
 
 
 class Lista(IPersistencia):
@@ -14,7 +13,7 @@ class Lista(IPersistencia):
         descripcion: str = None,
         lista_canciones: list["Cancion"] = None,
         fecha_creacion: Fecha = None,
-        usuario_creador: 'Usuario' = None,
+        usuario_creador: "Usuario" = None,
     ):
         self._nombre = nombre
         self._descripcion = descripcion
@@ -193,6 +192,23 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
         return catalogo_filtrado
 
+    def devolver_canciones_en_catalogo_por_consola(self):
+        lista_canciones : list['Cancion'] = []
+        seguir_anyadiendo : bool = True
+        while seguir_anyadiendo:
+            continuar : str = input("¿Desea seguir añadiendo canciones? ")
+            if continuar == "si":
+                id_cancion : str = input("Introduzca el id de la canción -> ")
+                if self.devolver_cancion_por_id(id_cancion) is not None:
+                    lista_canciones.append(self.devolver_cancion_por_id(id_cancion))
+                else:
+                    print("Id introducido no válido")
+            elif continuar == "no":
+                seguir_anyadiendo = False
+            else:
+                print("Introduce si o no")
+        return lista_canciones
+
     def devolver_cancion_por_id(self, id: str) -> "Cancion":
         contador: int = 0
         cancion_encontrada: bool = False
@@ -233,12 +249,12 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
     def diccionario_a_objeto(self, diccionario_catalogo: dict):
         nueva_lista_canciones: list["Cancion"] = []
-        for datos_cancion in diccionario_catalogo.items():
+        for datos_cancion in diccionario_catalogo:
             cancion = Cancion()
             cancion: Cancion = cancion.diccionario_a_objeto(datos_cancion)
             nueva_lista_canciones.append(cancion)
 
-        self.set_lista_canciones(nueva_lista_canciones)
+
 
 
 class CatalogoPersonal(Catalogo):
@@ -246,7 +262,7 @@ class CatalogoPersonal(Catalogo):
         super().__init__(lista_canciones)
 
     def anyadir_cancion_a_catalogo(self, cancion: "Cancion"):
-        self.set_lista_canciones(self.get_lista_canciones().append(cancion))
+        self.get_lista_canciones().append(cancion)
 
     def eliminar_cancion_de_catalogo(self, cancion: "Cancion"):
         encontrada = False

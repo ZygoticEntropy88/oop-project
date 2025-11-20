@@ -3,7 +3,7 @@ from usuarios import Usuario, UsuarioPremium
 from persistencia import GestorPersistencia
 from listas import Catalogo, CatalogoPersonal, Lista
 
-import os
+
 
 
 class Memoria:
@@ -14,7 +14,7 @@ class Memoria:
         self.__gp = GestorPersistencia()
 
         # ESTABLEZCO LOS USUARIOS
-        usuarios: dict[str:"Usuario"] = dict()
+        usuarios: dict[str : "Usuario"] = dict()
         for usuario_info in self.__gp.leer_json(f"{ruta}usuarios.json"):
 
             if usuario_info["Tipo usuario"] == "REGULAR":
@@ -121,7 +121,7 @@ class Memoria:
                             lista_reproduccion.objeto_a_diccionario()
                         )
                     self.__gp.guardar_json(
-                        contenido=usuario_listas_reproduccion,
+                        contenido= usuario_listas_reproduccion,
                         ruta=f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json",
                     )
 
@@ -147,20 +147,23 @@ class Memoria:
         )
 
     def comprobar_cancion_en_catalogo(self, id_cancion: str):
-        return True if id_cancion in self.get_catalogo_generico() else False
+        for cancion in self.get_catalogo_generico().get_lista_canciones():
+            if cancion.get_identificador() == id_cancion:
+                return True
+        return False
 
     def comprobar_cancion_en_catalogo_premium(
         self, id_cancion: str, nombre_usuario: str
     ):
         if self.get_usuarios()[nombre_usuario].comprobar_acceso_premium() != "PREMIUM":
             return False
-        return (
-            True
-            if id_cancion in self.get_usuarios()[nombre_usuario].get_catalogo_personal()
-            else False
-        )
+        for cancion in self.get_usuarios()[nombre_usuario].get_catalogo_personal().get_lista_canciones():
+            if cancion.get_identificador() == id_cancion:
+                return True
+        return False
 
-    def comprobar_credenciales_validas(self, nombre: str, contrasenya : str) -> bool:
+
+    def comprobar_credenciales_validas(self, nombre: str, contrasenya: str) -> bool:
         """Comprueba que el usuario esté registrado y que la contraseña coincida con la guardada en la base de datos"""
         if self.comprobar_usuario_registrado(nombre):
             if contrasenya == self.get_usuarios()[nombre].get_contrasenya():
