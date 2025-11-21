@@ -172,29 +172,32 @@ class Controlador:
 
                 # ========================= MENÚ CATÁLOGO PERSONAL =========================
                 elif id_menu == 4:
-                    if not self._usuario_actual.comprobar_acceso_premium():
+                    if not self.get_usuario_actual().comprobar_acceso_premium():
                         print(
                             "Lo sentimos el catálogo personal está solo disponible para usuarios premium."
                         )
                         self.__cambiar_al_menu_anterior()
                     else:
 
+                        # LISTAR CATÁLOGO PERSONAL
                         if opcion == 2:
-                            self._menu_actual.listar_catalogo_personal(
+                            self.get_menu_actual().listar_catalogo_personal(
                                 self._usuario_actual.get_catalogo_personal()
                             )
 
+                        # AÑADIR CANCIÓN AL CATÁLOGO PERSONAL
                         elif opcion == 3:
-                            nueva_cancion = self._menu_actual.anyadir_cancion()
-                            self._usuario_actual.anyadir_cancion_a_catalogo(
+                            nueva_cancion = self.get_menu_actual().anyadir_cancion()
+                            self.get_usuario_actual().anyadir_cancion_a_catalogo(
                                 nueva_cancion
                             )
 
+                        # ELIMINAR CANCIÓN DEL CATÁLOGO PERSONAL
                         elif opcion == 4:
-                            cancion_a_eliminar = self._menu_actual.eliminar_cancion()
-                            self._usuario_actual.eliminar_cancion_de_catalogo(
-                                cancion_a_eliminar
-                            )
+                            id_cancion_eliminar = self.get_menu_actual().solicitar_cancion_a_eliminar()  
+                            self.get_usuario_actual().get_catalogo_personal().eliminar_cancion(id_cancion_eliminar)
+
+                            
 
                 # ========================= MENÚ LISTAS REPRODUCCIÓN =========================
                 elif id_menu == 5:
@@ -273,5 +276,7 @@ class Controlador:
         #except TypeError as e:
          #4
         #print(f"La opción escogida debe ser un número entero. {e}")
+        except ValueError as e:
+            print("La opción introducida debe ser un número entero.")
         except Exception as e:
             print(f"Error: {e}")

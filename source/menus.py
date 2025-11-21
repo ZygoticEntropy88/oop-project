@@ -191,12 +191,9 @@ class MenuCatalogoPersonal(Menu):
         return nueva_cancion
 
     @classmethod
-    def eliminar_cancion(cls):
-        cancion_a_eliminar = Cancion()
-        cancion_a_eliminar.solicitar_usuario_por_consola(
-            "(Que desea eliminar)", eliminar=True
-        )
-        return cancion_a_eliminar
+    def solicitar_cancion_a_eliminar(cls):
+        id_cancion_desea_eliminar = input("Introduzca el ID de la canción que desea eliminar: ")
+        return id_cancion_desea_eliminar
 
 # ====================================== MENU LISTAS REPRODUCCIÓN =====================================
 class MenuListasReproduccion(Menu):

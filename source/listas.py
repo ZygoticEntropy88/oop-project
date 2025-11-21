@@ -74,7 +74,6 @@ class Lista(IPersistencia):
     def eliminar_cancion(self, id_cancion: "Cancion"):
         if self.comprobar_cancion_en_lista_por_id(id_cancion):
             posicion_cancion, cancion = self.cargar_cancion_por_id(id_cancion)
-            print(f"DEBUG POSICION {posicion_cancion}, CANCION {cancion}")
             self.get_lista_canciones().pop(posicion_cancion)
         else:
             print(f"No se puede eliminar la canción. La canción {id_cancion}  no está en la lista.")
@@ -174,6 +173,18 @@ class Lista(IPersistencia):
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
     def __init__(self, lista_canciones: list["Cancion"]):
@@ -264,6 +275,22 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
             )
         ):
             print(f"\t\t\t[{i}]: {cancion}")
+
+    def eliminar_cancion(self, id_cancion: "Cancion"):
+        if self.devolver_cancion_por_id(id_cancion):
+
+            encontrada = False
+            posicion = 0
+            while not encontrada and posicion < len(self.get_lista_canciones()):
+
+                if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
+                    self.get_lista_canciones().pop(posicion)
+                    encontrada = True
+                else:
+                    posicion += 1
+        else:
+            print(f"No se puede eliminar la canción. La canción {id_cancion}  no está en la lista.")
+
 
     def objeto_a_csv(self):
         pass
