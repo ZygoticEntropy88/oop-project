@@ -258,6 +258,7 @@ class MenuListasReproduccion(Menu):
             if usuario_actual.get_listas_reproduccion()[contador].get_nombre() == nombre_lista:
                 usuario_actual.get_listas_reproduccion().remove(usuario_actual.get_listas_reproduccion()[contador])
                 encontrada = True
+            contador += 1
         if not encontrada:
             print("No se ha encontrado la lista")
 
