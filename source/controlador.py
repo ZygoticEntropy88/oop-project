@@ -10,6 +10,7 @@ from menus import (
 from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium
 from memoria import Memoria
 from canciones import Cancion
+from listas import Lista
 
 HASH_MENUS: dict[int:"Menu"] = {
     0: MenuInicio(),
@@ -208,29 +209,41 @@ class Controlador:
 
                 # ========================= MENÚ LISTAS REPRODUCCIÓN =========================
                 elif id_menu == 5:
-                    if self.get_memoria().comprobar_usuario_registrado(self.get_usuario_actual().get_nombre_usuario()):
-                        if opcion == 2:
-                            self.get_menu_actual().mostrar_todas_las_listas(
-                                self.get_usuario_actual().get_listas_reproduccion()
-                            )
+                    nombre_usuario_actual:str = self.get_usuario_actual().get_nombre_usuario() 
 
+                    if self.get_memoria().comprobar_usuario_registrado(nombre_usuario_actual):
+
+                        # MOSTRAR TODAS LAS LISTAS
+                        if opcion == 2:
+                            self.get_menu_actual().mostrar_todas_las_listas(self.get_usuario_actual().get_listas_reproduccion())
+
+                        # MOSTRAR CANCIONES EN LISTA
                         elif opcion == 3:
                             self.get_menu_actual().mostrar_canciones_en_lista(
                                 self.get_usuario_actual().get_listas_reproduccion()
                             )
 
+                        # CREAR LISTA
                         elif opcion == 4:
 
-                            if self.get_usuario_actual().get_tipo_usuario() == "REGULAR":
-                                lista_canciones = self.get_memoria().get_catalogo_generico().devolver_canciones_en_catalogo_por_consola()
-                                nueva_lista = self.get_menu_actual().crear_lista(lista_canciones, self.get_usuario_actual())
-                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
-                            elif self.get_usuario_actual().get_tipo_usuario () == "PREMIUM":
-                                lista_canciones = self.get_memoria().get_catalogo_generico().devolver_canciones_en_catalogo_por_consola()
-                                lista_premium : list ['Cancion'] = self.get_memoria().get_usuario_actual().get_catalogo_personal().devolver_canciones_en_catalogo_por_consola()
-                                lista_definitiva = lista_canciones + lista_premium
-                                nueva_lista_premium = self.get_menu_actual().crear_lista(lista_definitiva, self.get_usuario_actual())
-                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista_premium)
+                            nombre_lista, descripcion_lista, fecha, ids_canciones = self.get_menu_actual().crear_lista()
+                            canciones_validas  = self.get_memoria().get_catalogo_generico().comprobar_lista_canciones_por_id(ids_canciones)
+
+                            # Si el usuario es premium, también añado las que estén en el catálogo personal
+                            if self.get_usuario_actual().comprobar_acceso_premium():
+                                canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
+
+                            nueva_lista:list['Cancion'] =  Lista(
+                                nombre_lista,
+                                descripcion_lista,
+                                canciones_validas,
+                                fecha_creacion=fecha,
+                                usuario_creador=self.get_usuario_actual(),
+                            )
+
+                            listas_reproduccion_actuales:list['Lista'] = self.get_usuario_actual().get_listas_reproduccion()
+                            listas_reproduccion_actuales.append(nueva_lista)
+                            self.get_usuario_actual().set_listas_reproduccion(listas_reproduccion_actuales)
 
                         elif opcion == 5:
                             self.get_menu_actual().eliminar_lista(self.get_usuario_actual())

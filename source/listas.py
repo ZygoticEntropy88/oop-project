@@ -220,6 +220,15 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
             contador += 1
         return cancion if cancion_encontrada else None
 
+    def comprobar_lista_canciones_por_id(self, lista_ids:list['str']) -> list['Cancion']:
+        """Dada una lista de ids, devuelve la lista de canciones cuyos ids están en el catálogo"""
+        lista_canciones_validas:list['Cancion'] = list()
+        for id_cancion in lista_ids:
+            cancion = self.devolver_cancion_por_id(id_cancion) # Puede ser None
+            if cancion:
+                lista_canciones_validas.append(cancion)
+        return lista_canciones_validas
+
     def listar_canciones(self, filtrar_por_genero=None, filtrar_por_artista=None):
         for i, cancion in enumerate(
             self.filtrar_catalogo(
@@ -263,6 +272,15 @@ class CatalogoPersonal(Catalogo):
 
     def anyadir_cancion_a_catalogo(self, cancion: "Cancion"):
         self.get_lista_canciones().append(cancion)
+
+    def comprobar_lista_canciones_por_id(self, lista_ids:list['str']) -> list['Cancion']:
+        """Dada una lista de ids, devuelve la lista de canciones cuyos ids están en el catálogo"""
+        lista_canciones_validas:list['Cancion'] = list()
+        for id_cancion in lista_ids:
+            cancion = self.devolver_cancion_por_id(id_cancion) # Puede ser None
+            if cancion:
+                lista_canciones_validas.append(cancion)
+        return lista_canciones_validas
 
     def eliminar_cancion_de_catalogo(self, cancion: "Cancion"):
         encontrada = False

@@ -2,6 +2,7 @@ from abc import ABC
 from usuarios import Usuario, UsuarioPremium
 from listas import Lista, Catalogo, CatalogoPersonal
 from canciones import Cancion
+from fecha import Fecha
 
 
 def print_opcion(numero: int, opcion: str) -> None:
@@ -197,7 +198,7 @@ class MenuCatalogoPersonal(Menu):
         )
         return cancion_a_eliminar
 
-
+# ====================================== MENU LISTAS REPRODUCCIÓN =====================================
 class MenuListasReproduccion(Menu):
     numero_menu = 5
     opciones = [
@@ -214,33 +215,37 @@ class MenuListasReproduccion(Menu):
     def mostrar_todas_las_listas(cls, listas_de_reproduccion: list[Lista]):
         contador: int = 1
         for lista in listas_de_reproduccion:
-            print(f"Lista {contador} : {lista.__str__()} \n")
+            print(f"Lista {contador} : {lista} \n")
             contador += 1
 
     @classmethod
-    def mostrar_canciones_en_lista(
-        cls, listas_de_reproduccion: list["Lista"]
-    ):  # Comprobar errores!!
-        nombre_lista: str = input("Introduzca el nombre de la lista")
+    def mostrar_canciones_en_lista(cls, listas_de_reproduccion: list["Lista"]):  
+        nombre_lista: str = input("Introduzca el nombre de la lista que desea mostrar: ")
         contador: int = 0
         lista_encontrada: bool = False
         while contador < len(listas_de_reproduccion) and not lista_encontrada:
             if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
                 lista_encontrada = True
                 for cancion in listas_de_reproduccion[contador].get_lista_canciones():
-                    print(f"{cancion.__str__()} \n")
+                    print(f"{cancion} \n")
+            contador += 1
 
     @classmethod
-    def crear_lista(cls, lista_canciones : list['Cancion'], usuario_creador: "Usuario"):
-        nombre_lista: str = input("Introduzca el nombre de la lista")
-        descripcion_lista: str = input("Introduzca la descripción de la lista")
-        return Lista(
-            nombre_lista,
-            descripcion_lista,
-            lista_canciones,
-            fecha_creacion=None,
-            usuario_creador=usuario_creador,
-        )
+    def crear_lista(cls):
+        nombre_lista = input("Introduzca el nombre de la lista: ")
+        descripcion_lista = input("Introduzca la descripcion de la lista: ")
+        fecha = Fecha()
+        fecha.solicitar_usuario("(Fecha actual)")
+        id_canciones:list['str'] = list()
+        seguir_anyadiendo:bool = True
+        while seguir_anyadiendo:
+            id_cancion:str = input("Introduzca el ID de la canción que desea añadir (presione enter para terminar el proceso): ")
+            if id_cancion == "":
+                seguir_anyadiendo = False
+            else: 
+                id_canciones.append(id_cancion)
+        return (nombre_lista, descripcion_lista, fecha, id_canciones)
+
 
     @classmethod
     def eliminar_lista(
