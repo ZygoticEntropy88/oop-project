@@ -55,7 +55,7 @@ class Lista(IPersistencia):
         lista_a_str: str = "LISTA | "
         lista_a_str += f"{self.get_nombre()} ; "
         lista_a_str += f"{self.get_descripcion()} ; "
-        lista_a_str += f"{self.get_usuario_creador()} ; \n"
+        #lista_a_str += f"{self.get_usuario_creador()} ; \n"
 
         if self.get_lista_canciones():
             for cancion in self.get_lista_canciones():

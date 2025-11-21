@@ -233,7 +233,7 @@ class Controlador:
                             if self.get_usuario_actual().comprobar_acceso_premium():
                                 canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
 
-                            nueva_lista:list['Cancion'] =  Lista(
+                            nueva_lista: 'Lista' =  Lista(
                                 nombre_lista,
                                 descripcion_lista,
                                 canciones_validas,
@@ -241,9 +241,8 @@ class Controlador:
                                 usuario_creador=self.get_usuario_actual(),
                             )
 
-                            listas_reproduccion_actuales:list['Lista'] = self.get_usuario_actual().get_listas_reproduccion()
-                            listas_reproduccion_actuales.append(nueva_lista)
-                            self.get_usuario_actual().set_listas_reproduccion(listas_reproduccion_actuales)
+                            self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+
 
                         elif opcion == 5:
                             self.get_menu_actual().eliminar_lista(self.get_usuario_actual())

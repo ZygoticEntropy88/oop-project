@@ -212,14 +212,14 @@ class MenuListasReproduccion(Menu):
     nombre_menu = "MENÚ LISTAS REPRODUCCIÓN"
 
     @classmethod
-    def mostrar_todas_las_listas(cls, listas_de_reproduccion: list[Lista]):
+    def mostrar_todas_las_listas(cls, listas_de_reproduccion: list['Lista']):
         contador: int = 1
         for lista in listas_de_reproduccion:
             print(f"Lista {contador} : {lista} \n")
             contador += 1
 
     @classmethod
-    def mostrar_canciones_en_lista(cls, listas_de_reproduccion: list["Lista"]):  
+    def mostrar_canciones_en_lista(cls, listas_de_reproduccion: list['Lista']):
         nombre_lista: str = input("Introduzca el nombre de la lista que desea mostrar: ")
         contador: int = 0
         lista_encontrada: bool = False

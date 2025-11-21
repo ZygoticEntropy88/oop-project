@@ -22,7 +22,7 @@ class Usuario(IPersistencia):
         self._contrasenya: str = contrasenya
         self._fecha_de_registro: Fecha = fecha_registro
         self._tipo_usuario = "REGULAR"
-        self._listas_reproduccion: list[Lista] = []
+        self._listas_reproduccion: list['Lista'] = []
 
     def __str__(self):
         return self.objeto_a_texto()
