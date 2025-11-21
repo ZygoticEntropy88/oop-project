@@ -16,8 +16,8 @@ class Menu(ABC):
     nombre_menu: str = ""
 
     @classmethod
-    def imprimir(cls):
-        print(cls.get_nombre_menu())
+    def imprimir(cls, nombre_usuario:str):
+        print(f"{cls.get_nombre_menu()} | Usuario: {nombre_usuario}")
         print_opcion(0, "Salir de la aplicación")
         print_opcion(1, "Volver al menú anterior")
         for opcion_id in range(len(cls.opciones)):

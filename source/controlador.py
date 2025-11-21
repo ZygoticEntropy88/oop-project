@@ -67,7 +67,7 @@ class Controlador:
         return False
 
     def imprimir_opciones(self):
-        self._menu_actual.imprimir()
+        self._menu_actual.imprimir(self.get_usuario_actual().get_nombre_usuario())
 
     def __cerrar_sesion_usuario(self):
         self._memoria.guardar_en_disco()
@@ -122,13 +122,14 @@ class Controlador:
                         if nuevo_usuario_cargado:
                             self._usuario_actual = nuevo_usuario_cargado
                             self.__cambiar_al_menu_con_id(1)
+                            self._memoria.guardar_en_disco()
+
                         else:
                             print("No se ha podido cargar el usuario.")
                     elif opcion == 4:
                         # CONTINUAR COMO INVITADO
                         self.__cerrar_sesion_usuario()
                         self.__cambiar_al_menu_con_id(1)
-                    self._memoria.guardar_en_disco()
 
                 # ============================ MENU PRINCIPAL ============================
                 elif id_menu == 1:
@@ -238,7 +239,7 @@ class Controlador:
                                 descripcion_lista,
                                 canciones_validas,
                                 fecha_creacion=fecha,
-                                usuario_creador=self.get_usuario_actual(),
+                                usuario_creador=self.get_usuario_actual().get_nombre_usuario(),
                             )
 
                             self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)

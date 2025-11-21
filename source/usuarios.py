@@ -277,6 +277,9 @@ class UsuarioAnonimo:
     def __init__(self):
         self._tipo_usuario = "ANONIMO"
 
+    def get_nombre_usuario(self):
+        return "Usuario anónimo"
+
     def get_tipo_usuario(self):
         return self._tipo_usuario
 
