@@ -226,9 +226,15 @@ class MenuListasReproduccion(Menu):
         while contador < len(listas_de_reproduccion) and not lista_encontrada:
             if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
                 lista_encontrada = True
-                for cancion in listas_de_reproduccion[contador].get_lista_canciones():
-                    print(f"{cancion} \n")
+                canciones:list['Cancion'] = listas_de_reproduccion[contador].get_lista_canciones()
+                if canciones and canciones != []:
+                    for cancion in canciones:
+                        print(f"{cancion} \n")
+                else:
+                    print("Lista vacía")
             contador += 1
+        if not lista_encontrada:
+            print("Lista no encontrada")
 
     @classmethod
     def crear_lista(cls):

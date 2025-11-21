@@ -257,4 +257,3 @@ class Controlador:
         #print(f"La opción escogida debe ser un número entero. {e}")
         except Exception as e:
             print(f"Error: {e}")
-        return opcion
