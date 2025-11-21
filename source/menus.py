@@ -99,9 +99,9 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def reproducir_por_id(cls):
-        id_cancion: str = input("Introduzca el id de la canción")
-        if not id_cancion:
-            raise EntradaInvalidaError("El id introducido no es válido")
+        id_cancion: str = input("Introduzca el id de la canción que desea reproducir: ")
+        if not id_cancion or id_cancion == "":
+            raise EntradaInvalidaError("El id introducido no es válido.")
         else:
             MenuReproduccion.reproductor.reproducir_desde_youtube(id_cancion)
         return id_cancion

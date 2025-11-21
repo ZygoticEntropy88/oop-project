@@ -142,34 +142,22 @@ class Controlador:
                 elif id_menu == 2:
                     # REPRODUCIR POR ID
                     if opcion == 2:
-                        id_cancion: str = self._menu_actual.reproducir_por_id()
-                        if self.get_memoria().comprobar_cancion_en_catalogo(id_cancion):
-                            cancion_actual = (
-                                self.get_memoria()
-                                .get_catalogo_generico()
-                                .devolver_cancion_por_id(id_cancion)
-                            )
-                            print(
-                                f"Reproduciendo actualmente : {cancion_actual.__str__()}"
-                            )
+                        id_cancion: str = self.get_menu_actual().reproducir_por_id()
 
-                        elif self.get_usuario_actual().tipo_usuario() == "PREMIUM" and self.get_memoria().comprobar_cancion_en_catalogo_premium(
-                                id_cancion, self.get_usuario_actual().get_nombre()
-                        ):
-                            cancion_actual = (
-                                self.get_memoria()
-                                .get_catalogo_generico()
-                                .devolver_cancion_por_id(id_cancion)
-                            )
-                            print(
-                                f"Reproduciendo actualmente : {cancion_actual.__str__()}"
-                            )
+                        cancion = self.get_memoria().get_catalogo_generico().devolver_cancion_por_id(id_cancion)
+                        if self.get_usuario_actual().comprobar_acceso_premium() and not cancion:
+                            cancion = self.get_usuario_actual().get_catalogo_personal().devolver_cancion_por_id(id_cancion)
 
+                        # Podría ser None en ambos casos, en cuyo caso la canción sería desconocida
+                        if cancion:
+                            print(f"Reproduciendo: {cancion}")
                         else:
-                            print("Cancion desconocida")
+                            print(f"La cancion {id_cancion} es desconocida.")
 
+                    # PAUSAR REPRODUCCIÓN
                     elif opcion == 3:
                         self.get_menu_actual().pausar_cancion()
+
                     # RENAUDAR REPRODUCCIÓN
                     elif opcion == 4:
                         self._menu_actual.reanudar_cancion()
