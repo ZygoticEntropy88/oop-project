@@ -74,6 +74,27 @@ class Lista(IPersistencia):
     def eliminar_cancion(self, cancion: "Cancion"):
         self.get_lista_canciones().remove(cancion)
 
+    def comprobar_cancion_en_lista_por_id(self, id_cancion):
+        encontrada = False
+        posicion = 0
+        while not encontrada and posicion < len(self.get_lista_canciones()):
+            if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
+                encontrada = True
+            posicion += 1
+        return posicion
+
+    def cargar_cancion_por_id(self, id_cancion):
+        if self.comprobar_cancion_en_lista_por_id(id_cancion):
+            encontrada = False
+            posicion = 0
+            while not encontrada and posicion < len(self.get_lista_canciones()):
+                if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
+                    encontrada = True
+                posicion += 1
+            return self.get_lista_canciones()[posicion] 
+        else:
+            return None 
+
     def objeto_a_csv(self):
         pass
 

@@ -244,9 +244,25 @@ class Controlador:
 
                             self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
 
-
+                        # ELIMINAR LISTA
                         elif opcion == 5:
                             self.get_menu_actual().eliminar_lista(self.get_usuario_actual())
+
+                        # AÑADIR CANCIÓN A LISTA
+                        elif opcion == 6:
+                            id_cancion, nombre_lista = self.get_menu_actual().anyadir_cancion_a_lista()
+                            posicion_lista_buscada, lista_buscada = self.get_usuario_actual().devolver_lista_por_nombre(nombre_lista)
+                            if lista_buscada:
+                                cancion = self.get_memoria().get_catalogo_generico().devolver_cancion_por_id(id_cancion)
+                                if self.get_usuario_actual().comprobar_acceso_premium() and not cancion:
+                                    cancion = self.get_usuario_actual().get_catalogo_personal().devolver_cancion_por_id(id_cancion)
+                                if cancion:
+                                    self.get_usuario_actual().get_listas_reproduccion()[posicion_lista_buscada].anyadir_cancion(cancion)
+                                else:
+                                    print("No se puede añadir la cancion {id_cancion} a la lista. Esta canción no está disponible en ningún catálogo.")
+                            else:
+                                print(f"No se pudo añadir la canción {id_cancion} a la lista {nombre_lista}.")
+
                     else:
                         print("Usuario no registrado")
                         self.__cambiar_al_menu_anterior()

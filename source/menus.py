@@ -257,7 +257,7 @@ class MenuListasReproduccion(Menu):
     def eliminar_lista(
         cls, usuario_actual : 'Usuario'
     ):
-        nombre_lista : str = input("Introduzca el nombre de la lista que desea eliminar -> ")
+        nombre_lista : str = input("Introduzca el nombre de la lista que desea eliminar: ")
         contador : int = 0
         encontrada : bool = False
         while contador < len(usuario_actual.get_listas_reproduccion()) and not encontrada:
@@ -270,9 +270,11 @@ class MenuListasReproduccion(Menu):
 
     @classmethod
     def anyadir_cancion_a_lista(
-        cls, lista_de_reproduccion: "Lista", cancion_a_anyadir: "Cancion"
+        cls
     ):
-        lista_de_reproduccion.anyadir_cancion(cancion_a_anyadir)
+        id_cancion:str = input("Introduzca el ID de la canción que desea añadir: ")
+        nombre_lista:str = input("Introduzca el nombre de la lista a la que quiere añadir la cancion: ")
+        return id_cancion, nombre_lista
 
     @classmethod
     def eliminar_cancion_de_lista(

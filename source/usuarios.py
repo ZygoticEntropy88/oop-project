@@ -96,6 +96,16 @@ class Usuario(IPersistencia):
         )
         return nueva_lista
 
+    def devolver_lista_por_nombre(self, nombre_lista:str) -> tuple[int, list["Cancion"]]:
+        encontrada = False
+        posicion = 0
+        lista_encontrada = None
+        while not encontrada and posicion < len(self.get_listas_reproduccion()):
+            if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
+                encontrada = True
+                lista_encontrada = self.get_listas_reproduccion()[posicion]
+        return posicion, lista_encontrada
+
     @staticmethod
     def comprobar_acceso_premium():
         return False
@@ -261,6 +271,18 @@ class UsuarioPremium(Usuario):
             return nueva_lista
         else:
             return -1
+
+    def devolver_lista_por_nombre(self, nombre_lista):
+        encontrada = False
+        lista_encontrada = None
+        posicion = 0
+        while not encontrada and posicion < len(self.get_listas_reproduccion()):
+            if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
+                encontrada = True
+                lista_encontrada = self.get_listas_reproduccion()[posicion]
+        if not encontrada:
+            print(f"La lista {nombre_lista} no se pudo encontrar.")
+        return posicion, lista_encontrada
 
     def diccionario_a_objeto(self, diccionario_usuario_premium: dict):
         super().diccionario_a_objeto(diccionario_usuario_premium)
