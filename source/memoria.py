@@ -109,7 +109,7 @@ class Memoria:
                             contenido=cancion_info,
                             ruta=f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv",
                         )
-
+                # GUARDO LAS LISTAS DE CADA USUARIO
                 if (
                     usuario.get_listas_reproduccion()
                     and usuario.get_listas_reproduccion() != []

@@ -71,8 +71,13 @@ class Lista(IPersistencia):
     def anyadir_cancion(self, cancion: "Cancion"):
         self.get_lista_canciones().append(cancion)
 
-    def eliminar_cancion(self, cancion: "Cancion"):
-        self.get_lista_canciones().remove(cancion)
+    def eliminar_cancion(self, id_cancion: "Cancion"):
+        if self.comprobar_cancion_en_lista_por_id(id_cancion):
+            posicion_cancion, cancion = self.cargar_cancion_por_id(id_cancion)
+            print(f"DEBUG POSICION {posicion_cancion}, CANCION {cancion}")
+            self.get_lista_canciones().pop(posicion_cancion)
+        else:
+            print(f"No se puede eliminar la canción. La canción {id_cancion}  no está en la lista.")
 
     def comprobar_cancion_en_lista_por_id(self, id_cancion):
         encontrada = False
@@ -80,8 +85,9 @@ class Lista(IPersistencia):
         while not encontrada and posicion < len(self.get_lista_canciones()):
             if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
                 encontrada = True
-            posicion += 1
-        return posicion
+            else:
+                posicion += 1
+        return encontrada
 
     def cargar_cancion_por_id(self, id_cancion):
         if self.comprobar_cancion_en_lista_por_id(id_cancion):
@@ -90,10 +96,11 @@ class Lista(IPersistencia):
             while not encontrada and posicion < len(self.get_lista_canciones()):
                 if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
                     encontrada = True
-                posicion += 1
-            return self.get_lista_canciones()[posicion] 
+                else:
+                    posicion += 1
+            return posicion, self.get_lista_canciones()[posicion] 
         else:
-            return None 
+            return posicion, None 
 
     def objeto_a_csv(self):
         pass

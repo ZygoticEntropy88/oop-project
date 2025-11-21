@@ -277,7 +277,15 @@ class MenuListasReproduccion(Menu):
         return id_cancion, nombre_lista
 
     @classmethod
-    def eliminar_cancion_de_lista(
-        cls, lista_de_reproduccion: "Lista", cancion_a_eliminar: "Cancion"
+    def solicitar_lista_a_eliminar(
+        cls
     ):
-        lista_de_reproduccion.eliminar_cancion(cancion_a_eliminar)
+        nombre_lista:str = input("Introduce el nombre de la lista donde quieres borrar una cancion: ")
+        return nombre_lista
+
+    @classmethod
+    def solicitar_cancion_a_eliminar(
+        cls
+    ):
+        nombre_cancion:str = input("Introduce el ID de la canción que quieres borrar: ")
+        return nombre_cancion

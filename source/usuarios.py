@@ -104,7 +104,8 @@ class Usuario(IPersistencia):
             if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
                 encontrada = True
                 lista_encontrada = self.get_listas_reproduccion()[posicion]
-        return posicion, lista_encontrada
+            posicion += 1
+        return posicion -1, lista_encontrada
 
     @staticmethod
     def comprobar_acceso_premium():

@@ -263,6 +263,20 @@ class Controlador:
                             else:
                                 print(f"No se pudo añadir la canción {id_cancion} a la lista {nombre_lista}.")
 
+                        # ELIMINAR CANCION DE LISTA
+                        elif opcion == 7:
+                            nombre_lista = self.get_menu_actual().solicitar_lista_a_eliminar()
+                            posicion_lista_buscada, lista_buscada = self.get_usuario_actual().devolver_lista_por_nombre(nombre_lista)
+                            if lista_buscada:
+
+                                lista_buscada.mostrar_canciones()
+                                id_cancion_eliminar = self.get_menu_actual().solicitar_cancion_a_eliminar()
+                                self.get_usuario_actual().get_listas_reproduccion()[posicion_lista_buscada].eliminar_cancion(id_cancion_eliminar)
+
+                            else:
+                                print(f"No se encontró la lista {nombre_lista}.")
+
+
                     else:
                         print("Usuario no registrado")
                         self.__cambiar_al_menu_anterior()
