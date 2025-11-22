@@ -1,5 +1,6 @@
 from memoria import Memoria
 from controlador import Controlador
+from persistencia import ErrorGravePersistencia
 
 if __name__ == "__main__":
     print(
