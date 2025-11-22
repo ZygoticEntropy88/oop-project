@@ -63,23 +63,27 @@ class Fecha:
         return self._anyo
 
     def set_dia(self, dia: int):
-        if 1 <= dia <= 31:
+        if 1 <= dia  and dia <= 31:
             self._dia = dia
         else:
             raise FechaNoValida("El día debe estar entre 1 y 31")
 
     def set_mes(self, mes: int):
-        if 1 <= mes <= 12:
+        if 1 <= mes and mes <= 12:
             self._mes = Meses(mes)
         else:
             raise FechaNoValida("El número del mes debe estar entre 1 y 12")
 
     def set_anyo(self, anyo: int):
         if not self._es_de_caducidad:
-            if 1900 <= anyo <= 2026:
+            if 1900 <= anyo and anyo <= 2026:
                 self._anyo = anyo
             else:
                 raise FechaNoValida("El año debe estar entre 1900 y 2026")
+        else:
+            # ES DE CADUCIDAD
+            self._anyo = anyo
+
 
     def solicitar_usuario(self, motivo_consulta: str = None):
         fecha_introducida = input(
@@ -88,24 +92,16 @@ class Fecha:
 
         try:
             # Tratamiento de los datos (casting)
-            dia_introducido: int = (
-                int(fecha_introducida[:1])
-                if fecha_introducida[0] != "0"
-                else int(fecha_introducida[1])
-            )
-            mes_introducido: int = (
-                int(fecha_introducida[3:4])
-                if fecha_introducida[3] != "0"
-                else int(fecha_introducida[4])
-            )
-            anyo_introducido: int = int(fecha_introducida[6:])
+            dia_introducido: int = int(fecha_introducida[0:2])
+            mes_introducido: int = int(fecha_introducida[3:5])
+            anyo_introducido: int = int(fecha_introducida[6:10])
+
+            self.set_dia(dia_introducido)
+            self.set_mes(mes_introducido)
+            self.set_anyo(anyo_introducido)
 
         except Exception as e:
             raise FormatoFechaNoValido
-
-        self.set_dia(dia_introducido)
-        self.set_mes(mes_introducido)
-        self.set_anyo(anyo_introducido)
 
     def objeto_a_diccionario(self) -> dict:
         diccionario_informacion_fecha = {
