@@ -3,6 +3,9 @@ import csv
 from abc import ABC, abstractmethod
 import os
 
+class ErrorGravePersistencia(Exception):
+    def __init__(self, mensaje = "No se ha podido cargar la base de datos."):
+        super().__init__(mensaje)
 
 class GestorPersistencia:
 
@@ -15,7 +18,7 @@ class GestorPersistencia:
 
         except Exception as e:
             print(f"No se ha podido guardar en el JSON: {ruta}, error {e}")
-            return False
+            raise ErrorGravePersistencia
         return True
 
     @staticmethod
@@ -29,7 +32,7 @@ class GestorPersistencia:
                 writer.writerow(cabecera)
         except Exception as e:
             print("No se ha podido resetear el csv, error {e}")
-            return False
+            raise ErrorGravePersistencia
         return True
 
     @staticmethod
@@ -44,7 +47,7 @@ class GestorPersistencia:
                 escritor.writerow(contenido)
         except Exception as e:
             print(f"No se ha podido escribir en el CSV: {ruta}, error {e}")
-            return False
+            raise ErrorGravePersistencia
         return True
 
     @staticmethod
@@ -55,7 +58,7 @@ class GestorPersistencia:
                 escritor.writerow(contenido.keys())  # todas en una sola fila
         except Exception as e:
             print(f"No se ha podido escribir en el CSV las cabeceras: {ruta}, error {e}")
-            return False
+            raise ErrorGravePersistencia
         return True
 
 
