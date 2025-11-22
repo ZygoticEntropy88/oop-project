@@ -140,6 +140,19 @@ class Controlador:
                     # DESPLAZARSE AL MENÚ CORRESPONDIENTE
                     if 2 <= opcion <= 5:
                         self.__cambiar_al_menu_con_id(opcion)
+                    elif opcion == 6:
+
+                        nombre_usuario_actual:str = self.get_usuario_actual().get_nombre_usuario()
+                        if self.get_memoria().comprobar_usuario_registrado(nombre_usuario_actual):
+                            if not self.get_usuario_actual().comprobar_acceso_premium():
+                                usuario_premium = UsuarioPremium()
+                                usuario_premium.crear_nuevo_usuario_premium_por_consola(self.get_usuario_actual())
+                                self.get_memoria().get_usuarios()[nombre_usuario_actual] = usuario_premium
+                                self.get_memoria().crear_catalogo_personal_csv(self.get_usuario_actual().get_nombre_usuario())
+                            else:
+                                print("La cuenta ya es premium.")
+                        else:
+                            print("Usuario no registrado. No puede mejorar su cuenta")
 
                 # ============================ MENU REPRODUCTOR ============================
                 elif id_menu == 2:

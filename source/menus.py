@@ -76,6 +76,7 @@ class MenuPrincipal(Menu):
         "·Menu catálogo genérico",
         "+Menu catálogo personal",
         "-Menu listas reproducción",
+        "-Mejorar tu cuenta"
     ]
     nombre_menu = "MENÚ PRINCIPAL"
 
