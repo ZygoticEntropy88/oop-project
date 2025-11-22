@@ -3,7 +3,7 @@ from usuarios import Usuario, UsuarioPremium
 from listas import Lista, Catalogo, CatalogoPersonal
 from canciones import Cancion
 from fecha import Fecha
-
+from reproductor import *
 
 def print_opcion(numero: int, opcion: str) -> None:
     print(f"[{numero}]: {opcion}")
@@ -243,11 +243,15 @@ class MenuListasReproduccion(Menu):
         id_canciones:list['str'] = list()
         seguir_anyadiendo:bool = True
         while seguir_anyadiendo:
-            id_cancion:str = input("Introduzca el ID de la canción que desea añadir (presione enter para terminar el proceso): ")
-            if id_cancion == "":
-                seguir_anyadiendo = False
-            else: 
-                id_canciones.append(id_cancion)
+            try:
+                id_cancion:str = input("Introduzca el ID de la canción que desea añadir (presione enter para terminar el proceso): ")
+                if id_cancion == "":
+                    seguir_anyadiendo = False
+                else:
+                    id_canciones.append(id_cancion)
+            except EntradaInvalidaError:
+                print("ID introducido no válido")
+                
         return (nombre_lista, descripcion_lista, fecha, id_canciones)
 
 

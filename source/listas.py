@@ -99,8 +99,7 @@ class Lista(IPersistencia):
                     posicion += 1
             return posicion, self.get_lista_canciones()[posicion] 
         else:
-            return posicion, None 
-
+            return posicion, None
     def objeto_a_csv(self):
         pass
 

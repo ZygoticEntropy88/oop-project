@@ -109,10 +109,14 @@ class Controlador:
                     if opcion == 2:
                         # REGISTRAR UN NUEVO USUARIO
                         nuevo_usuario: "Usuario" = self.get_menu_actual().registrar()
-                        self._memoria.anyadir_usuario(nuevo_usuario)
-                        self.get_memoria().crear_lista_de_reproduccion_json(nuevo_usuario.get_nombre_usuario())
-                        if nuevo_usuario.comprobar_acceso_premium():
-                            self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario.get_nombre_usuario())
+                        if not self.get_memoria().comprobar_usuario_registrado(nuevo_usuario.get_nombre_usuario()):
+                            self._memoria.anyadir_usuario(nuevo_usuario)
+                            self.get_memoria().crear_lista_de_reproduccion_json(nuevo_usuario.get_nombre_usuario())
+                            if nuevo_usuario.comprobar_acceso_premium():
+                                self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario.get_nombre_usuario())
+                        else:
+                            print("Nombre de usuario ya existente, elija otro")
+
                     elif opcion == 3:
                         # LOGIN DE UN USUARIO PREVIAMENTE REGISTRADO
                         nuevo_usuario: "Usuario" = self._menu_actual.login()
@@ -235,21 +239,23 @@ class Controlador:
                         elif opcion == 4:
 
                             nombre_lista, descripcion_lista, fecha, ids_canciones = self.get_menu_actual().crear_lista()
-                            canciones_validas  = self.get_memoria().get_catalogo_generico().comprobar_lista_canciones_por_id(ids_canciones)
+                            if not self.get_usuario_actual().comprobar_lista_en_listas_de_reproduccion(nombre_lista):
+                                canciones_validas  = self.get_memoria().get_catalogo_generico().comprobar_lista_canciones_por_id(ids_canciones)
+                                # Si el usuario es premium, también añado las que estén en el catálogo personal
+                                if self.get_usuario_actual().comprobar_acceso_premium():
+                                    canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
 
-                            # Si el usuario es premium, también añado las que estén en el catálogo personal
-                            if self.get_usuario_actual().comprobar_acceso_premium():
-                                canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
+                                nueva_lista: 'Lista' =  Lista(
+                                    nombre_lista,
+                                    descripcion_lista,
+                                    canciones_validas,
+                                    fecha_creacion=fecha,
+                                    usuario_creador=self.get_usuario_actual().get_nombre_usuario(),
+                                )
 
-                            nueva_lista: 'Lista' =  Lista(
-                                nombre_lista,
-                                descripcion_lista,
-                                canciones_validas,
-                                fecha_creacion=fecha,
-                                usuario_creador=self.get_usuario_actual().get_nombre_usuario(),
-                            )
-
-                            self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+                            else:
+                                print("Lista ya existente, elija otro nombre")
 
                         # ELIMINAR LISTA
                         elif opcion == 5:

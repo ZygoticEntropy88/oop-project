@@ -111,6 +111,14 @@ class Usuario(IPersistencia):
     def comprobar_acceso_premium():
         return False
 
+    def comprobar_lista_en_listas_de_reproduccion(self, nombre_lista : str):
+        contador : int = 0
+        encontrada : bool = False
+        while contador < len(self.get_listas_reproduccion()) and not encontrada:
+            if nombre_lista == self.get_listas_reproduccion()[contador].get_nombre():
+                encontrada = True
+            contador +=1
+        return encontrada
     # ===================================================================================
     #                  IMPLEMENTACIONES DE LA INTERFAZ DE PERSISTENCIA
     # ===================================================================================
