@@ -110,10 +110,9 @@ class Controlador:
                         # REGISTRAR UN NUEVO USUARIO
                         nuevo_usuario: "Usuario" = self.get_menu_actual().registrar()
                         self._memoria.anyadir_usuario(nuevo_usuario)
-                        self.get_memoria().crear_listas_reproduccion_json(nuevo_usuario)
-                        self.get_memoria().gp
-                        if nuevo_usuario.get_tipo_usuario() == "PREMIUM":
-                            self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario)
+                        self.get_memoria().crear_lista_de_reproduccion_json(nuevo_usuario.get_nombre_usuario())
+                        if nuevo_usuario.comprobar_acceso_premium():
+                            self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario.get_nombre_usuario())
                     elif opcion == 3:
                         # LOGIN DE UN USUARIO PREVIAMENTE REGISTRADO
                         nuevo_usuario: "Usuario" = self._menu_actual.login()

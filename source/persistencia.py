@@ -48,6 +48,18 @@ class GestorPersistencia:
         return True
 
     @staticmethod
+    def escribir_keys_csv(contenido: dict, ruta: str) -> bool:
+        try:
+            with open(ruta, "w", newline="") as f:
+                escritor = csv.writer(f)
+                escritor.writerow(contenido.keys())  # todas en una sola fila
+        except Exception as e:
+            print(f"No se ha podido escribir en el CSV las cabeceras: {ruta}, error {e}")
+            return False
+        return True
+
+
+    @staticmethod
     def guardar_txt(contenido: str, ruta: str) -> bool:
         """Dada la ruta de un archivo .txt, guarda el contenido que recibe por parámetros en esa ruta."""
         try:

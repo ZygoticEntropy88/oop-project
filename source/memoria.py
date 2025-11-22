@@ -177,19 +177,8 @@ class Memoria:
         if self.comprobar_credenciales_validas(nombre, contrasenya):
             return self.get_usuarios()[nombre]
 
-    def crear_lista_de_reproduccion_json(self, usuario : 'Usuario'):
-        assert usuario.get_tipo_usuario()!= "ANONIMO", "El usuario debe de estar registrado"
-        with open (f"{usuario.get_nombre_usuario()}.json", "w") as fichero:
-            json.dump(usuario.get_listas_reproduccion().objeto_a_diccionario(), fichero)
+    def crear_lista_de_reproduccion_json(self, nombre_usuario:str):
+        self.__gp.guardar_json([], f"{self.ruta}listas_reproduccion/{nombre_usuario}.json")
 
-    def crear_catalogo_personal_csv(self, usuario : 'Usuario'):
-        assert usuario.get_tipo_usuario() == "PREMIUM", "Sólo los usuarios premium tienen acceso a un catálogo personal"
-        with open(f"{usuario.get_nombre_usuario()}.csv", "w") as fichero:
-            writer = csv.writer(fichero)
-            writer.writerow(["Nombre", "Artista", "Genero", "Anyo", "Identificador"])
-        self.__gp.guardar_csv()
-
-
-
-
-
+    def crear_catalogo_personal_csv(self, nombre_usuario : str):
+        self.__gp.escribir_keys_csv({"Nombre":None, "Artista":None, "Genero":None, "Anyo":None, "Identificador":None}, f"{self.ruta}catalogos_personales/{nombre_usuario}.csv")
