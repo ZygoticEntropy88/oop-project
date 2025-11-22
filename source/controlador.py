@@ -7,6 +7,7 @@ from menus import (
     MenuCatalogoPersonal,
     MenuListasReproduccion,
 )
+
 from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium
 from memoria import Memoria
 from canciones import Cancion
@@ -56,7 +57,7 @@ class Controlador:
         return False
 
     def set_usuario_actual(self, nuevo_usuario: "Usuario" = None) -> bool:
-        if nuevo_usuario and self._memoria.comprobar_credenciales_validas(
+        if nuevo_usuario and self.get_memoria().comprobar_credenciales_validas(
             nuevo_usuario
         ):
             print(f"Login correcto: {nuevo_usuario}")
@@ -70,7 +71,7 @@ class Controlador:
         self._menu_actual.imprimir(self.get_usuario_actual().get_nombre_usuario())
 
     def __cerrar_sesion_usuario(self):
-        self._memoria.guardar_en_disco()
+        self.get_memoria().guardar_en_disco()
         self.set_usuario_actual()  # Cómo no le paso ninguno, va a establecer el usuario como UsuarioAnonimo
 
     def __apagar_controlador(self):
@@ -110,7 +111,7 @@ class Controlador:
                         # REGISTRAR UN NUEVO USUARIO
                         nuevo_usuario: "Usuario" = self.get_menu_actual().registrar()
                         if not self.get_memoria().comprobar_usuario_registrado(nuevo_usuario.get_nombre_usuario()):
-                            self._memoria.anyadir_usuario(nuevo_usuario)
+                            self.get_memoria().anyadir_usuario(nuevo_usuario)
                             self.get_memoria().crear_lista_de_reproduccion_json(nuevo_usuario.get_nombre_usuario())
                             if nuevo_usuario.comprobar_acceso_premium():
                                 self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario.get_nombre_usuario())
@@ -121,7 +122,7 @@ class Controlador:
                         # LOGIN DE UN USUARIO PREVIAMENTE REGISTRADO
                         nuevo_usuario: "Usuario" = self._menu_actual.login()
                         nuevo_usuario_cargado: "Usuario" = (
-                            self._memoria.cargar_usuario_por_nombre_y_contrasenya(
+                            self.get_memoria().cargar_usuario_por_nombre_y_contrasenya(
                                 nombre=nuevo_usuario.get_nombre_usuario(),
                                 contrasenya=nuevo_usuario.get_contrasenya(),
                             )
@@ -129,7 +130,7 @@ class Controlador:
                         if nuevo_usuario_cargado:
                             self._usuario_actual = nuevo_usuario_cargado
                             self.__cambiar_al_menu_con_id(1)
-                            self._memoria.guardar_en_disco()
+                            self.get_memoria().guardar_en_disco()
 
                         else:
                             print("No se ha podido cargar el usuario.")
@@ -187,7 +188,7 @@ class Controlador:
 
                     if opcion == 2:
                         self._menu_actual.listar_canciones(
-                            self._memoria.get_catalogo_generico()
+                            self.get_memoria().get_catalogo_generico()
                         )
 
                 # ========================= MENÚ CATÁLOGO PERSONAL =========================

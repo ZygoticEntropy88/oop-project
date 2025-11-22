@@ -1,5 +1,6 @@
 from persistencia import IPersistencia
-from fecha import Fecha, Meses
+from fecha import Fecha, Meses 
+from tarjeta import TarjetaCredito
 
 from listas import Lista, CatalogoPersonal
 from canciones import Cancion

@@ -45,14 +45,10 @@ class MenuInicio(Menu):
     def registrar(cls) -> "Usuario":
         nuevo_usuario = Usuario()
         nuevo_usuario.crear_nuevo_usuario_por_consola()
-        opcion_registrar_usuario_premium = (
-            input("Quieres hacer tu cuenta premium? (s/n): ").lower().strip()
-        )
+        opcion_registrar_usuario_premium = input("Quieres hacer tu cuenta premium? (s/n): ").lower().strip()
         if opcion_registrar_usuario_premium == "s":
             nuevo_usuario_premium = UsuarioPremium()
-            nuevo_usuario_premium.crear_nuevo_usuario_premium_por_consola(
-                usuario_base=nuevo_usuario
-            )
+            nuevo_usuario_premium.crear_nuevo_usuario_premium_por_consola(usuario_base=nuevo_usuario)
             return nuevo_usuario_premium
         else:
             return nuevo_usuario
@@ -94,9 +90,7 @@ class MenuReproduccion(Menu):
     ]
     nombre_menu = "MENÚ REPRODUCCIÓN"
 
-    reproductor: Reproductor = (
-        Reproductor()
-    )  # Cuando llamo al menú, instancio un objeto de la clase reproductor
+    reproductor: Reproductor = Reproductor()
 
     @classmethod
     def reproducir_por_id(cls):
@@ -112,10 +106,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def pausar_cancion(cls):
-        if (
-            MenuReproduccion.reproductor.obtener_estado_reproductor()
-            != EstadoReproductor.REPRODUCIENDO
-        ):
+        if (MenuReproduccion.reproductor.obtener_estado_reproductor()!= EstadoReproductor.REPRODUCIENDO):
             raise PlayError("La canción no está sonando")
         # Compruebo que la canción está reproduciéndose
         else:
@@ -123,10 +114,7 @@ class MenuReproduccion(Menu):
 
     @classmethod
     def reanudar_cancion(cls):
-        if (
-            MenuReproduccion.reproductor.obtener_estado_reproductor()
-            != EstadoReproductor.PAUSADO
-        ):
+        if (MenuReproduccion.reproductor.obtener_estado_reproductor()!= EstadoReproductor.PAUSADO):
             raise PlayError("Error al reanudar")
         else:
             MenuReproduccion.reproductor.reanudar()
@@ -142,18 +130,10 @@ class MenuCatalogoGenerico(Menu):
 
     @classmethod
     def listar_canciones(cls, catalogo_generico: "Catalogo"):
-        filtrar_por_genero: str = input(
-            "Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): "
-        )
-        filtrar_por_artista: str = input(
-            "Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): "
-        )
-        filtrar_por_genero = (
-            filtrar_por_genero.lower() if filtrar_por_genero != "" else None
-        )
-        filtrar_por_artista = (
-            filtrar_por_artista.lower() if filtrar_por_artista != "" else None
-        )
+        filtrar_por_genero: str = input("Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): ")
+        filtrar_por_artista: str = input("Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): ")
+        filtrar_por_genero = filtrar_por_genero.lower() if filtrar_por_genero != "" else None
+        filtrar_por_artista = filtrar_por_artista.lower() if filtrar_por_artista != "" else None
         catalogo_generico.listar_canciones(
             filtrar_por_genero=filtrar_por_genero,
             filtrar_por_artista=filtrar_por_artista,
@@ -168,22 +148,11 @@ class MenuCatalogoPersonal(Menu):
 
     @classmethod
     def listar_catalogo_personal(cls, catalogo_personal: "CatalogoPersonal"):
-        filtrar_por_genero: str = input(
-            "Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): "
-        )
-        filtrar_por_artista: str = input(
-            "Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): "
-        )
-        filtrar_por_genero = (
-            filtrar_por_genero.lower() if filtrar_por_genero != "" else None
-        )
-        filtrar_por_artista = (
-            filtrar_por_artista.lower() if filtrar_por_artista != "" else None
-        )
-        catalogo_personal.listar_canciones(
-            filtrar_por_genero=filtrar_por_genero,
-            filtrar_por_artista=filtrar_por_artista,
-        )
+        filtrar_por_genero: str = input("Escriba el género que desea filtrar (presione Enter si desea ver todos los géneros): ")
+        filtrar_por_artista: str = input("Escriba el artista que desea filtrar (presione Enter si desea ver todos los artistas): ")
+        filtrar_por_genero = filtrar_por_genero.lower() if filtrar_por_genero != "" else None
+        filtrar_por_artista = filtrar_por_artista.lower() if filtrar_por_artista != "" else None
+        catalogo_personal.listar_canciones(filtrar_por_genero=filtrar_por_genero,filtrar_por_artista=filtrar_por_artista)
 
     @classmethod
     def anyadir_cancion(cls):

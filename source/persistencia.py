@@ -1,7 +1,6 @@
 import json
 import csv
 from abc import ABC, abstractmethod
-import os
 
 class ErrorGravePersistencia(Exception):
     def __init__(self, mensaje = "No se ha podido cargar la base de datos."):
