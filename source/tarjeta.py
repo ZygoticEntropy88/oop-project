@@ -16,7 +16,6 @@ class TarjetaCredito(IPersistencia):
         numero_de_cuenta: int = "",
         cvv: int = 123,
         fecha_de_caducidad: Fecha = Fecha(),
-        nombre_completo_titular: str = "nombre",
         propietario: str = None,
     ):
 
