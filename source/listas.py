@@ -90,8 +90,8 @@ class Lista(IPersistencia):
 
     def cargar_cancion_por_id(self, id_cancion):
         if self.comprobar_cancion_en_lista_por_id(id_cancion):
-            encontrada = False
             posicion = 0
+            encontrada = False
             while not encontrada and posicion < len(self.get_lista_canciones()):
                 if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
                     encontrada = True
@@ -99,7 +99,7 @@ class Lista(IPersistencia):
                     posicion += 1
             return posicion, self.get_lista_canciones()[posicion] 
         else:
-            return posicion, None
+            return -1, None
 
     def objeto_a_diccionario(self):
         diccionario_listas: dict = {
