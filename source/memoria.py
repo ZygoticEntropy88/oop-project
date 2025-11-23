@@ -24,7 +24,6 @@ class Memoria:
                 usuario = UsuarioPremium()
                 usuario.diccionario_a_objeto(usuario_info)
                 usuario.set_catalogo_personal(self.cargar_catalogo_personal(usuario))
-                print("DEBUG 27", usuario._catalogo_personal)
 
             usuario.set_listas_reproduccion(self.cargar_listas_reproduccion(usuario))
             usuarios[usuario.get_nombre_usuario()] = usuario
