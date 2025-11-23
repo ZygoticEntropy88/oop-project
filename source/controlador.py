@@ -148,6 +148,7 @@ class Controlador:
                                 usuario_premium.crear_nuevo_usuario_premium_por_consola(self.get_usuario_actual())
                                 self.get_memoria().get_usuarios()[nombre_usuario_actual] = usuario_premium
                                 self.get_memoria().crear_catalogo_personal_csv(self.get_usuario_actual().get_nombre_usuario())
+                                self.set_usuario_actual(usuario_premium)
                             else:
                                 print("La cuenta ya es premium.")
                         else:
