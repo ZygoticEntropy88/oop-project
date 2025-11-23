@@ -13,7 +13,7 @@ class Lista(IPersistencia):
         descripcion: str = None,
         lista_canciones: list["Cancion"] = None,
         fecha_creacion: Fecha = None,
-        usuario_creador: "Usuario" = None,
+        usuario_creador: str = None,
     ):
         self._nombre = nombre
         self._descripcion = descripcion
@@ -48,7 +48,7 @@ class Lista(IPersistencia):
     def set_fecha_creacion(self, nueva_fecha: "Fecha"):
         self._fecha_creacion = nueva_fecha
 
-    def set_usuario_creador(self, nuevo_usuario: "Usuario"):
+    def set_usuario_creador(self, nuevo_usuario: str):
         self._usuario_creador = nuevo_usuario
 
     def __str__(self):
@@ -100,11 +100,6 @@ class Lista(IPersistencia):
             return posicion, self.get_lista_canciones()[posicion] 
         else:
             return posicion, None
-    def objeto_a_csv(self):
-        pass
-
-    def csv_a_objeto(self):
-        pass
 
     def objeto_a_diccionario(self):
         diccionario_listas: dict = {

@@ -14,7 +14,7 @@ class Memoria:
 
         # ESTABLEZCO LOS USUARIOS
         usuarios: dict[str : "Usuario"] = dict()
-        for usuario_info in self.gp().leer_json(f"{ruta}usuarios.json"):
+        for usuario_info in self.gp().leer_json(f"{self.ruta}usuarios.json"):
 
             if usuario_info["Tipo usuario"] == "REGULAR":
                 usuario = Usuario()
@@ -25,9 +25,9 @@ class Memoria:
                 usuario.diccionario_a_objeto(usuario_info)
                 usuario.set_catalogo_personal(self.cargar_catalogo_personal(usuario))
 
-        usuario.set_listas_reproduccion(self.cargar_listas_reproduccion(usuario))
-        usuarios[usuario.get_nombre_usuario()] = usuario
-        self._usuarios = usuarios
+            usuario.set_listas_reproduccion(self.cargar_listas_reproduccion(usuario))
+            usuarios[usuario.get_nombre_usuario()] = usuario
+            self._usuarios = usuarios
 
         self.cargar_catalogo_generico()
 
