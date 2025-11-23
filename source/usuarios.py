@@ -97,17 +97,17 @@ class Usuario(IPersistencia):
         )
         return nueva_lista
 
-    def devolver_lista_por_nombre(self, nombre_lista:str) -> tuple[int, list["Cancion"]]:
+    def devolver_lista_por_nombre(self, nombre_lista):
         encontrada = False
-        posicion = 0
         lista_encontrada = None
+        posicion = 0
         while not encontrada and posicion < len(self.get_listas_reproduccion()):
             if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
                 encontrada = True
                 lista_encontrada = self.get_listas_reproduccion()[posicion]
-            posicion += 1
-        return posicion -1, lista_encontrada
-
+        if not encontrada:
+            print(f"La lista {nombre_lista} no se pudo encontrar.")
+        return posicion, lista_encontrada
     @staticmethod
     def comprobar_acceso_premium():
         return False
@@ -146,9 +146,6 @@ class Usuario(IPersistencia):
             "Tipo usuario": self.get_tipo_usuario(),
         }
         return usuario
-
-    def objeto_a_csv(self):
-        pass
 
     def diccionario_a_objeto(self, diccionario_usuario: dict):
         try:
@@ -192,9 +189,6 @@ class Usuario(IPersistencia):
 
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
-
-    def csv_a_objeto(self):
-        pass
 
 
 class UsuarioPremium(Usuario):
@@ -252,13 +246,6 @@ class UsuarioPremium(Usuario):
         tarjeta.crear_tarjeta_por_consola()
         self.set_tarjeta_credito(tarjeta)
 
-    def objeto_a_diccionario(self) -> dict:
-        diccionario: dict = super().objeto_a_diccionario()
-        diccionario["Tarjeta de credito"] = (
-            self.get_tarjeta_credito().objeto_a_diccionario()
-        )
-        return diccionario
-
     def crear_lista_reproduccion(self, lista_canciones: list["Cancion"]):
         contador: int = 0
         pertenece_a_catalogo_personal: bool = True
@@ -279,18 +266,6 @@ class UsuarioPremium(Usuario):
         else:
             return -1
 
-    def devolver_lista_por_nombre(self, nombre_lista):
-        encontrada = False
-        lista_encontrada = None
-        posicion = 0
-        while not encontrada and posicion < len(self.get_listas_reproduccion()):
-            if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
-                encontrada = True
-                lista_encontrada = self.get_listas_reproduccion()[posicion]
-        if not encontrada:
-            print(f"La lista {nombre_lista} no se pudo encontrar.")
-        return posicion, lista_encontrada
-
     def diccionario_a_objeto(self, diccionario_usuario_premium: dict):
         super().diccionario_a_objeto(diccionario_usuario_premium)
         if (
@@ -300,6 +275,13 @@ class UsuarioPremium(Usuario):
             self.get_tarjeta_credito().diccionario_a_objeto(
                 diccionario_usuario_premium["Tarjeta de credito"]
             )
+
+    def objeto_a_diccionario(self) -> dict:
+        diccionario: dict = super().objeto_a_diccionario()
+        diccionario["Tarjeta de credito"] = (
+            self.get_tarjeta_credito().objeto_a_diccionario()
+        )
+        return diccionario
 
 
 class UsuarioAnonimo:

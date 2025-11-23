@@ -50,12 +50,6 @@ class Controlador:
     def get_menu_actual(self):
         return self._menu_actual
 
-    def comprobar_acceso_premium(self) -> bool:
-        """Sirve como flag para restringir el acceso a aquellos menús que solo están disponibles para usuarios premium"""
-        if self.get_usuario_actual().get_tipo_usuario() == "Premium":
-            return True
-        return False
-
     def set_usuario_actual(self, nuevo_usuario: "Usuario" = None) -> bool:
         if nuevo_usuario and self.get_memoria().comprobar_credenciales_validas(
             nuevo_usuario
@@ -209,14 +203,12 @@ class Controlador:
                         # AÑADIR CANCIÓN AL CATÁLOGO PERSONAL
                         elif opcion == 3:
                             nueva_cancion = self.get_menu_actual().anyadir_cancion()
-                            self.get_usuario_actual().anyadir_cancion_a_catalogo(
-                                nueva_cancion
-                            )
+                            self.get_usuario_actual().anyadir_cancion_a_catalogo(nueva_cancion)
 
                         # ELIMINAR CANCIÓN DEL CATÁLOGO PERSONAL
                         elif opcion == 4:
                             id_cancion_eliminar = self.get_menu_actual().solicitar_cancion_a_eliminar()  
-                            self.get_usuario_actual().get_catalogo_personal().eliminar_cancion(id_cancion_eliminar)
+                            self.get_usuario_actual().get_catalogo_personal().eliminar_cancion_de_catalogo(id_cancion_eliminar)
 
                             
 

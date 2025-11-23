@@ -133,7 +133,7 @@ class Memoria:
         """Dado un nombre de usuario, verifica que esté en la base de datos"""
         return True if nombre in self.get_usuarios() and self.get_usuarios()[nombre] else False
         
-    def comprobar_cancion_en_catalogo(self, id_cancion: str):
+    def comprobar_cancion_en_catalogo(self, id_cancion: str) -> bool:
         for cancion in self.get_catalogo_generico().get_lista_canciones():
             if cancion.get_identificador() == id_cancion:
                 return True

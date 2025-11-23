@@ -142,18 +142,6 @@ class Lista(IPersistencia):
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
     def __init__(self, lista_canciones: list["Cancion"]):
@@ -171,7 +159,7 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
     def set_lista_canciones(self, nueva_lista: list["Cancion"]):
         self._lista_canciones = nueva_lista
 
-    def filtrar_catalogo(self, artista: str = None, genero: str = None):
+    def filtrar_catalogo(self, artista: str = None, genero: str = None) -> list['Cancion']:
         catalogo_filtrado: list["Cancion"] = []
 
         if artista is not None and genero is not None:
@@ -245,34 +233,6 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
         ):
             print(f"\t\t\t[{i}]: {cancion}")
 
-    def eliminar_cancion(self, id_cancion: "Cancion"):
-        if self.devolver_cancion_por_id(id_cancion):
-
-            encontrada = False
-            posicion = 0
-            while not encontrada and posicion < len(self.get_lista_canciones()):
-
-                if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
-                    self.get_lista_canciones().pop(posicion)
-                    encontrada = True
-                else:
-                    posicion += 1
-        else:
-            print(f"No se puede eliminar la canción. La canción {id_cancion}  no está en la lista.")
-
-
-    def objeto_a_csv(self):
-        pass
-
-    def csv_a_objeto(self):
-        pass
-
-    def texto_a_objeto(self, diccionario_texto: str):
-        pass
-
-    def objeto_a_texto(self):
-        pass
-
     def objeto_a_diccionario(self):
 
         diccionario_catalogo: list = list()
@@ -297,24 +257,17 @@ class CatalogoPersonal(Catalogo):
     def anyadir_cancion_a_catalogo(self, cancion: "Cancion"):
         self.get_lista_canciones().append(cancion)
 
-    def comprobar_lista_canciones_por_id(self, lista_ids:list['str']) -> list['Cancion']:
-        """Dada una lista de ids, devuelve la lista de canciones cuyos ids están en el catálogo"""
-        lista_canciones_validas:list['Cancion'] = list()
-        for id_cancion in lista_ids:
-            cancion = self.devolver_cancion_por_id(id_cancion) # Puede ser None
-            if cancion:
-                lista_canciones_validas.append(cancion)
-        return lista_canciones_validas
+    def eliminar_cancion_de_catalogo(self, id_cancion: "Cancion"):
+        if self.devolver_cancion_por_id(id_cancion):
 
-    def eliminar_cancion_de_catalogo(self, cancion: "Cancion"):
-        encontrada = False
-        posicion = 0
-        while not encontrada and posicion < len(self.get_lista_canciones()):
-            print(f" pos : {posicion}")
-            if (
-                self.get_lista_canciones()[posicion].get_identificador()
-                == cancion.get_identificador()
-            ):
-                encontrada = True
-                self.get_lista_canciones().pop(posicion)
-            posicion += 1
+            encontrada = False
+            posicion = 0
+            while not encontrada and posicion < len(self.get_lista_canciones()):
+
+                if self.get_lista_canciones()[posicion].get_identificador() == id_cancion:
+                    self.get_lista_canciones().pop(posicion)
+                    encontrada = True
+                else:
+                    posicion += 1
+        else:
+            print(f"No se puede eliminar la canción. La canción {id_cancion}  no está en el catálogo.")

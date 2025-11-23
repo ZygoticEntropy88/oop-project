@@ -11,35 +11,35 @@ def print_opcion(numero: int, opcion: str) -> None:
 
 class Menu(ABC):
 
-    numero_menu: int = 0
-    opciones = []
-    nombre_menu: str = ""
+    _numero_menu: int = 0
+    _opciones = []
+    _nombre_menu: str = ""
 
     @classmethod
     def imprimir(cls, nombre_usuario:str):
         print(f"{cls.get_nombre_menu()} | Usuario: {nombre_usuario}")
         print_opcion(0, "Salir de la aplicación")
         print_opcion(1, "Volver al menú anterior")
-        for opcion_id in range(len(cls.opciones)):
-            print_opcion(opcion_id + 2, cls.opciones[opcion_id])
+        for opcion_id in range(len(cls._opciones)):
+            print_opcion(opcion_id + 2, cls._opciones[opcion_id])
 
     @classmethod
     def get_numero_menu(cls) -> int:
-        return cls.numero_menu
+        return cls._numero_menu
 
     @classmethod
     def get_nombre_menu(cls) -> str:
-        return f"\n================================== {cls.nombre_menu} =================================="
+        return f"\n================================== {cls._nombre_menu} =================================="
 
 
 class MenuInicio(Menu):
-    numero_menu = 0
-    opciones = [
+    _numero_menu = 0
+    _opciones = [
         "Registrar un usuario",
         "Login con usuario y contraseña",
         "Continuar como invitado",
     ]
-    nombre_menu = "MENÚ INICIO"
+    _nombre_menu = "MENÚ INICIO"
 
     @classmethod
     def registrar(cls) -> "Usuario":
@@ -66,15 +66,15 @@ class MenuInicio(Menu):
 
 # ======================================== MENU PRINCIPAL ==============================================
 class MenuPrincipal(Menu):
-    numero_menu = 1
-    opciones = [
+    _numero_menu = 1
+    _opciones = [
         "·Menu reproducción",
         "·Menu catálogo genérico",
         "+Menu catálogo personal",
         "-Menu listas reproducción",
         "-Mejorar tu cuenta"
     ]
-    nombre_menu = "MENÚ PRINCIPAL"
+    _nombre_menu = "MENÚ PRINCIPAL"
 
 
 # ======================================== MENU REPRODUCCIÓN ==============================================
@@ -82,13 +82,13 @@ from reproductor import *  # Me traigo del módulo reproductor todas sus clases,
 
 
 class MenuReproduccion(Menu):
-    numero_menu = 2
-    opciones = [
+    _numero_menu = 2
+    _opciones = [
         "Reproducir canción por ID",
         "Pausar reproducción de la canción",
         "Renaudar reproducción",
     ]
-    nombre_menu = "MENÚ REPRODUCCIÓN"
+    _nombre_menu = "MENÚ REPRODUCCIÓN"
 
     reproductor: Reproductor = Reproductor()
 
@@ -122,11 +122,11 @@ class MenuReproduccion(Menu):
 
 # ================================= MENU CATÁLOGO GENÉRICO ==========================================
 class MenuCatalogoGenerico(Menu):
-    numero_menu = 3
-    opciones = [
+    _numero_menu = 3
+    _opciones = [
         "Listar canciones",
     ]
-    nombre_menu = "MENÚ CATÁLOGO GENÉRICO"
+    _nombre_menu = "MENÚ CATÁLOGO GENÉRICO"
 
     @classmethod
     def listar_canciones(cls, catalogo_generico: "Catalogo"):
@@ -142,9 +142,9 @@ class MenuCatalogoGenerico(Menu):
 
 # ====================================== MENU CATÁLOGO PERSONAL =====================================
 class MenuCatalogoPersonal(Menu):
-    numero_menu = 4
-    opciones = ["Listar catálogo personal", "Añadir canción", "Eliminar canción"]
-    nombre_menu = "MENÚ CATÁLOGO PERSONAL"
+    _numero_menu = 4
+    _opciones = ["Listar catálogo personal", "Añadir canción", "Eliminar canción"]
+    _nombre_menu = "MENÚ CATÁLOGO PERSONAL"
 
     @classmethod
     def listar_catalogo_personal(cls, catalogo_personal: "CatalogoPersonal"):
@@ -167,8 +167,8 @@ class MenuCatalogoPersonal(Menu):
 
 # ====================================== MENU LISTAS REPRODUCCIÓN =====================================
 class MenuListasReproduccion(Menu):
-    numero_menu = 5
-    opciones = [
+    _numero_menu = 5
+    _opciones = [
         "Mostrar todas las listas",
         "Mostrar canciones en una lista",
         "Crear lista",
@@ -176,7 +176,7 @@ class MenuListasReproduccion(Menu):
         "Añadir canción a la lista",
         "Eliminar canción de la lista",
     ]
-    nombre_menu = "MENÚ LISTAS REPRODUCCIÓN"
+    _nombre_menu = "MENÚ LISTAS REPRODUCCIÓN"
 
     @classmethod
     def mostrar_todas_las_listas(cls, listas_de_reproduccion: list['Lista']):
@@ -240,23 +240,17 @@ class MenuListasReproduccion(Menu):
             print("No se ha encontrado la lista")
 
     @classmethod
-    def anyadir_cancion_a_lista(
-        cls
-    ):
+    def anyadir_cancion_a_lista(cls):
         id_cancion:str = input("Introduzca el ID de la canción que desea añadir: ")
         nombre_lista:str = input("Introduzca el nombre de la lista a la que quiere añadir la cancion: ")
         return id_cancion, nombre_lista
 
     @classmethod
-    def solicitar_lista_a_eliminar(
-        cls
-    ):
+    def solicitar_lista_a_eliminar(cls):
         nombre_lista:str = input("Introduce el nombre de la lista donde quieres borrar una cancion: ")
         return nombre_lista
 
     @classmethod
-    def solicitar_cancion_a_eliminar(
-        cls
-    ):
+    def solicitar_cancion_a_eliminar(cls):
         nombre_cancion:str = input("Introduce el ID de la canción que quieres borrar: ")
         return nombre_cancion
