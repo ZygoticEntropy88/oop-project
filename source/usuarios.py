@@ -105,6 +105,7 @@ class Usuario(IPersistencia):
             if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
                 encontrada = True
                 lista_encontrada = self.get_listas_reproduccion()[posicion]
+            posicion += 1
         if not encontrada:
             print(f"La lista {nombre_lista} no se pudo encontrar.")
         return posicion, lista_encontrada
