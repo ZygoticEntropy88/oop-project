@@ -43,12 +43,6 @@ class Memoria:
         for cancion in self.get_catalogo_generico().get_lista_canciones():
             msg += f"\t\t{cancion}\n"
         msg += "\n"
-        """
-        msg += f"\t ·LISTAS REPRODUCCIÓN =  \n"
-        for usuario in self._listas_reproduccion.values():
-            msg += f"\t\t {usuario}"
-        msg += "\n"
-        """
         return msg
 
     def gp(self) -> 'GestorPersistencia':

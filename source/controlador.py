@@ -260,7 +260,8 @@ class Controlador:
                         elif opcion == 6:
                             id_cancion, nombre_lista = self.get_menu_actual().anyadir_cancion_a_lista()
                             posicion_lista_buscada, lista_buscada = self.get_usuario_actual().devolver_lista_por_nombre(nombre_lista)
-                            if lista_buscada:
+
+                            if lista_buscada and self.get_usuario_actual().get_listas_reproduccion()[posicion_lista_buscada]:
                                 cancion = self.get_memoria().get_catalogo_generico().devolver_cancion_por_id(id_cancion)
                                 if self.get_usuario_actual().comprobar_acceso_premium() and not cancion:
                                     cancion = self.get_usuario_actual().get_catalogo_personal().devolver_cancion_por_id(id_cancion)

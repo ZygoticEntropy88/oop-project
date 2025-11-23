@@ -11,7 +11,7 @@ class Lista(IPersistencia):
         self,
         nombre: str = None,
         descripcion: str = None,
-        lista_canciones: list["Cancion"] = None,
+        lista_canciones: list["Cancion"] = [],
         fecha_creacion: Fecha = None,
         usuario_creador: str = None,
     ):
