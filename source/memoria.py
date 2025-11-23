@@ -24,6 +24,7 @@ class Memoria:
                 usuario = UsuarioPremium()
                 usuario.diccionario_a_objeto(usuario_info)
                 usuario.set_catalogo_personal(self.cargar_catalogo_personal(usuario))
+                print("DEBUG 27", usuario._catalogo_personal)
 
             usuario.set_listas_reproduccion(self.cargar_listas_reproduccion(usuario))
             usuarios[usuario.get_nombre_usuario()] = usuario
@@ -66,7 +67,9 @@ class Memoria:
             cancion = Cancion()
             cancion.diccionario_a_objeto(cancion_info)
             lista_canciones_catalogo_personal.append(cancion)
-        return CatalogoPersonal(lista_canciones_catalogo_personal)
+
+        catalogo:CatalogoPersonal =  CatalogoPersonal(lista_canciones_catalogo_personal)
+        return catalogo
 
     def guardar_catalogo_personal(self, usuario:'Usuario'):
         if (usuario.comprobar_acceso_premium() and usuario.get_catalogo_personal()):
@@ -165,4 +168,4 @@ class Memoria:
         self.gp().guardar_json([], f"{self.ruta}listas_reproduccion/{nombre_usuario}.json")
 
     def crear_catalogo_personal_csv(self, nombre_usuario : str):
-        self.gp().escribir_keys_csv({"Nombre":None, "Artista":None, "Genero":None, "Anyo":None, "Identificador":None}, f"{self.ruta}catalogos_personales/{nombre_usuario}.csv")
+        self.gp().escribir_keys_csv({"Nombre":None, "Artista":None, "Genero":None, "Anyo":None, "Identificador cancion":None}, f"{self.ruta}catalogos_personales/{nombre_usuario}.csv")

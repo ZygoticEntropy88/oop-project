@@ -124,8 +124,6 @@ class Controlador:
                         if nuevo_usuario_cargado:
                             self._usuario_actual = nuevo_usuario_cargado
                             self.__cambiar_al_menu_con_id(1)
-                            self.get_memoria().guardar_en_disco()
-
                         else:
                             print("No se ha podido cargar el usuario.")
                     elif opcion == 4:
@@ -238,14 +236,16 @@ class Controlador:
                             nombre_lista, descripcion_lista, fecha, ids_canciones = self.get_menu_actual().crear_lista()
                             if not self.get_usuario_actual().comprobar_lista_en_listas_de_reproduccion(nombre_lista):
                                 canciones_validas  = self.get_memoria().get_catalogo_generico().comprobar_lista_canciones_por_id(ids_canciones)
+                                print("DEBUG", canciones_validas)
                                 # Si el usuario es premium, también añado las que estén en el catálogo personal
                                 if self.get_usuario_actual().comprobar_acceso_premium():
                                     canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
 
+                                print("DEBUG", canciones_validas)
                                 # Información para el usuario   
                                 nombre_usuario_actual = self.get_usuario_actual().get_nombre_usuario()
                                 for id_cancion in ids_canciones:
-                                    if (not self.get_memoria().comprobar_cancion_en_catalogo(id_cancion) and not self.get_memoria().comprobar_cancion_en_catalogo_premium(id_cancion, nombre_usuario_actual)):
+                                    if (not self.get_memoria().comprobar_cancion_en_catalogo(id_cancion) or not self.get_memoria().comprobar_cancion_en_catalogo_premium(id_cancion, nombre_usuario_actual)):
                                         print(f"La canción {id_cancion} no se ha podido añadir a la lista")
 
                                 nueva_lista: 'Lista' =  Lista(

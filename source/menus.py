@@ -180,10 +180,13 @@ class MenuListasReproduccion(Menu):
 
     @classmethod
     def mostrar_todas_las_listas(cls, listas_de_reproduccion: list['Lista']):
-        contador: int = 1
-        for lista in listas_de_reproduccion:
-            print(f"Lista {contador} : {lista} \n")
-            contador += 1
+        if listas_de_reproduccion:
+            contador: int = 1
+            for lista in listas_de_reproduccion:
+                print(f"Lista {contador} : {lista} \n")
+                contador += 1
+        else:
+            print("No tienes listas creadas. Crea una lista!")
 
     @classmethod
     def mostrar_canciones_en_lista(cls, listas_de_reproduccion: list['Lista']):
