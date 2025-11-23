@@ -77,7 +77,7 @@ class Fecha:
 
     def set_anyo(self, anyo: int):
         if not self._es_de_caducidad:
-            if 1900 <= anyo and anyo <= 2026:
+            if 1900 <= anyo and anyo <= 2126:
                 self._anyo = anyo
             else:
                 raise FechaNoValida("El año debe estar entre 1900 y 2026")
