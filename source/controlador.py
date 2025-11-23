@@ -110,7 +110,7 @@ class Controlador:
                             if nuevo_usuario.comprobar_acceso_premium():
                                 self.get_memoria().crear_catalogo_personal_csv(nuevo_usuario.get_nombre_usuario())
                         else:
-                            print("Nombre de usuario ya existente, elija otro")
+                            print("Nombre de usuario ya existente, elija otro.")
 
                     elif opcion == 3:
                         # LOGIN DE UN USUARIO PREVIAMENTE REGISTRADO
@@ -253,7 +253,10 @@ class Controlador:
                                     usuario_creador=self.get_usuario_actual().get_nombre_usuario(),
                                 )
 
-                                self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+                                if self.get_usuario_actual().get_listas_reproduccion():
+                                    self.get_usuario_actual().get_listas_reproduccion().append(nueva_lista)
+                                else:
+                                    self.get_usuario_actual().set_listas_reproduccion([nueva_lista])
                             else:
                                 print("Lista ya existente, elija otro nombre")
 

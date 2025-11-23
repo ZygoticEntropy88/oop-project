@@ -109,7 +109,7 @@ class Lista(IPersistencia):
             "Usuario creador": self.get_usuario_creador(),
         }
         if self.get_lista_canciones():
-            diccionario_listas["Lista canciones"] = [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()]
+            diccionario_listas["Lista canciones"] = [cancion.get_identificador() for cancion in self.get_lista_canciones()]
         return diccionario_listas
 
     def diccionario_a_objeto(self, diccionario_listas: dict):
@@ -119,14 +119,6 @@ class Lista(IPersistencia):
 
             if ("Descripcion" in diccionario_listas and diccionario_listas["Descripcion"]):
                 self.set_descripcion(diccionario_listas["Descripcion"])
-
-            if ("Lista canciones" in diccionario_listas and diccionario_listas["Lista canciones"]):
-                lista_canciones: list[Cancion] = list()
-                for cancion_info in diccionario_listas["Lista canciones"]:
-                    cancion = Cancion()
-                    cancion.diccionario_a_objeto(cancion_info)
-                    lista_canciones.append(cancion)
-                self.set_lista_canciones(lista_canciones)
 
             if ("Fecha creacion" in diccionario_listas and diccionario_listas["Fecha creacion"]):
                 fecha_creacion = Fecha()
@@ -218,7 +210,7 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
     def comprobar_lista_canciones_por_id(self, lista_ids:list['str']) -> list['Cancion']:
         """Dada una lista de ids, devuelve la lista de canciones cuyos ids están en el catálogo"""
-        lista_canciones_validas:list['Cancion'] = list()
+        lista_canciones_validas:list['Cancion'] = []
         for id_cancion in lista_ids:
             cancion = self.devolver_cancion_por_id(id_cancion) # Puede ser None
             if cancion:
@@ -251,7 +243,7 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
 
 
 class CatalogoPersonal(Catalogo):
-    def __init__(self, lista_canciones: list["Cancion"]):
+    def __init__(self, lista_canciones: list["Cancion"] = []):
         super().__init__(lista_canciones)
 
     def anyadir_cancion_a_catalogo(self, cancion: "Cancion"):

@@ -8,6 +8,7 @@ if __name__ == "__main__":
     )
     try:
         memoria: Memoria = Memoria()
+        print(memoria)
     except ErrorGravePersistencia as e:
         print(f"ERROR: {e}")
     else:

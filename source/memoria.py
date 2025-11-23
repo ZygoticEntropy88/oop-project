@@ -11,6 +11,7 @@ class Memoria:
         self.ruta = ruta
 
         self.__gp = GestorPersistencia()
+        self.cargar_catalogo_generico()
 
         # ESTABLEZCO LOS USUARIOS
         usuarios: dict[str : "Usuario"] = dict()
@@ -27,15 +28,14 @@ class Memoria:
 
             usuario.set_listas_reproduccion(self.cargar_listas_reproduccion(usuario))
             usuarios[usuario.get_nombre_usuario()] = usuario
-            self._usuarios = usuarios
+        self._usuarios = usuarios
 
-        self.cargar_catalogo_generico()
 
     def __str__(self):
         """Devuelve la memoria cargada, aunque solo se utiliza a efectos del administrador"""
         msg = "===================================MEMORIA=========================================\n"
         msg += f"\t ·USUARIOS = \n\n"
-        for usuario in self._usuarios.values():
+        for usuario in self.get_usuarios().values():
             msg += f"\t{usuario}\n"
         msg += "\n"
 
@@ -74,12 +74,31 @@ class Memoria:
                 )
 
     def cargar_listas_reproduccion(self, usuario:'Usuario'):
-        listas_reproduccion_usuario: list[Lista] = list()
-        for lista_info in self.gp().leer_json(f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json"):
-            lista = Lista()
-            lista.diccionario_a_objeto(lista_info)
-            listas_reproduccion_usuario.append(lista)
-        return listas_reproduccion_usuario
+
+        listas_reproduccion_usuario : list[Lista] = []
+        listas_info = self.gp().leer_json(f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json")
+
+        for lista_info in listas_info:
+
+            for lista_info in self.gp().leer_json(f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json"):
+                
+                lista = Lista()
+                lista.diccionario_a_objeto(lista_info)
+
+                canciones_recuperadas = []
+                if "Lista canciones" in lista_info:
+                    for cancion_id in lista_info["Lista canciones"]:
+
+                        cancion = self.get_catalogo_generico().devolver_cancion_por_id(cancion_id)
+                        if not cancion and usuario.comprobar_acceso_premium():
+                            cancion = usuario.get_catalogo_personal().devolver_cancion_por_id(cancion_id)
+                        if cancion:
+                            canciones_recuperadas.append(cancion)
+
+                lista.set_lista_canciones(canciones_recuperadas)
+                listas_reproduccion_usuario.append(lista)
+            return listas_reproduccion_usuario
+
 
     def guardar_listas_reproduccion(self, usuario:'Usuario'):
         if (usuario.get_listas_reproduccion() and usuario.get_listas_reproduccion() != []):

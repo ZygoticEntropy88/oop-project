@@ -193,18 +193,21 @@ class MenuListasReproduccion(Menu):
         nombre_lista: str = input("Introduzca el nombre de la lista que desea mostrar: ")
         contador: int = 0
         lista_encontrada: bool = False
-        while contador < len(listas_de_reproduccion) and not lista_encontrada:
-            if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
-                lista_encontrada = True
-                canciones:list['Cancion'] = listas_de_reproduccion[contador].get_lista_canciones()
-                if canciones and canciones != []:
-                    for cancion in canciones:
-                        print(f"{cancion} \n")
-                else:
-                    print("Lista vacía")
-            contador += 1
-        if not lista_encontrada:
-            print("Lista no encontrada")
+        if listas_de_reproduccion:
+            while contador < len(listas_de_reproduccion) and not lista_encontrada:
+                if listas_de_reproduccion[contador].get_nombre() == nombre_lista:
+                    lista_encontrada = True
+                    canciones:list['Cancion'] = listas_de_reproduccion[contador].get_lista_canciones()
+                    if canciones and canciones != []:
+                        for cancion in canciones:
+                            print(f"{cancion} \n")
+                    else:
+                        print("Lista vacía")
+                contador += 1
+            if not lista_encontrada:
+                print("Lista no encontrada")
+        else:
+            print("No tienes listas de reproducción. Comienza creando una lista.")
 
     @classmethod
     def crear_lista(cls):

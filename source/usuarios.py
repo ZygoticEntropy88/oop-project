@@ -117,11 +117,14 @@ class Usuario(IPersistencia):
     def comprobar_lista_en_listas_de_reproduccion(self, nombre_lista : str):
         contador : int = 0
         encontrada : bool = False
-        while contador < len(self.get_listas_reproduccion()) and not encontrada:
-            if nombre_lista == self.get_listas_reproduccion()[contador].get_nombre():
-                encontrada = True
-            contador +=1
-        return encontrada
+        if self.get_listas_reproduccion():
+            while contador < len(self.get_listas_reproduccion()) and not encontrada:
+                if nombre_lista == self.get_listas_reproduccion()[contador].get_nombre():
+                    encontrada = True
+                contador +=1
+            return encontrada
+        return False
+
     # ===================================================================================
     #                  IMPLEMENTACIONES DE LA INTERFAZ DE PERSISTENCIA
     # ===================================================================================
@@ -198,7 +201,7 @@ class UsuarioPremium(Usuario):
         self,
         usuario_base: "Usuario" = Usuario(),
         tarjeta_credito: "TarjetaCredito" = TarjetaCredito(),
-        catalogo_personal: "CatalogoPersonal" = None,
+        catalogo_personal: "CatalogoPersonal" = CatalogoPersonal(),
     ):
 
         super().__init__(
