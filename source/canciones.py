@@ -125,12 +125,6 @@ class Cancion(IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
-    def texto_a_objeto(self, texto: str):
-        pass
-
-    def objeto_a_texto(self):
-        pass
-
     def objeto_a_csv(self):
         pass
 

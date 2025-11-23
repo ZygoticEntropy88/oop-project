@@ -128,12 +128,6 @@ class TarjetaCredito(IPersistencia):
         except Exception as error:
             raise ValueError(f"Valor erróneo en lo que se haya introducido {error}")
 
-    def objeto_a_csv(self):
-        pass
-
-    def objeto_a_texto(self):
-        pass
-
     def csv_a_objeto(self):
         pass
 

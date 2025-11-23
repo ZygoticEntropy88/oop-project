@@ -150,9 +150,6 @@ class Usuario(IPersistencia):
     def objeto_a_csv(self):
         pass
 
-    def texto_a_objeto(self, texto: str):
-        pass
-
     def diccionario_a_objeto(self, diccionario_usuario: dict):
         try:
             if (

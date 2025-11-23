@@ -7,7 +7,11 @@ class ErrorGravePersistencia(Exception):
         super().__init__(mensaje)
 
 class GestorPersistencia:
+    # ===== MÉTODOS CARGAR: Cargan el contenido directamente en un objeto =======
+    # === MÉTODOS LEER: Devuelven el contenido como información sin procesar ====
 
+
+    # =============================== MÉTODOS PARA JSON =================================================
     @staticmethod
     def guardar_json(contenido: dict, ruta: str) -> bool:
         """Dada la ruta de un archivo .json, guarda el contenido que recibe por parámetros en esa ruta."""
@@ -21,19 +25,25 @@ class GestorPersistencia:
         return True
 
     @staticmethod
-    def resetear_csv_manteniendo_cabeceras(ruta: str) -> bool:
-        try:
-            with open(ruta, "r", newline="") as f:
-                reader = csv.reader(f)
-                cabecera = next(reader)
-            with open(ruta, "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(cabecera)
-        except Exception as e:
-            print("No se ha podido resetear el csv, error {e}")
-            raise ErrorGravePersistencia
-        return True
+    def leer_json(ruta: str) -> dict:
+        with open(ruta, "r") as f:
+            contenido = json.load(f)
+        return contenido
 
+    def cargar_json(self, ruta: str, objeto: object) -> bool:
+        """Dada la ruta de un archivo .json, y un objeto objeto que debe heredar de IPersistencia, carga su contenido
+        en el archivo .txt. Devuelve True si ha conseguido cargar el contenido satisfactoriamente y false si no puede.
+        """
+        try:
+            contenido = self.leer_json(ruta)
+        except Exception as e:
+            print(f"No se ha podido cargar el JSON: {ruta}, error {e}")
+            return False
+        else:
+            objeto.diccionario_a_objeto(contenido)
+            return True
+
+    # =============================== MÉTODOS PARA CSV =================================================
     @staticmethod
     def guardar_csv(contenido: dict, ruta: str) -> bool:
         """Dada la ruta de un archivo .csv, guarda el contenido que recibe por parámetros en esa ruta.
@@ -60,39 +70,19 @@ class GestorPersistencia:
             raise ErrorGravePersistencia
         return True
 
-
     @staticmethod
-    def guardar_txt(contenido: str, ruta: str) -> bool:
-        """Dada la ruta de un archivo .txt, guarda el contenido que recibe por parámetros en esa ruta."""
+    def resetear_csv_manteniendo_cabeceras(ruta: str) -> bool:
         try:
-            with open(ruta), "w" as f:
-                f.write(contenido)
+            with open(ruta, "r", newline="") as f:
+                reader = csv.reader(f)
+                cabecera = next(reader)
+            with open(ruta, "w", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow(cabecera)
         except Exception as e:
-            print(f"No se ha podido guardar en el TXT: {ruta}, error {e}")
-            return False
+            print("No se ha podido resetear el csv, error {e}")
+            raise ErrorGravePersistencia
         return True
-
-    # ===== MÉTODOS CARGAR: Cargan el contenido directamente en un objeto =======
-    # === MÉTODOS LEER: Devuelven el contenido como información sin procesar ====
-
-    @staticmethod
-    def leer_json(ruta: str) -> dict:
-        with open(ruta, "r") as f:
-            contenido = json.load(f)
-        return contenido
-
-    def cargar_json(self, ruta: str, objeto: object) -> bool:
-        """Dada la ruta de un archivo .json, y un objeto objeto que debe heredar de IPersistencia, carga su contenido
-        en el archivo .txt. Devuelve True si ha conseguido cargar el contenido satisfactoriamente y false si no puede.
-        """
-        try:
-            contenido = self.leer_json(ruta)
-        except Exception as e:
-            print(f"No se ha podido cargar el JSON: {ruta}, error {e}")
-            return False
-        else:
-            objeto.diccionario_a_objeto(contenido)
-            return True
 
     @staticmethod
     def leer_csv(ruta: str) -> list[dict]:
@@ -117,33 +107,7 @@ class GestorPersistencia:
             objeto.csv_a_objeto(contenido)
             return True
 
-    @staticmethod
-    def leer_txt(ruta: str) -> str:
-        with open(ruta) as f:
-            contenido = f.read()
-        return contenido
-
-    def cargar_txt(self, ruta: str, objeto: object) -> bool:
-        """Dada la ruta de un archivo .txt, y un objeto objeto que debe heredar de IPersistencia, carga su contenido
-        en el archivo .txt. Devuelve True si ha conseguido cargar el contenido satisfactoriamente y false si no puede.
-        """
-        try:
-            contenido = self.leer_txt(ruta)
-        except Exception as e:
-            print(f"No se ha cargado el texto en el TXT: {ruta}")
-            return False
-        else:
-            objeto.texto_a_objeto(contenido)
-            return True
-
-
 class IPersistencia(ABC):
-
-    @abstractmethod
-    def objeto_a_texto(self) -> str:
-        """Dado un objeto (aquel que implementa la Interfaz de Persistencia), este método ha de sintetizar los atributos
-        del objeto en una cadena de texto."""
-        pass
 
     @abstractmethod
     def objeto_a_diccionario(self) -> dict:
@@ -157,12 +121,6 @@ class IPersistencia(ABC):
         """Dado un objeto (aquel que implementa la Interfaz de Persistencia), este método ha de sintetizar los atributos
         del objeto y devolver un diccionario de la forma {'cabecera' : ' valor del atributo asociado a esa cabecera'}
         """
-        pass
-
-    @abstractmethod
-    def texto_a_objeto(self, texto: str) -> None:
-        """Dado un texto, el objeto que implemente este método debe extraer del texto los valores necesarios para
-        establecerlos en su propia instancia."""
         pass
 
     @abstractmethod

@@ -106,12 +106,6 @@ class Lista(IPersistencia):
     def csv_a_objeto(self):
         pass
 
-    def texto_a_objeto(self, diccionario_texto: str):
-        pass
-
-    def objeto_a_texto(self):
-        pass
-
     def objeto_a_diccionario(self):
         diccionario_listas: dict = {
             "Nombre lista": self.get_nombre(),
