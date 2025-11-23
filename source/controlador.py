@@ -53,7 +53,7 @@ class Controlador:
         return self._menu_actual
 
     def set_usuario_actual(self, nuevo_usuario: "Usuario" = None) -> bool:
-        if nuevo_usuario
+        if nuevo_usuario:
             if self.get_memoria().comprobar_credenciales_validas(nuevo_usuario.get_nombre_usuario(), nuevo_usuario.get_contrasenya()):
                 print(f"Login correcto: {nuevo_usuario}")
                 self._usuario_actual = nuevo_usuario
