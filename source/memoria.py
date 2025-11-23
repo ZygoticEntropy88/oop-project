@@ -65,7 +65,7 @@ class Memoria:
         return catalogo
 
     def guardar_catalogo_personal(self, usuario:'Usuario'):
-        if usuario.comprobar_acceso_premium() and usuario.get_catalogo_personal():
+        if (usuario.comprobar_acceso_premium() and usuario.get_catalogo_personal()):
             self.gp().resetear_csv_manteniendo_cabeceras(f"{self.ruta}catalogos_personales/{usuario.get_nombre_usuario()}.csv")
             for cancion_info in usuario.get_catalogo_personal().objeto_a_diccionario():
                 self.gp().guardar_csv(
@@ -74,34 +74,20 @@ class Memoria:
                 )
 
     def cargar_listas_reproduccion(self, usuario:'Usuario'):
-        listas_reproduccion_usuario : list[Lista] = []
-        listas_info = self.gp().leer_json(f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json")
-
-        for lista_info in listas_info:
+        listas_reproduccion_usuario: list[Lista] = list()
+        for lista_info in self.gp().leer_json(f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json"):
             lista = Lista()
             lista.diccionario_a_objeto(lista_info)
-
-            canciones_recuperadas = []
-            if "Lista canciones" in lista_info:
-                for cancion_id in lista_info["Lista canciones"]:
-
-                    cancion = self.get_catalogo_generico().devolver_cancion_por_id(cancion_id)
-                    if not cancion and usuario.comprobar_acceso_premium():
-                        cancion = usuario.get_catalogo_personal().devolver_cancion_por_id(cancion_id)
-                    if cancion:
-                        canciones_recuperadas.append(cancion)
-
-            lista.set_lista_canciones(canciones_recuperadas)
             listas_reproduccion_usuario.append(lista)
         return listas_reproduccion_usuario
 
     def guardar_listas_reproduccion(self, usuario:'Usuario'):
-        if usuario.get_listas_reproduccion() and usuario.get_listas_reproduccion() != []:
+        if (usuario.get_listas_reproduccion() and usuario.get_listas_reproduccion() != []):
             usuario_listas_reproduccion = list()
             for lista_reproduccion in usuario.get_listas_reproduccion():
                 usuario_listas_reproduccion.append(lista_reproduccion.objeto_a_diccionario())
             self.gp().guardar_json(
-                contenido = usuario_listas_reproduccion,
+                contenido= usuario_listas_reproduccion,
                 ruta=f"{self.ruta}listas_reproduccion/{usuario.get_nombre_usuario()}.json",
             )
 

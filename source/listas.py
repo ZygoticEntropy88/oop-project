@@ -109,35 +109,33 @@ class Lista(IPersistencia):
             "Usuario creador": self.get_usuario_creador(),
         }
         if self.get_lista_canciones():
-            diccionario_listas["Lista canciones"] = [cancion.get_identificador() for cancion in self.get_lista_canciones()]
+            diccionario_listas["Lista canciones"] = [cancion.objeto_a_diccionario() for cancion in self.get_lista_canciones()]
         return diccionario_listas
 
     def diccionario_a_objeto(self, diccionario_listas: dict):
         try:
-            if "Nombre lista" in diccionario_listas and diccionario_listas["Nombre lista"]:
+            if ("Nombre lista" in diccionario_listas and diccionario_listas["Nombre lista"]):
                 self.set_nombre(diccionario_listas["Nombre lista"])
 
-            if "Descripcion" in diccionario_listas and diccionario_listas["Descripcion"]:
+            if ("Descripcion" in diccionario_listas and diccionario_listas["Descripcion"]):
                 self.set_descripcion(diccionario_listas["Descripcion"])
 
+            if ("Lista canciones" in diccionario_listas and diccionario_listas["Lista canciones"]):
+                lista_canciones: list[Cancion] = list()
+                for cancion_info in diccionario_listas["Lista canciones"]:
+                    cancion = Cancion()
+                    cancion.diccionario_a_objeto(cancion_info)
+                    lista_canciones.append(cancion)
+                self.set_lista_canciones(lista_canciones)
 
-           #if "Lista canciones" in diccionario_listas and diccionario_listas["Lista canciones"]:
-            #    lista_canciones: list[Cancion] = list()
-             #   for cancion_info in diccionario_listas["Lista canciones"]:
-              #      cancion = Cancion()
-               #     cancion.diccionario_a_objeto(cancion_info)
-                #    lista_canciones.append(cancion)
-                #self.set_lista_canciones(lista_canciones)
-
-
-            if "Fecha creacion" in diccionario_listas and diccionario_listas["Fecha creacion"]:
+            if ("Fecha creacion" in diccionario_listas and diccionario_listas["Fecha creacion"]):
                 fecha_creacion = Fecha()
                 fecha_creacion.diccionario_a_objeto(
                     diccionario_listas["Fecha creacion"]
                 )
                 self.set_fecha_creacion(fecha_creacion)
 
-            if "Usuario creador" in diccionario_listas and diccionario_listas["Usuario creador"]:
+            if ("Usuario creador" in diccionario_listas and diccionario_listas["Usuario creador"]):
                 self.set_usuario_creador(diccionario_listas["Usuario creador"])
 
         except Exception as error:
