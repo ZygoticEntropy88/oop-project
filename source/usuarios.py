@@ -7,6 +7,10 @@ from canciones import Cancion
 from tarjeta import TarjetaCredito
 
 
+class CorreoNoValido(Exception):
+    def __init__(self, mensaje=None):
+        super().__init__(mensaje)
+
 class Usuario(IPersistencia):
     def __init__(
         self,
@@ -75,6 +79,9 @@ class Usuario(IPersistencia):
         fecha_nacimiento.solicitar_usuario("(fecha de nacimiento)")
         fecha_registro.solicitar_usuario("(fecha de registro)")
         contrasenya: str = input("Establece una contraseña: ")
+
+        if correo_electronico.count('@') != 1 or correo_electronico.count('.') == 0:
+            raise CorreoNoValido("El correo introducido no es válido.")
 
         self.set_nombre_usuario(nombre_de_usuario)
         self.set_correo_electronico(correo_electronico)

@@ -9,10 +9,11 @@ from menus import (
 )
 
 from fecha import FechaNoValida, FormatoFechaNoValido
-from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium
+from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium, CorreoNoValido
 from memoria import Memoria
 from canciones import Cancion
 from listas import Lista
+from tarjeta import TarjetaNoValida, TarjetaCaducada
 
 HASH_MENUS: dict[int:"Menu"] = {
     0: MenuInicio(),
@@ -309,3 +310,11 @@ class Controlador:
             print(f"ERROR FECHA: {e}")
         except FormatoFechaNoValido as e:
             print(f"ERROR FECHA: {e}")
+        except CorreoNoValido as e:
+            print(f"ERROR USUARIO: {e}")
+        except TarjetaNoValida as e:
+            print(f"ERROR TARJETA: {e}")
+        except TarjetaCaducada as e:
+            print(f"ERROR TARJETA: {e}")
+        except Exception as e:
+            print(f"ERROR DESCONOCIDO: {e}")

@@ -3,11 +3,14 @@ from persistencia import IPersistencia
 
 
 class TarjetaNoValida(Exception):
-    pass
+    def __init__(self, mensaje=None):
+        super().__init__(mensaje)
 
 
 class TarjetaCaducada(Exception):
-    pass
+    def __init__(self, mensaje=None):
+        super().__init__(mensaje)
+
 
 
 class TarjetaCredito(IPersistencia):
@@ -67,6 +70,16 @@ class TarjetaCredito(IPersistencia):
         fecha_caducidad = Fecha(es_de_caducidad=True)
         fecha_registro.solicitar_usuario("Fecha de registro de la tarjeta")
         fecha_caducidad.solicitar_usuario("Fecha de caducidad de la tarjeta")
+
+        if fecha_caducidad.get_anyo() <= 2025:
+            raise TarjetaCaducada("La tarjeta de crédito está caducada. Hable con su banco.")
+
+        if len(str(iban)) >= 30 or len(str(iban)) <= 17:
+            raise TarjetaNoValida("El IBAN No es correcto")
+
+        if len(str(cvv)) != 3:
+            raise TarjetaNoValida("El CVV No es correcto")
+
 
         # TODO COMPROBACIONES DE ERRORES
         self.set_numero_cuenta(iban)
