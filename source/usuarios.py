@@ -99,13 +99,14 @@ class Usuario(IPersistencia):
 
     def devolver_lista_por_nombre(self, nombre_lista):
         encontrada = False
-        lista_encontrada = None
+        lista_encontrada = list()
         posicion = 0
         while not encontrada and posicion < len(self.get_listas_reproduccion()):
             if self.get_listas_reproduccion()[posicion].get_nombre() == nombre_lista:
                 encontrada = True
                 lista_encontrada = self.get_listas_reproduccion()[posicion]
-            posicion += 1
+            else:
+                posicion += 1
         if not encontrada:
             print(f"La lista {nombre_lista} no se pudo encontrar.")
         return posicion, lista_encontrada
