@@ -22,7 +22,8 @@ class FechaNoValida(Exception):
 
 
 class FormatoFechaNoValido(Exception):
-    pass
+    def __init__(self, mensaje=None):
+        super().__init__(mensaje)
 
 
 class Fecha:
@@ -101,7 +102,7 @@ class Fecha:
             self.set_anyo(anyo_introducido)
 
         except Exception as e:
-            raise FormatoFechaNoValido
+            raise FechaNoValida("La fecha introducida no es válida.")
 
     def objeto_a_diccionario(self) -> dict:
         diccionario_informacion_fecha = {

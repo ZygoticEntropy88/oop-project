@@ -8,6 +8,7 @@ from menus import (
     MenuListasReproduccion,
 )
 
+from fecha import FechaNoValida, FormatoFechaNoValido
 from usuarios import UsuarioAnonimo, Usuario, UsuarioPremium
 from memoria import Memoria
 from canciones import Cancion
@@ -304,5 +305,7 @@ class Controlador:
         #print(f"La opción escogida debe ser un número entero. {e}")
         except ValueError as e:
             print("La opción introducida debe ser un número entero.")
-        except Exception as e:
-            print(f"Error: {e}")
+        except FechaNoValida as e:
+            print(f"ERROR FECHA: {e}")
+        except FormatoFechaNoValido as e:
+            print(f"ERROR FECHA: {e}")
