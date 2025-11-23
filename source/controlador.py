@@ -240,6 +240,11 @@ class Controlador:
                                 if self.get_usuario_actual().comprobar_acceso_premium():
                                     canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
                                 
+                                # Informacion para el usuario
+                                for id_cancion in ids_canciones:
+                                    if id_cancion not in [cancion.get_identificador() for cancion in canciones_validas]:
+                                        print(f"La canción con ID : {id_cancion} no se ha podido añadir a la nueva lista.")
+                                
                                 nueva_lista: 'Lista' =  Lista(
                                     nombre_lista,
                                     descripcion_lista,
@@ -268,7 +273,7 @@ class Controlador:
                                 if cancion:
                                     self.get_usuario_actual().get_listas_reproduccion()[posicion_lista_buscada].anyadir_cancion(cancion)
                                 else:
-                                    print("No se puede añadir la cancion {id_cancion} a la lista. Esta canción no está disponible en ningún catálogo.")
+                                    print(f"No se puede añadir la cancion {id_cancion} a la lista. Esta canción no está disponible en ningún catálogo.")
                             else:
                                 print(f"No se pudo añadir la canción {id_cancion} a la lista {nombre_lista}.")
 
