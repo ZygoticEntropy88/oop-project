@@ -212,14 +212,11 @@ class MenuListasReproduccion(Menu):
         id_canciones:list['str'] = list()
         seguir_anyadiendo:bool = True
         while seguir_anyadiendo:
-            try:
-                id_cancion:str = input("Introduzca el ID de la canción que desea añadir (presione enter para terminar el proceso): ")
-                if id_cancion == "":
-                    seguir_anyadiendo = False
-                else:
-                    id_canciones.append(id_cancion)
-            except EntradaInvalidaError:
-                print("ID introducido no válido")
+            id_cancion:str = input("Introduzca el ID de la canción que desea añadir (presione enter para terminar el proceso): ")
+            if id_cancion == "":
+                seguir_anyadiendo = False
+            else:
+                id_canciones.append(id_cancion)
                 
         return (nombre_lista, descripcion_lista, fecha, id_canciones)
 

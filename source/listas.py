@@ -223,7 +223,7 @@ class Catalogo(IPersistencia):  # Tenemos que guardar los catálogos
             cancion = self.devolver_cancion_por_id(id_cancion) # Puede ser None
             if cancion:
                 lista_canciones_validas.append(cancion)
-        return lista_canciones_validas
+            return lista_canciones_validas
 
     def listar_canciones(self, filtrar_por_genero=None, filtrar_por_artista=None):
         for i, cancion in enumerate(

@@ -238,6 +238,12 @@ class Controlador:
                                 if self.get_usuario_actual().comprobar_acceso_premium():
                                     canciones_validas += self.get_usuario_actual().get_catalogo_personal().comprobar_lista_canciones_por_id(ids_canciones)
 
+                                # Información para el usuario   
+                                nombre_usuario_actual = self.get_usuario_actual().get_nombre_usuario()
+                                for id_cancion in ids_canciones:
+                                    if (not self.get_memoria().comprobar_cancion_en_catalogo(id_cancion) and not self.get_memoria().comprobar_cancion_en_catalogo_premium(id_cancion, nombre_usuario_actual)):
+                                        print(f"La canción {id_cancion} no se ha podido añadir a la lista")
+
                                 nueva_lista: 'Lista' =  Lista(
                                     nombre_lista,
                                     descripcion_lista,
