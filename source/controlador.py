@@ -196,9 +196,10 @@ class Controlador:
 
                         # LISTAR CATÁLOGO PERSONAL
                         if opcion == 2:
-                            self.get_menu_actual().listar_catalogo_personal(
-                                self._usuario_actual.get_catalogo_personal()
-                            )
+                            if self.get_usuario_actual().get_catalogo_personal():
+                                self.get_menu_actual().listar_catalogo_personal(self.get_usuario_actual().get_catalogo_personal())
+                            else:
+                                print("El catálogo personal está vacío")
 
                         # AÑADIR CANCIÓN AL CATÁLOGO PERSONAL
                         elif opcion == 3:
@@ -207,8 +208,11 @@ class Controlador:
 
                         # ELIMINAR CANCIÓN DEL CATÁLOGO PERSONAL
                         elif opcion == 4:
-                            id_cancion_eliminar = self.get_menu_actual().solicitar_cancion_a_eliminar()  
-                            self.get_usuario_actual().get_catalogo_personal().eliminar_cancion_de_catalogo(id_cancion_eliminar)
+                            if self.get_usuario_actual().get_catalogo_personal():
+                                id_cancion_eliminar = self.get_menu_actual().solicitar_cancion_a_eliminar()  
+                                self.get_usuario_actual().get_catalogo_personal().eliminar_cancion_de_catalogo(id_cancion_eliminar)
+                            else:
+                                print("El catálogo personal está vacío, no se puede eliminar una canción del catálogo vacío")
 
                             
 
